@@ -1,0 +1,22 @@
+import TetraStereo.OneCenter.P94MoleculeCoordinateTorsion
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-!
+# Kernel-only certificate: molecule-to-coordinate P-94 torsion closure
+
+This target requires a torsion carrier to name its finite bonded rotation axis and typed terminal
+participants; validates physical, lone-pair, and multiple-bond-duplicate attachment; resolves
+physical or explicit virtual points; derives the exact coordinate torsion; and reaches the public
+P-94 report with exact positive/refusal and multiplicity theorems.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.P94ConformationUnit.torsionAxis_validFor_iff
+assert_kernel_only TetraStereo.OneCenter.P94TorsionEvidence.molecularRolesValid_iff_axisParticipants
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateTorsion.VirtualTorsionPointLedger.lookup_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateTorsion.participantPoint?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateTorsion.coordinateTorsionEvidence?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateTorsion.coordinateTorsionEvidence?_eq_none_iff
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateTorsion.coordinateTorsionEvidence_success_supports_classification
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateTorsion.coordinateTorsionAssignment_count_eq_one

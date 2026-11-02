@@ -1,0 +1,23 @@
+import TetraStereo.OneCenter.P94CoordinateTorsion
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-!
+# Kernel-only certificate: exact coordinate-derived P-94 torsion angles
+
+The certified path must derive the principal signed torsion angle from exact spatial points,
+refuse precisely the P-94 collinear endpoint cases, preserve the full real-valued angle, and
+implement the source's positive-clockwise/negative-anticlockwise sign convention.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateTorsion.torsionNumerator_norm_identity
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateTorsion.noncollinear_angleComplex_ne_zero
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateTorsion.principalDegrees_lowerBound
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateTorsion.principalDegrees_upperBound
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateTorsion.torsionAngleOfPoints?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateTorsion.torsionAngleOfPoints?_eq_none_iff
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateTorsion.positiveQuarterTurn_degrees
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateTorsion.negativeQuarterTurn_degrees
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateTorsion.spatialTorsionAngle?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateTorsion.spatialTorsionAngle?_eq_none_iff

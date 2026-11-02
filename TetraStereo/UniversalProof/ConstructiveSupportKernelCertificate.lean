@@ -1,0 +1,47 @@
+import TetraStereo.UniversalProof.ProductionMancudeSupportCheckProofs.ProductionMancudeSupportCheck
+import TetraStereo.UniversalProof.Rule3ConstitutionalReferenceBoundaryProofs.Rule3ConstitutionalReferenceBoundary
+import TetraStereo.UniversalProof.ProductionPrunedFrontierCapacityProofs.ProductionMoleculeBranchingRanking
+import TetraStereo.KernelOnly
+
+/-! Focused support constructions. A verified finite matching check discharges a graph-theoretic
+support premise; local width and well-formed representation assumptions remain explicit. This
+module neither removes the operational frontier cap nor supplies external source approval. -/
+
+namespace TetraStereo.UniversalProof
+
+open OneCenter
+open OneCenter.RawMolecule
+open OneCenter.AuthoritativeCIPMoleculeCursorRanking
+open OneCenter.ProductionCIPRerootComparatorLaws
+
+/-- Connect the computed matching support gate to the molecule-derived recursive support result.
+This constructs cursor support, not a frontier-cap certificate or universal chemical admission. -/
+theorem moleculeBranchingCursorSupport_of_verifiedKekuleCheck
+    (mol : RawMolecule) (center : Nat) (centerBound : center < mol.atomCount)
+    (wellFormed : mol.WellFormed) (unique : mol.BondRecordsUnique)
+    (branching : ProductionPrunedFrontierCapacityProofs.CanonicalCenterBranchingWidth mol center)
+    (checked : ProductionMancudeSupportCheckProofs.localizedMancudeKekuleCheck mol = true)
+    {cursor : CanonicalRerootCursor}
+    (eligible : CanonicalCenterRerootCursor mol center cursor) :
+    BranchingCursorSupport mol (2 * mol.atomCount + 1) cursor := by
+  apply ProductionPrunedFrontierCapacityProofs.moleculeBranchingCursorSupport_uniform_of_localizedMaximum
+    mol center centerBound wellFormed unique branching
+  · exact (ProductionMancudeSupportCheckProofs.localizedMancudeKekuleCheck_eq_true_iff mol).mp checked
+  · exact eligible
+
+end TetraStereo.UniversalProof
+
+assert_kernel_only TetraStereo.UniversalProof.ProductionMancudeSupportCheckProofs.writtenMancudeEdgeMaximumCheck_eq_true_iff
+assert_kernel_only TetraStereo.UniversalProof.ProductionMancudeSupportCheckProofs.localizedMancudeKekuleCheck_eq_true_iff
+assert_kernel_only TetraStereo.UniversalProof.ProductionMancudeSupportCheckProofs.mancudeRule1aLabel?_exists_of_kekuleCheck
+assert_kernel_only TetraStereo.UniversalProof.ProductionMancudeSupportCheckProofs.mancudeComponentSupportCheck_eq_false_of_label_none
+assert_kernel_only TetraStereo.UniversalProof.ProductionMancudeSupportCheckProofs.writtenMancudeEdgeMaximumCheck_accepts_disjoint_maximum
+assert_kernel_only TetraStereo.UniversalProof.ProductionMancudeSupportCheckProofs.writtenMancudeEdgeMaximumCheck_rejects_submaximum
+assert_kernel_only TetraStereo.UniversalProof.ProductionMancudeSupportCheckProofs.writtenMancudeEdgeMaximumCheck_rejects_overlapping_written
+assert_kernel_only TetraStereo.UniversalProof.ProductionPrunedFrontierCapacityProofs.canonicalCenterRerootCursor_local_width_three
+assert_kernel_only TetraStereo.UniversalProof.ProductionPrunedFrontierCapacityProofs.moleculeBranchingCursorSupport_uniform_of_localizedMaximum
+assert_kernel_only TetraStereo.UniversalProof.moleculeBranchingCursorSupport_of_verifiedKekuleCheck
+assert_kernel_only TetraStereo.UniversalProof.Rule3ConstitutionalReferenceBoundaryProofs.aromaticCanonicalRule3ConstitutionalReferenceBoundary?_toOption
+assert_kernel_only TetraStereo.UniversalProof.Rule3ConstitutionalReferenceBoundaryProofs.aromaticCanonicalRule3ConstitutionalReferenceBoundary?_eq_absent_iff
+assert_kernel_only TetraStereo.UniversalProof.Rule3ConstitutionalReferenceBoundaryProofs.aromaticCanonicalRule3ConstitutionalReferenceBoundary?_eq_unresolved_iff
+assert_kernel_only TetraStereo.UniversalProof.Rule3ConstitutionalReferenceBoundaryProofs.compareAromaticCanonicalOrdinaryDoubleBondEndpointThroughRule5_pseudo_decides_later

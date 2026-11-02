@@ -1,0 +1,9 @@
+import TetraStereo.OneCenter.CIPAuthoritativePublicOccurrenceRouting
+import TetraStereo.KernelOnly
+
+assert_kernel_only
+  TetraStereo.OneCenter.tetrahedralOccurrenceFact?_eq_fullyAuthoritative
+assert_kernel_only
+  TetraStereo.OneCenter.compareOccurrenceBranchesThroughRule6?_eq_fullyAuthoritative
+assert_kernel_only
+  TetraStereo.OneCenter.discoverOccurrenceAuxBatchesAuthoritative?_singleton_failure

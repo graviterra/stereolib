@@ -1,0 +1,14 @@
+import TetraStereo.OneCenter.P94ExecutableCoordinateRingGeometry
+import TetraStereo.KernelOnly
+
+/-! # Kernel-only certificate: executable exact P-94 ring geometry -/
+
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateRing.ExactPlane.nondegenerate?_eq_true_iff
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateRing.ExactPlane.nondegenerate?_eq_false_iff
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateRing.ExactPlane.executableSideOfPlane?_eq_specification
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateRing.ExactPlane.executableSideOfPlane?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateRing.ExactPlane.executableSideOfPlane?_eq_none_iff
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateRing.ringPointPacketAdmissible?_eq_true_iff
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateRing.executableRingSidesOfPlane?_eq_specification
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateRing.executableRingSidesOfPlane?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.CoordinateRing.executableRingSidesOfPlane?_eq_none_iff

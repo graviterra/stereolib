@@ -1,0 +1,19 @@
+import TetraStereo.UniversalProof.SecondSphereCompilerClosure
+import TetraStereo.KernelOnly
+
+
+namespace TetraStereo
+namespace Generated
+namespace SecondSphereStringFamilyCompilerExport
+
+theorem secondSphereStringFamilyCorrect : TetraStereo.UniversalProof.SecondSphereCompilerClosure.FamilyClaim := by
+  exact TetraStereo.UniversalProof.SecondSphereCompilerClosure.compiledArtifact_checked
+
+example : TetraStereo.UniversalProof.SecondSphereCompilerClosure.compiledArtifact.claim :=
+  secondSphereStringFamilyCorrect
+
+assert_kernel_only TetraStereo.Generated.SecondSphereStringFamilyCompilerExport.secondSphereStringFamilyCorrect
+
+end SecondSphereStringFamilyCompilerExport
+end Generated
+end TetraStereo

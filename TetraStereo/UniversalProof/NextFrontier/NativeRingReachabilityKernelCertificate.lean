@@ -1,0 +1,6 @@
+import TetraStereo.UniversalProof.NextFrontier.NativeRingReachability
+import TetraStereo.KernelOnly
+
+assert_kernel_only TetraStereo.UniversalProof.NativeRingReachability.mem_eraseDups_iff
+assert_kernel_only TetraStereo.UniversalProof.NativeRingReachability.reachable_of_walk
+assert_kernel_only TetraStereo.UniversalProof.NativeRingReachability.reachable_singleton_of_walk

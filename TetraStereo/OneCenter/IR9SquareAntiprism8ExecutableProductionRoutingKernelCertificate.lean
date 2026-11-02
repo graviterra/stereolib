@@ -1,0 +1,20 @@
+import TetraStereo.OneCenter.GeometryAnnotatedCIPConformance
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-!
+# Kernel-only certificate for executable SAPR-8 production routing
+
+The certificate covers the typed relative-index route and production/reference agreement while
+retaining exact refusal of an unsupported SAPR-8 absolute-orientation convention.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.squareAntiprism_positionsFor?_exact
+assert_kernel_only TetraStereo.OneCenter.squareAntiprismConfigurationIndex?_exact
+assert_kernel_only TetraStereo.OneCenter.squareAntiprismMathematicalConfigurationIndex_conforms_IR9
+assert_kernel_only TetraStereo.OneCenter.squareAntiprismAbsoluteConfiguration?_none
+assert_kernel_only TetraStereo.OneCenter.squareAntiprismAbsoluteConfiguration?_some
+assert_kernel_only TetraStereo.OneCenter.polyhedralConfigurationIndexArity?_conforms_P93_IR9
+assert_kernel_only TetraStereo.OneCenter.polyhedralConfigurationIndex?_conforms_P93_IR9
+assert_kernel_only TetraStereo.OneCenter.polyhedralAbsoluteConfiguration?_conforms_P93_IR9

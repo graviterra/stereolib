@@ -1,0 +1,32 @@
+import TetraStereo.OneCenter.P94MolecularAuthoritativeRingSelection
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+namespace TetraStereo.OneCenter
+
+/-!
+RED-first target for source-backed P-94 ring applicability.  The certificate requires exact finite
+selection from the exhaustive chordless-cycle scheduler and a complete molecule report whose ring
+branch contains exactly the selected requests while retaining scheduled twist/in-out and
+carbohydrate branches with global exact-once semantics.
+-/
+
+assert_kernel_only
+  BlueBookP94.P94MolecularAuthoritativeRingSelection.mem_selectedAutomaticCoordinateRingInputs_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularAuthoritativeRingSelection.selectedAutomaticCoordinateRingInput_mem_scheduled
+assert_kernel_only
+  BlueBookP94.P94MolecularAuthoritativeRingSelection.allScheduledRingAuthority_applies_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularAuthoritativeRingSelection.authoritativeMolecularRingAssignments_mem_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularAuthoritativeRingSelection.molecularAssignmentsWithAuthoritativeRings_mem_iff_independent
+assert_kernel_only
+  BlueBookP94.P94MolecularAuthoritativeRingSelection.molecularAssignmentsWithAuthoritativeRings_nodup
+assert_kernel_only
+  BlueBookP94.P94MolecularAuthoritativeRingSelection.molecularAssignmentWithAuthoritativeRings_count_eq_one_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularAuthoritativeRingSelection.molecularAssignmentWithAuthoritativeRings_count_eq_zero_iff
+
+end TetraStereo.OneCenter

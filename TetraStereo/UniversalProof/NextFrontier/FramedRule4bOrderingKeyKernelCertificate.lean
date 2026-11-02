@@ -1,0 +1,14 @@
+import TetraStereo.UniversalProof.NextFrontier.FramedRule4bOrderingKey
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+set_option maxHeartbeats 2000000
+set_option maxRecDepth 4096
+
+namespace TetraStereo.OneCenter.FramedRule4bOrderingKey
+
+assert_kernel_only compareDenseRule4bProjectedKeys_transCmp
+assert_kernel_only rankOccurrenceRule4bReferences_length_of_success
+assert_kernel_only compareRule4b_success_factors
+
+end TetraStereo.OneCenter.FramedRule4bOrderingKey

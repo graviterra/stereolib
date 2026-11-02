@@ -1,0 +1,17 @@
+import TetraStereo.OneCenter.P94PracticalExecutableHalfChairSelection
+import TetraStereo.KernelOnly
+
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalHalfChairSelection.halfChairRemoteSides?_eq_some_iff
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalHalfChairSelection.halfChairCarrier?_eq_true_iff
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalHalfChairSelection.selectHalfChairAtWitness?_eq_some_iff
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalHalfChairSelection.automaticHalfChairSelection?_eq_some_iff
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalHalfChairSelection.automaticHalfChairSelection?_eq_none_iff
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalHalfChairSelection.halfChairSelectionJudgment_independent
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalHalfChairSelection.automaticHalfChairAssignment?_some_independent

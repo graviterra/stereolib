@@ -1,0 +1,14 @@
+import TetraStereo.OneCenter.IR9ConfigurationIndexTotality
+import TetraStereo.KernelOnly
+
+/-! # Kernel-only certificate: complete IR-9 configuration-index witnesses -/
+
+assert_kernel_only TetraStereo.OneCenter.canonicalPolyhedralPriorities_length
+assert_kernel_only TetraStereo.OneCenter.canonicalPolyhedralPriorities_valid
+assert_kernel_only TetraStereo.OneCenter.canonicalPolyhedralPositions_length
+assert_kernel_only TetraStereo.OneCenter.canonicalPolyhedralPositions_nodup
+assert_kernel_only TetraStereo.OneCenter.canonicalPolyhedralConfigurationIndex_isSome
+assert_kernel_only TetraStereo.OneCenter.every_polyhedral_geometry_has_configuration_index
+assert_kernel_only TetraStereo.OneCenter.canonicalPolyhedralDescriptor?_isSome
+assert_kernel_only TetraStereo.OneCenter.canonicalPolyhedralDescriptor?_geometry
+assert_kernel_only TetraStereo.OneCenter.PolyhedralDescriptor.geometryOnly_label

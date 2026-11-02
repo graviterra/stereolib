@@ -1,0 +1,22 @@
+import TetraStereo.OneCenter.CIPObservedAxialSpatialConformance
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-!
+# Kernel-only certificate for exact spatial axial-observation refinement
+
+This certificate proves that the coordinate-bearing public entry point cannot accept a raw axial
+sense unless molecule-derived senior references and the exact rational P-92 axial sign reproduce
+the descriptor.  Other geometry families retain their explicitly documented observation boundary.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.seniorReferenceOfDecision?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.SpatialConfiguration.pointAt?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.CartesianPoint3.axialChiralityMeasure_swap
+assert_kernel_only TetraStereo.OneCenter.rationalAxialSpatialDescriptor_swap
+assert_kernel_only TetraStereo.OneCenter.axialDescriptorOfSpatialReferences?_swap
+assert_kernel_only TetraStereo.OneCenter.ChemistryNormalizationResult.axialObservationSpatialDescriptor?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.ChemistryNormalizationResult.axialObservationSpatiallyValid?_eq_true_iff
+assert_kernel_only TetraStereo.OneCenter.independentlyJudgedSpatiallyValidatedObservedGeometryAssignment_of_filtered
+assert_kernel_only TetraStereo.OneCenter.analyzeCertifiedNormalizedWithSpatiallyValidatedAxialGeometry_member_judged

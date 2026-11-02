@@ -1,0 +1,5 @@
+import TetraStereo.UniversalProof.NextFrontier.NativeNitrileTrackedSort
+import TetraStereo.KernelOnly
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.actual_root_tracked_sort
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.actual_root_authoritative_adjacent

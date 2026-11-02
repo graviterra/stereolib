@@ -1,0 +1,20 @@
+import TetraStereo.OneCenter.CIPIR9SquarePyramidOctahedronIntegration
+import TetraStereo.OneCenter.IR9SquarePyramidCompletenessKernelCertificate
+import TetraStereo.OneCenter.IR9OctahedronSourceIndexCompletenessKernelCertificate
+import TetraStereo.OneCenter.IR9OctahedronAbsoluteSymmetryKernelCertificate
+import TetraStereo.KernelOnly
+
+open TetraStereo
+
+/-!
+# Kernel-only certificate: SPY-5 and OC-6 molecular observation integration
+
+The source and absolute dependencies certify the complete idealized symmetry classifications.
+These assertions additionally reach the public molecule-ranked descriptor constructor, with exact
+index lookup and exact final A/C assignment after typed observation evidence.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.squarePyramidConfigurationIndex?_exact
+assert_kernel_only TetraStereo.OneCenter.octahedronConfigurationIndex?_exact
+assert_kernel_only TetraStereo.OneCenter.squarePyramidGeometryObservationAssignment_exact
+assert_kernel_only TetraStereo.OneCenter.octahedronGeometryObservationAssignment_exact

@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "Cite the exact source commit used. This is an active research project."
+title: "Stereolib: Machine-checked stereochemistry in Lean"
+type: software
+repository-code: "https://github.com/graviterra/stereolib"
+authors:
+  - family-names: "Reale"
+    given-names: "M."
+    name-suffix: "Ph.D."
+license: Apache-2.0
+keywords:
+  - stereochemistry
+  - Lean
+  - formal verification
+  - CIP

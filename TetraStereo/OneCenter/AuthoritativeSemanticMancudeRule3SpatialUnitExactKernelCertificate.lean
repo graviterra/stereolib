@@ -1,0 +1,39 @@
+import TetraStereo.OneCenter.AuthoritativeSemanticMancudeRule3SpatialUnitExact
+import TetraStereo.KernelOnly
+
+/-!
+# Kernel-only certificate: exact Rule-3 spatial-unit semantics
+
+This certificate records that the exact relational characterization of the
+source Rule-3 branch compiler, stable sort, constitutional senior reference,
+and spatial unit is accepted without compiler-trust axioms.
+-/
+
+open TetraStereo
+
+assert_kernel_only
+  TetraStereo.OneCenter.ExactOfficialRuleMajorKey.compare?_eq_some_compare_of_complete
+assert_kernel_only
+  TetraStereo.OneCenter.ExactOfficialRuleMajorKey.insert?_eq_some_iff_declarativeComplete
+assert_kernel_only
+  TetraStereo.OneCenter.ExactOfficialRuleMajorKey.sort?_eq_some_iff_declarativeComplete
+assert_kernel_only
+  TetraStereo.OneCenter.MoleculeGraph.CanonicalCompleteExactOfficialRuleMajorKey.complete
+assert_kernel_only
+  TetraStereo.OneCenter.MoleculeGraph.buildExactOfficialRuleMajorKey_eq_some_iff_canonicalComplete
+assert_kernel_only
+  TetraStereo.OneCenter.AuthoritativeChemicalInput.buildAromaticCanonicalRule3BranchKey?_eq_some_iff_canonical
+assert_kernel_only
+  TetraStereo.OneCenter.AuthoritativeChemicalInput.buildAromaticCanonicalRule3RankedSubstituent?_eq_some_iff_canonical
+assert_kernel_only
+  TetraStereo.OneCenter.AuthoritativeChemicalInput.mapM_buildAromaticCanonicalRule3RankedSubstituent?_eq_some_iff_canonical
+assert_kernel_only
+  TetraStereo.OneCenter.AuthoritativeChemicalInput.DeclarativeAromaticCanonicalRule3StrictlySenior.atom_eq
+assert_kernel_only
+  TetraStereo.OneCenter.AuthoritativeChemicalInput.aromaticCanonicalRule3ConstitutionalSeniorReference?_eq_some_iff_canonical
+assert_kernel_only
+  TetraStereo.OneCenter.AuthoritativeChemicalInput.aromaticCanonicalRule3SpatialUnit?_eq_some_iff_canonical
+assert_kernel_only
+  TetraStereo.OneCenter.AuthoritativeChemicalInput.CanonicalAromaticCanonicalRule3SpatialUnit.sound
+assert_kernel_only
+  TetraStereo.OneCenter.AuthoritativeChemicalInput.aromaticCanonicalRule3SpatialUnit?_eq_none_iff_no_canonical

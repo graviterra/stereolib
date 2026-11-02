@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="440" class="molecule" viewBox="0 0 600 440" role="img" aria-labelledby="fig1-title fig1-desc">
+<style>
+.molecule { display: block; width: 100%; height: auto; }
+
+.molecule line,
+.molecule polygon {
+  stroke: #1b1c1e;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.molecule .wedge { fill: #1b1c1e; stroke-width: 1; }
+.molecule .hash line { stroke-width: 2; }
+
+.molecule .mirror {
+  stroke: #4f5357;
+  stroke-width: 1;
+  stroke-dasharray: 1 7;
+}
+.molecule .mirror-label { font: italic 13px Georgia, serif; fill: #4f5357; }
+
+.molecule .arm-a line { stroke: #a8361b; }
+.molecule .arm-b line { stroke: #1d4f73; }
+.molecule .centre { fill: #f6f2ea; stroke-width: 2.2; }
+.molecule .arm-a .centre { stroke: #a8361b; }
+.molecule .arm-b .centre { stroke: #1d4f73; }
+.molecule .group { font: 13px Arial, sans-serif; fill: #4f5357; }
+
+.molecule .turn { fill: none; stroke: #a8361b; stroke-width: 1.6; }
+.molecule .arrowhead { fill: #a8361b; }
+.molecule .descriptor { font: italic 46px Georgia, serif; fill: #a8361b; }
+
+.molecule .atom-bg { fill: #f6f2ea; }
+.molecule .atoms text { font: 22px Georgia, serif; fill: #1b1c1e; text-anchor: middle; }
+.molecule .atoms .n-a { fill: #a8361b; }
+.molecule .atoms .n-b { fill: #1d4f73; }
+.molecule .core { fill: #1b1c1e; }
+.molecule .index { font: 12px Arial, sans-serif; fill: #4f5357; }
+.molecule .ranks text { font: 600 13px Arial, sans-serif; fill: #1b1c1e; }
+
+</style>
+<rect width="600" height="440" rx="8" fill="#f6f2ea"/>
+            <title id="fig1-title">Schematic of the fixture root centre</title>
+            <desc id="fig1-desc">A tetrahedral carbon with chlorine above, hydrogen to the rear, and two nitrogen arms drawn as mirror images across a vertical mirror plane. Each nitrogen carries two CHF centres, each bonded to a CHClBr centre. Priorities are numbered 1 for chlorine, 2 for nitrogen 3, 3 for nitrogen 18 and 4 for hydrogen. A clockwise arrow from 1 to 3 is labelled r.</desc>
+
+            <line class="mirror" x1="300" y1="18" x2="300" y2="424"/>
+            <text class="mirror-label" x="308" y="432">mirror plane</text>
+
+            <!-- left arm (N18), blue -->
+            <g class="arm arm-b">
+              <line x1="190" y1="250" x2="120" y2="190"/>
+              <line x1="120" y1="190" x2="55" y2="130"/>
+              <line x1="190" y1="250" x2="130" y2="330"/>
+              <line x1="130" y1="330" x2="65" y2="392"/>
+              <circle class="centre" cx="120" cy="190" r="8"/>
+              <circle class="centre" cx="55" cy="130" r="8"/>
+              <circle class="centre" cx="130" cy="330" r="8"/>
+              <circle class="centre" cx="65" cy="392" r="8"/>
+              <text class="group" x="132" y="178">CHF</text>
+              <text class="group" x="40" y="108" text-anchor="middle">CHClBr</text>
+              <text class="group" x="144" y="352">CHF</text>
+              <text class="group" x="56" y="420" text-anchor="middle">CHClBr</text>
+            </g>
+
+            <!-- right arm (N3), vermilion -->
+            <g class="arm arm-a">
+              <line x1="410" y1="250" x2="480" y2="190"/>
+              <line x1="480" y1="190" x2="545" y2="130"/>
+              <line x1="410" y1="250" x2="470" y2="330"/>
+              <line x1="470" y1="330" x2="535" y2="392"/>
+              <circle class="centre" cx="480" cy="190" r="8"/>
+              <circle class="centre" cx="545" cy="130" r="8"/>
+              <circle class="centre" cx="470" cy="330" r="8"/>
+              <circle class="centre" cx="535" cy="392" r="8"/>
+              <text class="group" x="468" y="178" text-anchor="end">CHF</text>
+              <text class="group" x="560" y="108" text-anchor="middle">CHClBr</text>
+              <text class="group" x="456" y="352" text-anchor="end">CHF</text>
+              <text class="group" x="544" y="420" text-anchor="middle">CHClBr</text>
+            </g>
+
+            <!-- root bonds -->
+            <g class="bonds">
+              <line x1="300" y1="196" x2="300" y2="94"/>
+              <polygon class="wedge" points="300,200 387.3,247.4 393.1,234.6"/>
+              <polygon class="wedge" points="300,200 206.9,234.6 212.7,247.4"/>
+              <g class="hash">
+                <line x1="298" y1="214" x2="302" y2="214"/>
+                <line x1="296" y1="226" x2="304" y2="226"/>
+                <line x1="294" y1="238" x2="306" y2="238"/>
+                <line x1="292" y1="250" x2="308" y2="250"/>
+                <line x1="290" y1="262" x2="310" y2="262"/>
+                <line x1="288" y1="274" x2="312" y2="274"/>
+                <line x1="286" y1="286" x2="314" y2="286"/>
+                <line x1="284" y1="298" x2="316" y2="298"/>
+              </g>
+            </g>
+
+            <!-- direction of 1 → 2 → 3 -->
+            <defs>
+              <marker id="arrowhead" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path class="arrowhead" d="M0 0 L10 5 L0 10 Z"/>
+              </marker>
+            </defs>
+            <path class="turn" d="M316.0 140.1 A62 62 0 1 1 252.5 239.9" marker-end="url(#arrowhead)"/>
+            <text class="descriptor" x="372" y="128">r</text>
+
+            <!-- atoms -->
+            <g class="atoms">
+              <circle class="atom-bg" cx="300" cy="80" r="17"/>
+              <text x="300" y="88">Cl</text>
+              <circle class="atom-bg" cx="300" cy="318" r="15"/>
+              <text x="300" y="326">H</text>
+              <circle class="atom-bg" cx="410" cy="250" r="15"/>
+              <text class="n-a" x="410" y="258">N</text>
+              <circle class="atom-bg" cx="190" cy="250" r="15"/>
+              <text class="n-b" x="190" y="258">N</text>
+              <circle class="core" cx="300" cy="200" r="4.5"/>
+            </g>
+
+            <!-- atom numbers from the Lean fixture -->
+            <text class="index" x="426" y="276">3</text>
+            <text class="index" x="166" y="276" text-anchor="end">18</text>
+
+            <!-- priority ranks -->
+            <g class="ranks">
+              <text x="326" y="74">1</text>
+              <text x="402" y="222">2</text>
+              <text x="198" y="222">3</text>
+              <text x="326" y="340">4</text>
+            </g>
+          </svg>

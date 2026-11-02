@@ -1,0 +1,7 @@
+import TetraStereo.UniversalProof.NextFrontier.ParsedParityCentralRule3
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.ParsedParityCentralRule3.central_slot_rule3_empty
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.ParsedParityCentralRule3.central_arms_rule3_tie

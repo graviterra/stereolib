@@ -1,0 +1,6 @@
+import TetraStereo.UniversalProof.NextFrontier.NativeNitrileAminoChildren
+import TetraStereo.KernelOnly
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.actual_amino_children
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.actual_amino_nonterminal
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.actual_amino_sibling_sort

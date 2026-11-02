@@ -1,0 +1,182 @@
+import TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure
+import TetraStereo.UniversalProof.PlanarAllCandidateConflictClosureProofs.PlanarAllCandidateConflictClosure
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+set_option maxRecDepth 10000
+set_option maxHeartbeats 1000000
+
+namespace TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosureKernelCertificate
+
+open TetraStereo.OneCenter
+open TetraStereo.OneCenter.AuthoritativeChemicalInput
+open TetraStereo.OneCenter.AuthoritativeChemicalInput.SingleWedgeSource
+open TetraStereo.UniversalProof.ScheduledDrawingSpatialEndToEndProofs.ScheduledDrawingSpatialIntegration
+open TetraStereo.UniversalProof.SourceNativeRawAnnotationAgreementProofs.SourceNativeRawAnnotationAgreement
+open TetraStereo.UniversalProof.SourceNativeMixedParserDrawingCausalModelProofs.SourceNativeMixedParserDrawingCausalModel
+open TetraStereo.UniversalProof.SourceNativeMixedBondAuditProofs.SourceNativeMixedBondAudit
+open TetraStereo.UniversalProof.MixedPlanarCausalRecoveryProofs.SourceNativeMixedPlanarCausalModel
+open TetraStereo.UniversalProof.MixedPlanarCausalRecoveryProofs.SourceNativeMixedPlanarCausalModelKernelCertificate.ClosedAnnotatedPlanarWitness
+open TetraStereo.UniversalProof.PlanarAllCandidateConflictClosureProofs.PlanarAllCandidateConflictClosure
+open TetraStereo.UniversalProof.ReviewedMixedPlanarCausalRecoveryClosureProofs.ReviewedMixedPlanarCausalRecoveryClosure
+open TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+namespace ClosedSourceOwnedTransaction
+
+
+
+theorem closed_drawingAbsent : DrawingAbsentEverywhere annotatedSource :=
+  fun ruleFuel carrierFuel target view =>
+    annotated_drawing_absent_all_occurrences (carrierFuel := carrierFuel) target view ruleFuel
+
+/-- The closed source-generated conflict issue list is empty, forced by the drawing-absent domain. -/
+theorem closed_conflictIssues_nil :
+    planarConflictIssues annotatedRaw annotatedSource annotatedAgreement annotatedWrittenExact 1 4
+      = [] :=
+  planarConflictIssues_eq_nil_of_drawingAbsent annotatedRaw annotatedSource annotatedAgreement
+    annotatedWrittenExact closed_drawingAbsent 1 4
+
+/-- The closed partial issue list is emptied by the four actual source facts through the new decision
+procedure. -/
+theorem closed_partialAuditIssues_nil :
+    planarPartialAuditIssues annotatedRaw annotatedSource annotatedAgreement annotatedWrittenExact
+      1 4 = [] :=
+  (planarPartialAuditIssues_eq_nil_iff annotatedRaw annotatedSource annotatedAgreement
+    annotatedWrittenExact 1 4).mpr
+    ⟨annotated_rawParity_interpreted, annotated_no_raw_directions, annotated_mixedBond_accepted,
+      annotated_annotatedCenter_coverage⟩
+
+/-- The closed full issue list is empty. -/
+theorem closed_fullAuditIssues_nil :
+    planarFullAuditIssues annotatedRaw annotatedSource annotatedAgreement annotatedWrittenExact 1 4
+      = [] := by
+  unfold planarFullAuditIssues
+  rw [List.append_eq_nil_iff]
+  exact ⟨closed_conflictIssues_nil, closed_partialAuditIssues_nil⟩
+
+
+
+theorem closed_auditObligation :
+    PlanarJointAuditObligation annotatedRaw annotatedSource annotatedAgreement annotatedWrittenExact
+      1 4 :=
+  (planarFullAuditIssues_eq_nil_iff annotatedRaw annotatedSource annotatedAgreement
+    annotatedWrittenExact 1 4).mp closed_fullAuditIssues_nil
+
+/-- The source-owned transaction emits the source-generated report at the actual closed source. -/
+theorem closed_produce :
+    planarSourceProduce annotatedRaw annotatedSource annotatedAgreement annotatedWrittenExact 1 4 =
+      some (planarSourceReport annotatedRaw annotatedSource annotatedAgreement annotatedWrittenExact
+        1 4) :=
+  (planarSourceProduce_eq_some_iff annotatedRaw annotatedSource annotatedAgreement annotatedWrittenExact
+    1 4
+    (planarSourceReport annotatedRaw annotatedSource annotatedAgreement annotatedWrittenExact 1 4)).mpr
+    ⟨closed_fullAuditIssues_nil, rfl⟩
+
+/-- The actual closed row carrying the source's genuine planar-parser label. -/
+noncomputable def closedRow : PlanarScheduledRow annotatedSource := ⟨annotatedCenter, some (.chiral RS.R)⟩
+
+
+
+theorem closed_jointState_R :
+    planarJointState annotatedRaw annotatedSource annotatedAgreement annotatedWrittenExact 1 4
+      annotatedTarget = some (.chiral RS.R) := by
+  have h := closedJointState_R
+  simpa only [planarJointState, closedJointState] using h
+
+/-- The actual row is a member of the source-generated report. -/
+theorem closed_report_R_row :
+    closedRow ∈ planarSourceReport annotatedRaw annotatedSource annotatedAgreement annotatedWrittenExact
+      1 4 := by
+  apply (mem_planarSourceReport_iff annotatedRaw annotatedSource annotatedAgreement annotatedWrittenExact
+    1 4 closedRow).mpr
+  simpa only [closedRow] using closed_jointState_R.symm
+
+/-- The actual row carries the independent joint model meaning at the closed source. -/
+theorem closed_R_row_meaning :
+    PlanarSourceRowMeaning annotatedRaw annotatedSource annotatedAgreement annotatedWrittenExact 1 4
+      closedRow :=
+  planarSourceReport_member_sound annotatedRaw annotatedSource annotatedAgreement annotatedWrittenExact
+    1 4 closedRow closed_report_R_row
+
+/-- **The complete source-owned planar transaction at the actual closed source.** The transaction is
+admitted (derived from the empty full issue list), its source-generated report contains the actual
+row, that row carries the independent joint model meaning, and the model's own scheduled state at the
+closed target derives the actual `R`. -/
+theorem closed_source_owned_transaction :
+    planarSourceProduce annotatedRaw annotatedSource annotatedAgreement annotatedWrittenExact 1 4 =
+        some (planarSourceReport annotatedRaw annotatedSource annotatedAgreement annotatedWrittenExact
+          1 4) ∧
+      closedRow ∈ planarSourceReport annotatedRaw annotatedSource annotatedAgreement annotatedWrittenExact
+        1 4 ∧
+      PlanarSourceRowMeaning annotatedRaw annotatedSource annotatedAgreement annotatedWrittenExact 1 4
+        closedRow ∧
+      planarJointState annotatedRaw annotatedSource annotatedAgreement annotatedWrittenExact 1 4
+        annotatedTarget = some (.chiral RS.R) :=
+  ⟨closed_produce, closed_report_R_row, closed_R_row_meaning, closed_jointState_R⟩
+
+end ClosedSourceOwnedTransaction
+
+end TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosureKernelCertificate
+
+
+
+
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.planarParityInterpreted?_eq_true_iff
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.planarParityIssue?_eq_none_iff
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.planarRawParityIssues_eq_nil_iff
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.planarRawDirectionIssues_eq_nil_iff
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.planarMixedBondIssues_eq_nil_iff
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.planarAnnotatedCenterInterpreted?_eq_true_iff
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.planarAnnotatedCenterIssues_eq_nil_iff
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.planarPartialAuditIssues_eq_nil_iff
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.planarConflictIssues_eq_nil_iff
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.planarFullAuditIssues_eq_nil_iff
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.planarJointStatus_conflict_of_channel_disagreement
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.jointStatusConflict_mem_conflictIssues
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.planarFullAuditIssues_ne_nil_of_candidate_conflict
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.mem_planarSourceReport_iff
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.planarSourceReport_member_sound
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.planarSourceProduce_eq_some_iff
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.planarSourceProduce_eq_none_iff
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.planarSourceProduce_iff_obligation
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.planarSourceProduce_refuses_issue
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.planarSourceProduce_refuses_of_channel_disagreement
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.planarConflictIssues_eq_nil_of_drawingAbsent
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosure.planarFullAuditIssues_eq_nil_of_drawingAbsent_of_partial
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosureKernelCertificate.ClosedSourceOwnedTransaction.closed_drawingAbsent
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosureKernelCertificate.ClosedSourceOwnedTransaction.closed_conflictIssues_nil
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosureKernelCertificate.ClosedSourceOwnedTransaction.closed_partialAuditIssues_nil
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosureKernelCertificate.ClosedSourceOwnedTransaction.closed_fullAuditIssues_nil
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosureKernelCertificate.ClosedSourceOwnedTransaction.closed_auditObligation
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosureKernelCertificate.ClosedSourceOwnedTransaction.closed_produce
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosureKernelCertificate.ClosedSourceOwnedTransaction.closed_jointState_R
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosureKernelCertificate.ClosedSourceOwnedTransaction.closed_report_R_row
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosureKernelCertificate.ClosedSourceOwnedTransaction.closed_R_row_meaning
+assert_kernel_only TetraStereo.UniversalProof.ConstructiveMixedPlanarCausalRecoveryClosureProofs.ConstructiveMixedPlanarCausalRecoveryClosureKernelCertificate.ClosedSourceOwnedTransaction.closed_source_owned_transaction

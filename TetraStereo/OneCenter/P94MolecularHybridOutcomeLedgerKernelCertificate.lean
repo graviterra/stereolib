@@ -1,0 +1,34 @@
+import TetraStereo.OneCenter.P94MolecularHybridOutcomeLedger
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+namespace TetraStereo.OneCenter
+
+/-!
+RED-first target for the final represented P-94 outcome ledger.  Hybrid-authority rings,
+scheduled twists, molecule-wide in/out requests, and independently applicable carbohydrate
+five-rings must all have exact request membership.  Analysis must preserve every request
+occurrence and give it one independently correct accepted/refused outcome.
+-/
+
+assert_kernel_only
+  BlueBookP94.P94MolecularHybridOutcomeLedger.hybridMolecularRequests_ring_mem_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularHybridOutcomeLedger.hybridMolecularRequests_twist_mem_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularHybridOutcomeLedger.hybridMolecularRequests_inOut_mem_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularHybridOutcomeLedger.hybridMolecularRequests_carbohydrate_mem_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularHybridOutcomeLedger.analyzeHybridRequest_outcome_request
+assert_kernel_only
+  BlueBookP94.P94MolecularHybridOutcomeLedger.analyzeHybridRequest_correct
+assert_kernel_only
+  BlueBookP94.P94MolecularHybridOutcomeLedger.hybridMolecularOutcomes_map_request
+assert_kernel_only
+  BlueBookP94.P94MolecularHybridOutcomeLedger.hybridMolecularOutcomes_all_correct
+assert_kernel_only
+  BlueBookP94.P94MolecularHybridOutcomeLedger.hybridMolecularOutcomes_length_eq_requests_length
+
+end TetraStereo.OneCenter

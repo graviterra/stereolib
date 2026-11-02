@@ -1,0 +1,38 @@
+import TetraStereo.OneCenter.P94MolecularBridgeheadAxisInterior
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+namespace TetraStereo.OneCenter
+
+/-!
+RED-first target for the source-backed P-94 bridgehead-axis interior reference.  The certificate
+requires the generic coordinate authority boundary to distinguish an actual bridgehead from an
+arbitrary framework atom, the graph-derived theta adapter to recognize exactly its two endpoints, and
+the inward/outward alignment point to be the coordinate of the opposite endpoint.  It also checks
+that the complete graph/electronic/geometry adapter retains the exact raw-molecule topology,
+molecule-linked lone-pair evidence, and operational bridge-sufficiency semantics.
+-/
+
+assert_kernel_only
+  BlueBookP94.P94MolecularBridgeheadAxisInterior.thetaFramework_isBridgehead_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularBridgeheadAxisInterior.oppositeBridgehead_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularBridgeheadAxisInterior.oppositeBridgehead_ne
+assert_kernel_only
+  BlueBookP94.P94MolecularBridgeheadAxisInterior.bridgeheadAxisInteriorWitness_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularBridgeheadAxisInterior.graphElectronicAxisBridgePremises_bicyclicFramework_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularBridgeheadAxisInterior.graphElectronicAxisBridgePremises_bridgeheadInFramework_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularBridgeheadAxisInterior.graphElectronicAxisBridgePremises_interiorWitness_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularBridgeheadAxisInterior.graphElectronicAxisBridgePremises_atomInFramework_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularBridgeheadAxisInterior.graphElectronicAxisBridgePremises_lonePairAt_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularBridgeheadAxisInterior.coordinateDirectionJudgment_uses_oppositeBridgeheadAxis
+
+end TetraStereo.OneCenter

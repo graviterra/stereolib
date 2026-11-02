@@ -1,0 +1,47 @@
+import TetraStereo.Examples.HostAnalysisRequestKernelWitness0Final
+import TetraStereo.Examples.HostAnalysisRequestKernelWitness1Final
+import TetraStereo.Examples.HostAnalysisRequestKernelWitness2Final
+import TetraStereo.Examples.HostAnalysisRequestKernelWitness3Final
+import TetraStereo.Examples.HostAnalysisRequestKernelWitness4Final
+import TetraStereo.Examples.HostAnalysisRequestKernelWitness5Final
+import TetraStereo.Examples.HostAnalysisRequestKernelWitness6Final
+import TetraStereo.Examples.HostAnalysisRequestKernelWitness7Final
+import TetraStereo.Examples.HostAnalysisRequestKernelWitness8Final
+import TetraStereo.Examples.HostAnalysisRequestKernelWitness9Final
+import TetraStereo.Examples.HostAnalysisRequestKernelWitness10Final
+import TetraStereo.Examples.HostAnalysisRequestKernelWitness11Final
+import TetraStereo.Examples.HostAnalysisRequestKernelWitness12Final
+import TetraStereo.Examples.HostAnalysisRequestKernelWitness13Final
+import TetraStereo.Examples.HostAnalysisRequestKernelWitness14Final
+import TetraStereo.Examples.HostAnalysisRequestKernelWitness15Final
+
+set_option autoImplicit false
+set_option maxRecDepth 10000
+
+namespace TetraStereo
+namespace Examples
+namespace HostAnalysisRequestKernelProof
+
+open Engine
+open OneCenter
+open HostAnalysisRequestBuilder
+
+noncomputable section
+
+theorem broadSurface_witness_list :
+    broadSurfaceMoleculeAnalysisRequest.witnessRequests = [witness0, witness1, witness2, witness3, witness4, witness5, witness6, witness7, witness8, witness9, witness10, witness11, witness12, witness13, witness14, witness15] := by
+  rfl
+
+theorem broadSurface_witness_shapes :
+    broadSurfaceMoleculeAnalysisRequest.suiteRequest.validateWitnessRequestShapes = .ok () := by
+  unfold HostAnalysisSuiteRequest.validateWitnessRequestShapes
+  change broadSurfaceMoleculeAnalysisRequest.suiteRequest.validateWitnessRequestList
+    broadSurfaceMoleculeAnalysisRequest.witnessRequests = .ok ()
+  rw [broadSurface_witness_list]
+  simp [HostAnalysisSuiteRequest.validateWitnessRequestList, witness0_suite_valid, witness1_suite_valid, witness2_suite_valid, witness3_suite_valid, witness4_suite_valid, witness5_suite_valid, witness6_suite_valid, witness7_suite_valid, witness8_suite_valid, witness9_suite_valid, witness10_suite_valid, witness11_suite_valid, witness12_suite_valid, witness13_suite_valid, witness14_suite_valid, witness15_suite_valid]
+  rfl
+
+end
+end HostAnalysisRequestKernelProof
+end Examples
+end TetraStereo

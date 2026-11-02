@@ -1,0 +1,28 @@
+import TetraStereo.OneCenter.P94MolecularLonePairInOutObservationScheduler
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+namespace TetraStereo.OneCenter
+
+/-!
+RED-first target for exhaustive P-94 lone-pair and combined observation scheduling.  The
+certificate requires every supplied spatial/virtual-point state at both theta axes, exact
+membership for the combined atom-or-lone-pair ledger, every ordered pair, and a coverage theorem
+showing that every accepted observation represented by either finite input ledger is generated.
+-/
+
+assert_kernel_only
+  BlueBookP94.P94MolecularLonePairInOutObservationScheduler.mem_lonePairObservationsForAxis_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularLonePairInOutObservationScheduler.mem_scheduledLonePairInOutObservations_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularLonePairInOutObservationScheduler.acceptedLonePairObservation_mem_scheduled
+assert_kernel_only
+  BlueBookP94.P94MolecularLonePairInOutObservationScheduler.mem_scheduledCompleteInOutObservations_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularLonePairInOutObservationScheduler.acceptedCoveredObservation_mem_scheduled
+assert_kernel_only
+  BlueBookP94.P94MolecularLonePairInOutObservationScheduler.mem_scheduledCompleteInOutInputs_iff
+
+end TetraStereo.OneCenter

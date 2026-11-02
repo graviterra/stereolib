@@ -1,0 +1,13 @@
+import TetraStereo.OneCenter.CIPOccurrenceTreeBudgetRetirement
+import TetraStereo.KernelOnly
+
+assert_kernel_only
+  TetraStereo.OneCenter.tetrahedralOccurrenceFact?_eq_fullyAuthoritative
+assert_kernel_only
+  TetraStereo.OneCenter.buildOccurrenceAuxState?_eq_authoritative
+assert_kernel_only
+  TetraStereo.OneCenter.compareOccurrenceBranchesThroughRule6?_eq_fullyAuthoritative
+assert_kernel_only
+  TetraStereo.OneCenter.exactCircularSharedRule3CarrierSense?_eq_capFree
+assert_kernel_only
+  TetraStereo.OneCenter.branchExtendedTetrahedralPseudoSequence?_eq_capFree

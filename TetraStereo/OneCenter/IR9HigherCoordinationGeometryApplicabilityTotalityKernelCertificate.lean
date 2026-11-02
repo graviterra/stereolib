@@ -1,0 +1,10 @@
+import TetraStereo.OneCenter.IR9HigherCoordinationGeometryApplicabilityTotality
+import TetraStereo.KernelOnly
+
+/-! # Kernel-only certificate: exact IR-9 higher-coordinate geometry applicability -/
+
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.mem_higherCoordinationGeometries_iff
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.higherCoordinationNearestIdealized_isSome_iff
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.higherCoordinationNearestIdealized_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.higherCoordinationGeometry_recognized
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.higherCoordinationNearestIdealized_eq_none_of_lower

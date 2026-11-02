@@ -1,0 +1,21 @@
+import TetraStereo.OneCenter.IR9OctahedronSourceIndexCompleteness
+import TetraStereo.KernelOnly
+
+open TetraStereo
+
+/-!
+# Kernel-only certificate: exact OC-6 source index
+
+These assertions check the complete theorem closures for the independently derived 48-element
+ideal-octahedral group and for equality of the actual two-entry P-93.3.3.7 index exactly at full
+octahedral symmetry on the distinct-priority, fixed-composition domain.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronSourceIndexCompleteness.card_fullSymmetryGroup
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronSourceIndexCompleteness.eq_opposite_of_common_perpendiculars
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronSourceIndexCompleteness.mem_fullSymmetryGroup_of_maps_two_opposite_pairs
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronSourceIndexCompleteness.matchingPermutation_of_samePriorityMultiset
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronSourceIndexCompleteness.perpendicular_map_of_maps_opposite_pair
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronSourceIndexCompleteness.octahedronIndex_eq_iff_symmetryEquivalent_of_samePriorityMultiset
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronSourceIndexCompleteness.blueBook_octahedronIndex_eq_iff_symmetryEquivalent
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronSourceIndexCompleteness.productionOctahedronConfigurationIndex_eq_iff_symmetryEquivalent

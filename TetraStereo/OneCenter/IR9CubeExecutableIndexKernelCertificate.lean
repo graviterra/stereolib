@@ -1,0 +1,20 @@
+import TetraStereo.OneCenter.IR9CubeExecutableIndex
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-!
+# Kernel-only certificate for executable CU-8 relative indexing
+
+The executable index is certified as the complete 48-frame mathematical symmetry index with the
+same collision classes as the established ideal-cube completion.  No unpublished short syntax or
+absolute `A`/`C` convention is asserted.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.CubeSourceIndexCompleteness.coordinatePermutation_compose
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.CubeSourceIndexCompleteness.coordinatePermutation_inverseFrame
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.CubeSourceIndexCompleteness.coordinateOrbitCodes_relabel
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.CubeSourceIndexCompleteness.executableSourceIndex_relabel
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.CubeSourceIndexCompleteness.executableSourceIndex_eq_iff_symmetryEquivalent
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.CubeSourceIndexCompleteness.executableSourceIndex_sameClassification_as_source
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.CubeSourceIndexCompleteness.executableCubeConfigurationIndex_sameClassification_as_mathematical

@@ -1,0 +1,27 @@
+name: Chemistry result disagreement
+description: Report an unexpected assignment, refusal, or perception result.
+title: "chemistry: "
+labels: [chemistry]
+body:
+  - type: textarea
+    attributes:
+      label: Molecular input
+      description: Include the exact representation, protonation, isotope, tautomer, and bond state.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected stereochemical result
+      description: Include sequence-rule reasoning and an authoritative reference when available.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Stereolib result
+      description: Include the output, version, and policy profile. If you have not run the evaluator, write "not run; proposed counterexample".
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Trust and normalization boundary
+      description: State which geometry, aromaticity, resonance, or host evidence was supplied.

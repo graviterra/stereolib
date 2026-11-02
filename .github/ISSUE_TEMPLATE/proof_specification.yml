@@ -1,0 +1,25 @@
+name: Proof or specification issue
+description: Report a theorem gap, questionable premise, authority transcription, or counterexample.
+title: "proof/spec: "
+labels: [proof, specification]
+body:
+  - type: input
+    attributes:
+      label: Declaration or provision
+      description: Lean declaration name, file, or exact normative provision.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Issue
+      description: State the proposition, suspected gap, or counterexample precisely.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Evidence
+      description: Include a minimal Lean reproducer, molecule, source quotation location, or proof sketch.
+  - type: textarea
+    attributes:
+      label: Proposed claim boundary
+      description: Explain whether the issue affects soundness, completeness, applicability, or documentation.

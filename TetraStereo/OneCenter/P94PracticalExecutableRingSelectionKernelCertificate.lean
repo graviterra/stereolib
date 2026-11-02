@@ -1,0 +1,17 @@
+import TetraStereo.OneCenter.P94PracticalExecutableRingSelection
+import TetraStereo.KernelOnly
+
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalRingSelection.descriptorForSides?_eq_some_iff
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalRingSelection.selectAtPlane?_eq_some_iff
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalRingSelection.automaticRingSelection?_eq_some_iff
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalRingSelection.automaticRingSelection?_eq_none_iff
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalRingSelection.planeSelectionJudgment_independent
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalRingSelection.automaticRingAssignment?_eq_some_iff
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalRingSelection.automaticRingAssignment?_some_independent

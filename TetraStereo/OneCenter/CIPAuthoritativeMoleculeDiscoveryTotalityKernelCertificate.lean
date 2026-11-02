@@ -1,0 +1,19 @@
+import TetraStereo.OneCenter.CIPAuthoritativeMoleculeDiscoveryTotality
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-!
+# Kernel-only certificate for molecule-wide authoritative discovery totality
+
+The checked endpoints lift pointwise physical/lone-pair branch compilation through the actual
+four-slot center and all-center executable discovery functions.  The final theorem returns both
+the computed discovery witness and its independent exact constitutional molecule conformance.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeCIPDiscovery.CompleteBranchDiscovery.discover?_exists_of_chemical_applicability
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeCIPDiscovery.centerBranchesSucceeded_of_chemical_applicability
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeCIPDiscovery.discoverCenter?_exists_of_chemical_applicability
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeCIPDiscovery.allCentersSucceeded_of_chemical_applicability
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeCIPDiscovery.discoverAll?_exists_of_chemical_applicability
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeCIPDiscovery.discoverAll?_exists_exactConstitutionalMoleculeConformance_of_chemical_applicability

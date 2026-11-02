@@ -1,0 +1,17 @@
+import TetraStereo.OneCenter.P94PracticalExecutableCrownSelection
+import TetraStereo.KernelOnly
+
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalCrownSelection.practicalAlternatingParallelPlanes?_eq_true_iff
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalCrownSelection.practicalGeneralCrownSymmetry?_eq_true_iff
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalCrownSelection.crownCarrier?_eq_true_iff
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalCrownSelection.automaticCrownSelection?_eq_some_iff
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalCrownSelection.automaticCrownSelection?_eq_none_iff
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalCrownSelection.crownSelectionJudgment_independent
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP94.PracticalCrownSelection.automaticCrownAssignment?_some_independent

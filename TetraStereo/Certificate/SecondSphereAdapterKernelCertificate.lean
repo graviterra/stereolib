@@ -1,0 +1,8 @@
+import TetraStereo.Certificate.SecondSphereAdapter
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+assert_kernel_only TetraStereo.Certificate.SecondSphereAdapter.slots_distinct
+assert_kernel_only TetraStereo.Certificate.SecondSphereAdapter.realization
+assert_kernel_only TetraStereo.Certificate.SecondSphereAdapter.safe_order

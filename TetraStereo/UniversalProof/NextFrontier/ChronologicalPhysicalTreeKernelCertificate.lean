@@ -1,0 +1,9 @@
+import TetraStereo.OneCenter.ChronologicalPhysicalTree
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+assert_kernel_only TetraStereo.OneCenter.RawMolecule.ChronologicalPhysicalTree.wellFormed
+assert_kernel_only TetraStereo.OneCenter.RawMolecule.ChronologicalPhysicalTree.no_root_target
+assert_kernel_only TetraStereo.OneCenter.RawMolecule.ChronologicalPhysicalTree.nonroot_covered
+assert_kernel_only TetraStereo.OneCenter.RawMolecule.ChronologicalPhysicalTree.target_inventory_nodup

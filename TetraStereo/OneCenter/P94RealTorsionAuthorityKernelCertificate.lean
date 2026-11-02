@@ -1,0 +1,17 @@
+import TetraStereo.OneCenter.CIPP94ConformationCompletePipeline
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-! # Kernel-only certificate: exact-real P-94 torsion authority -/
+
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.TorsionAngle.ofReal_degrees
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.TorsionAngle.every_bounded_real_representable
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.TorsionAngle.ofRat_degrees
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.TorsionAngle.sqrtTwo_degrees
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.TorsionAngle.sqrtTwo_irrational
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.TorsionAngle.sqrtTwo_ne_ratCast
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.signAgreesWithRotation_ofRat_iff
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.classifiedAs_ofRat_iff
+assert_kernel_only TetraStereo.OneCenter.BlueBookP94.sqrtTwo_classified_synperiplanar
+assert_kernel_only TetraStereo.OneCenter.p94ThirtyDegreeBoundary_emits_both

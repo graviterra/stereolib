@@ -1,0 +1,47 @@
+import TetraStereo.UniversalProof.NextFrontier.FramedDescriptorRuntime
+import TetraStereo.KernelOnly
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+assert_kernel_only TetraStereo.OneCenter.FrameRuntime.decisionComplete?_strict
+assert_kernel_only TetraStereo.OneCenter.FrameRuntime.decisionComplete?_empty_tie
+assert_kernel_only TetraStereo.OneCenter.FrameRuntime.decisionComplete?_rule4a
+assert_kernel_only TetraStereo.OneCenter.FrameRuntime.decisionComplete?_rule4b
+assert_kernel_only TetraStereo.OneCenter.FrameRuntime.decisionComplete?_rule4c
+assert_kernel_only TetraStereo.OneCenter.FrameRuntime.decisionComplete?_rule5
+assert_kernel_only TetraStereo.OneCenter.FrameRuntime.compareDescriptorPairLabels?_refuses_out_of_profile
+assert_kernel_only TetraStereo.OneCenter.FrameRuntime.nextDescriptorPairs?_refuses_out_of_profile
+assert_kernel_only TetraStereo.OneCenter.FrameRuntime.rule4bReferences?_refuses_out_of_profile
+assert_kernel_only TetraStereo.OneCenter.FrameRuntime.compareRule4b?_mixed_empty_unrestricted
+assert_kernel_only TetraStereo.OneCenter.FrameRuntime.compareRule4b?_mixed_empty_conservative

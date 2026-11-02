@@ -1,0 +1,24 @@
+import TetraStereo.Examples.HostAnalysisRequestKernelWitness4Final
+
+set_option autoImplicit false
+set_option maxRecDepth 10000
+
+namespace TetraStereo.Examples.HostAnalysisRequestKernelProof
+
+open TetraStereo.Engine
+
+noncomputable section
+
+def witness4DeclarationNames : List String :=
+  [ "TetraStereoGenerated.Examples.BroadSurface.Witnesses.hostMoleculeTargetWitness_Reqkhost_x45_analysis_x45_broad_x45_stereochemical_x45_surface_Cu_Tgtkcumulene_x45_unit"
+  , "TetraStereoGenerated.Examples.BroadSurface.Witnesses.host_molecule_target_witness_Reqkhost_x45_analysis_x45_broad_x45_stereochemical_x45_surface_Cu_Tgtkcumulene_x45_unit_coverage"
+  , "TetraStereoGenerated.Examples.BroadSurface.Witnesses.host_molecule_target_witness_Reqkhost_x45_analysis_x45_broad_x45_stereochemical_x45_surface_Cu_Tgtkcumulene_x45_unit_checked"
+  , "TetraStereoGenerated.Examples.BroadSurface.Witnesses.hostMoleculeTargetCertificate_Reqkhost_x45_analysis_x45_broad_x45_stereochemical_x45_surface_Cu_Tgtkcumulene_x45_unit"
+  , "TetraStereoGenerated.Examples.BroadSurface.Witnesses.host_molecule_target_certificate_Reqkhost_x45_analysis_x45_broad_x45_stereochemical_x45_surface_Cu_Tgtkcumulene_x45_unit_checked" ]
+
+set_option maxHeartbeats 1000000 in
+theorem witness4_declarationNames : witness4.declarationNames = witness4DeclarationNames := by
+  rfl
+
+end
+end TetraStereo.Examples.HostAnalysisRequestKernelProof

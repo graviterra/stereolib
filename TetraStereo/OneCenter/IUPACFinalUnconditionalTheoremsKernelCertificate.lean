@@ -1,0 +1,50 @@
+import TetraStereo.OneCenter.IUPACFinalUnconditionalTheorems
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-! # Kernel-only certificate: final unconditional IUPAC authority theorems -/
+
+assert_kernel_only
+  TetraStereo.OneCenter.CompleteIUPACAnalysisRequest.provision_pipeline_eq_reference
+assert_kernel_only
+  TetraStereo.OneCenter.CompleteIUPACAnalysisRequest.provision_production_iff_reference
+assert_kernel_only
+  TetraStereo.OneCenter.CompleteIUPACAnalysisRequest.provision_production_sound
+assert_kernel_only
+  TetraStereo.OneCenter.CompleteIUPACAnalysisRequest.provision_production_complete
+assert_kernel_only
+  TetraStereo.OneCenter.CompleteIUPACAnalysisRequest.applicability_agreement
+assert_kernel_only
+  TetraStereo.OneCenter.CompleteIUPACAnalysisRequest.inapplicability_agreement
+assert_kernel_only
+  TetraStereo.OneCenter.CompleteIUPACAnalysisRequest.mem_productionAssignments_iff_reference
+assert_kernel_only
+  TetraStereo.OneCenter.CompleteIUPACAnalysisRequest.production_sound
+assert_kernel_only
+  TetraStereo.OneCenter.CompleteIUPACAnalysisRequest.production_complete
+assert_kernel_only
+  TetraStereo.OneCenter.CompleteIUPACAnalysisRequest.canonical_extensional_equality
+assert_kernel_only
+  TetraStereo.OneCenter.CompleteIUPACAnalysisRequest.refusalReason_eq_none_iff_applicable
+assert_kernel_only
+  TetraStereo.OneCenter.CompleteIUPACAnalysisRequest.refusalReason_eq_unsupportedInput_iff_inapplicable
+assert_kernel_only
+  TetraStereo.OneCenter.CompleteIUPACAnalysisRequest.no_implementation_limit_refusal
+assert_kernel_only
+  TetraStereo.OneCenter.CompleteIUPACAnalysisRequest.applicable_no_implementation_limit_refusal
+assert_kernel_only
+  TetraStereo.OneCenter.CompleteIUPACAnalysisRequest.final_unconditional_correctness
+
+/-! These present-state obstructions prevent valid conditional theorems from being
+mistaken for an inhabited request under the currently open source checklists. -/
+assert_kernel_only
+  TetraStereo.OneCenter.IUPACNormativeProvision.p10_not_descriptorAssignmentBearing
+assert_kernel_only
+  TetraStereo.OneCenter.IUPACNormativeProvision.p10_mem_globalNonDescriptorProvisions
+assert_kernel_only
+  TetraStereo.OneCenter.IUPACNormativeProvision.globalNonDescriptorReviewedSemantics_false
+assert_kernel_only
+  TetraStereo.OneCenter.CompleteIUPACAnalysisRequest.completeIUPACAnalysisRequest_false
+assert_kernel_only
+  TetraStereo.OneCenter.CompleteIUPACAnalysisRequest.not_nonempty_completeIUPACAnalysisRequest

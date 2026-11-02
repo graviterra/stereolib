@@ -1,0 +1,30 @@
+import TetraStereo.UniversalProof.NextFrontier.FramedMultipleBondPublicDispatchRegression
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-! Proposed kernel-authority assertions for the actual parsed multiple-bond preservation
+fixture. Acceptance requires the parent-operated bounded gate; this file is not a build result. -/
+
+open TetraStereo.UniversalProof.NextFrontier.FramedMultipleBondPublicDispatchRegression
+
+assert_kernel_only parsed
+assert_kernel_only normalized_expanded
+assert_kernel_only written_double_bond
+assert_kernel_only generated_multiple_bond_duplicate
+assert_kernel_only fixture_profile_none
+assert_kernel_only actual_profile_none
+assert_kernel_only atom_at_center
+assert_kernel_only roots_computed
+assert_kernel_only fast_sort
+assert_kernel_only authoritative_sort
+assert_kernel_only priority_positions
+assert_kernel_only fast_adjacency
+assert_kernel_only authoritative_adjacency
+assert_kernel_only fixture_legacy_fast_fact
+assert_kernel_only fixture_legacy_authoritative_fact
+assert_kernel_only legacy_fast_fact
+assert_kernel_only legacy_authoritative_fact
+assert_kernel_only public_fast_fact
+assert_kernel_only public_authoritative_fact
+assert_kernel_only public_modes_agree

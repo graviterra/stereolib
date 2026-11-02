@@ -1,0 +1,28 @@
+import TetraStereo.OneCenter.P94MolecularTwistInOutRequestScheduler
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+namespace TetraStereo.OneCenter
+
+/-!
+RED-first target for exhaustive finite twist-path and in-out-pair request scheduling.  The
+certificate requires finite-domain completeness, exact composition with the molecule aggregator,
+coherent accepted/refused outcomes, and global public multiplicity closure.
+-/
+
+assert_kernel_only BlueBookP94.P94MolecularRequestScheduler.mem_boundedNodupStatePaths_iff
+assert_kernel_only BlueBookP94.P94MolecularRequestScheduler.mem_scheduledTwistPathCandidates_iff
+assert_kernel_only BlueBookP94.P94MolecularRequestScheduler.mem_scheduledCoordinateTwistInputs_iff
+assert_kernel_only BlueBookP94.P94MolecularRequestScheduler.mem_scheduledCoordinateInOutInputs_iff
+assert_kernel_only BlueBookP94.P94MolecularRequestScheduler.molecularOutcomesFromLedgers_map_request
+assert_kernel_only BlueBookP94.P94MolecularRequestScheduler.molecularOutcomesFromLedgers_all_correct
+assert_kernel_only
+  BlueBookP94.P94MolecularRequestScheduler.molecularAssignmentsFromLedgers_mem_iff_independent
+assert_kernel_only BlueBookP94.P94MolecularRequestScheduler.molecularAssignmentsFromLedgers_nodup
+assert_kernel_only
+  BlueBookP94.P94MolecularRequestScheduler.molecularAssignmentFromLedgers_count_eq_one_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularRequestScheduler.molecularAssignmentFromLedgers_count_eq_zero_iff
+
+end TetraStereo.OneCenter

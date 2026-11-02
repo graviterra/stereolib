@@ -1,0 +1,27 @@
+import TetraStereo.OneCenter.P94MolecularBicyclicFrameworkPerception
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+namespace TetraStereo.OneCenter
+
+/-!
+RED-first target for finite graph-derived P-94 bicyclic-framework perception.  The certificate
+requires exact path and theta-framework enumeration, molecular validity of every named bridge,
+exact adaptation into the independent in/out authority boundary, and complete scheduling of every
+framework/template observation combination.
+-/
+
+assert_kernel_only BlueBookP94.P94MolecularBicyclicFramework.mem_bondedPathsBetween_iff
+assert_kernel_only BlueBookP94.P94MolecularBicyclicFramework.mem_thetaFrameworks_iff
+assert_kernel_only BlueBookP94.P94MolecularBicyclicFramework.validFor_unit_validFor
+assert_kernel_only
+  BlueBookP94.P94MolecularBicyclicFramework.graphDerivedPremises_bicyclicFramework_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularBicyclicFramework.graphDerivedPremises_atomInFramework_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularBicyclicFramework.graphDerivedPremises_bridgeheadInFramework_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularBicyclicFramework.mem_scheduledCoordinateInOutObservations_iff
+
+end TetraStereo.OneCenter

@@ -1,0 +1,25 @@
+import TetraStereo.UniversalProof.NextFrontier.ParsedParityActualArmSource
+import TetraStereo.KernelOnly
+
+/-! Proposed assertions; no acceptance before an isolated bounded gate. -/
+open TetraStereo.UniversalProof.NextFrontier.ParsedParityActualArmSource
+
+assert_kernel_only returned_parent_frames
+assert_kernel_only reopened_roots_returned
+assert_kernel_only reopened_nodes_perm
+assert_kernel_only armAtom_index
+assert_kernel_only arm_slot_index
+assert_kernel_only arm_cursor_present
+assert_kernel_only arm_cursor_node
+assert_kernel_only arm_record_row
+assert_kernel_only arm_written_row
+assert_kernel_only arm_roots_nodes
+assert_kernel_only arm_roots_ids
+assert_kernel_only arm_root_real
+assert_kernel_only arm_roots_length
+assert_kernel_only arm_frame_returned
+assert_kernel_only arm_frame_real
+assert_kernel_only arm_atomic_numbers_distinct
+assert_kernel_only arm_priority_injective
+assert_kernel_only arm_alignment_exists
+assert_kernel_only arm_all_views_production

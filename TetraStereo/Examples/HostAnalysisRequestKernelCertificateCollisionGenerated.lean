@@ -1,0 +1,18 @@
+import TetraStereo.Examples.HostAnalysisRequestKernelCertificateCollisionGlobal
+
+set_option autoImplicit false
+
+namespace TetraStereo.Examples.HostAnalysisRequestKernelProof
+
+open TetraStereo.Engine
+
+theorem certificateKeyCollisionSuiteRequest_validation_rejected :
+    validationRejected certificateKeyCollisionSuiteRequest.validateGeneratedShape = true := by
+  unfold HostAnalysisSuiteRequest.validateGeneratedShape
+  apply validation_rejected_before
+  apply validation_rejected_before
+  apply validation_rejected_before
+  apply validation_rejected_before
+  exact certificateKeyCollisionSuiteRequest_global_names_rejected
+
+end TetraStereo.Examples.HostAnalysisRequestKernelProof

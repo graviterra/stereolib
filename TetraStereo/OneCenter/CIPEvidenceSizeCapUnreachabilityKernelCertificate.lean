@@ -1,0 +1,11 @@
+import TetraStereo.OneCenter.CIPEvidenceSizeCapUnreachability
+import TetraStereo.KernelOnly
+
+assert_kernel_only
+  TetraStereo.OneCenter.tetrahedralFactFromState?_evidenceSize_irrelevant
+assert_kernel_only
+  TetraStereo.OneCenter.stabilizedRawDescriptorState?_evidenceSize_irrelevant
+assert_kernel_only
+  TetraStereo.OneCenter.solveAuxiliaryDescriptorDependencies_evidenceSize_irrelevant
+assert_kernel_only
+  TetraStereo.OneCenter.solveExactAuxiliaryDescriptorDependencies_evidenceSize_irrelevant

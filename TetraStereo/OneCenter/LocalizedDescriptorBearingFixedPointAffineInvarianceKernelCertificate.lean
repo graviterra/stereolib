@@ -1,0 +1,11 @@
+import TetraStereo.OneCenter.LocalizedDescriptorBearingFixedPointAffineInvariance
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-! Kernel-only certificate for affine transport of the mutually dependent CIP model. -/
+
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.LocalizedAuxiliaryState.mapSpatialPoints_apply
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedDependencyView_state_mapSpatialPoints
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedOccurrenceDescriptorBearingRule3Through5Model_mapSpatialPoints
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.uniqueLocalizedOccurrenceDescriptorBearingRule3Through5Model_affine

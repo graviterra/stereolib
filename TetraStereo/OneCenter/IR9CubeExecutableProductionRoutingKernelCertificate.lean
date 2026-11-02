@@ -1,0 +1,20 @@
+import TetraStereo.OneCenter.GeometryAnnotatedCIPConformance
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-!
+# Kernel-only certificate for executable CU-8 production routing
+
+The certificate covers the typed relative-index route and production/reference agreement while
+retaining the exact refusal of an unsupported cube absolute-orientation convention.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.cube_positionsFor?_exact
+assert_kernel_only TetraStereo.OneCenter.cubeConfigurationIndex?_exact
+assert_kernel_only TetraStereo.OneCenter.cubeMathematicalConfigurationIndex_conforms_IR9
+assert_kernel_only TetraStereo.OneCenter.cubeAbsoluteConfiguration?_none
+assert_kernel_only TetraStereo.OneCenter.cubeAbsoluteConfiguration?_some
+assert_kernel_only TetraStereo.OneCenter.polyhedralConfigurationIndexArity?_conforms_P93_IR9
+assert_kernel_only TetraStereo.OneCenter.polyhedralConfigurationIndex?_conforms_P93_IR9
+assert_kernel_only TetraStereo.OneCenter.polyhedralAbsoluteConfiguration?_conforms_P93_IR9

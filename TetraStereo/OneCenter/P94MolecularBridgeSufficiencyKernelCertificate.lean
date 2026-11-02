@@ -1,0 +1,31 @@
+import TetraStereo.OneCenter.P94MolecularBridgeSufficiency
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+namespace TetraStereo.OneCenter
+
+/-!
+RED-first target for the source-operational P-94 bridge-sufficiency criterion.  The certificate
+requires exact “allows inward and outward” semantics, invariance of direction judgments under the
+derived bridge field, automatic construction from opposite same-site observations, and exact
+composition with graph-derived frameworks and molecule-linked electronic evidence.
+-/
+
+assert_kernel_only BlueBookP94.P94MolecularBridgeSufficiency.bridgeAllowsBothDirections_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularBridgeSufficiency.directionJudgment_bridgeDerived_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularBridgeSufficiency.oppositeDirections_establish_bridgeSufficiency
+assert_kernel_only
+  BlueBookP94.P94MolecularBridgeSufficiency.bridgeDerivedPremises_bridgeLongEnough_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularBridgeSufficiency.graphElectronicBridgePremises_bicyclicFramework_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularBridgeSufficiency.graphElectronicBridgePremises_atomInFramework_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularBridgeSufficiency.graphElectronicBridgePremises_bridgeheadInFramework_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularBridgeSufficiency.graphElectronicBridgePremises_lonePairAt_iff
+
+end TetraStereo.OneCenter

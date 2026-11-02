@@ -1,0 +1,51 @@
+/-
+Copyright (c) 2026 TetraStereo contributors.
+Released under Apache 2.0 license as described in the file LICENSE.
+-/
+import TetraStereo.OneCenter.OrganicStereoJointAuthorityCellMixturesFixtures
+
+set_option autoImplicit false
+set_option linter.unusedSectionVars false
+set_option linter.unusedSimpArgs false
+set_option linter.unnecessarySimpa false
+set_option linter.unusedVariables false
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/-! ## Kernel-authority guards for the decisive endpoints -/
+
+assert_kernel_only TetraStereo.OneCenter.OrganicStereoJointAuthorityCellMixtures.decodeJointCase_assembleJointCase
+assert_kernel_only TetraStereo.OneCenter.OrganicStereoJointAuthorityCellMixtures.assembleJointCase_injective
+assert_kernel_only TetraStereo.OneCenter.OrganicStereoJointAuthorityCellMixtures.decodeJointCaseSet_assembleJointCaseSet
+assert_kernel_only TetraStereo.OneCenter.OrganicStereoJointAuthorityCellMixtures.decodeSample_encodeSample
+assert_kernel_only TetraStereo.OneCenter.OrganicStereoJointAuthorityCellMixtures.encodeSample_injective
+assert_kernel_only TetraStereo.OneCenter.OrganicStereoJointAuthorityCellMixtures.decodeMixtureSet_encodeMixtureSet
+assert_kernel_only TetraStereo.OneCenter.OrganicStereoJointAuthorityCellMixtures.encodeMixtureSet_injective
+assert_kernel_only TetraStereo.OneCenter.OrganicStereoJointAuthorityCellMixtures.amount_correlated_with_state
+assert_kernel_only TetraStereo.OneCenter.OrganicStereoJointAuthorityCellMixtures.f0f1_repeated_occurrence_identity
+assert_kernel_only TetraStereo.OneCenter.OrganicStereoJointAuthorityCellMixtures.f0f1_decisive_uncertainty
+assert_kernel_only TetraStereo.OneCenter.OrganicStereoJointAuthorityCellMixtures.f0f1_decisive_encoding
+assert_kernel_only TetraStereo.OneCenter.OrganicStereoJointAuthorityCellMixtures.f0f1_encoded_cells_differ
+assert_kernel_only TetraStereo.OneCenter.OrganicStereoJointAuthorityCellMixtures.varyingShape_encoded_members_distinct_and_present

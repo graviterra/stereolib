@@ -1,0 +1,28 @@
+import TetraStereo.OneCenter.P94MolecularCompleteCarbohydrateReport
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+namespace TetraStereo.OneCenter
+
+/-!
+RED-first target for the combined molecule-wide P-94 report.  The certificate requires the
+existing automatic-ring/twist/in-out assignment surface and the carbohydrate five-ring twist
+surface to form one exact deduplicated union, preserving either source while emitting nothing
+outside their independent disjunction and reporting every supported assignment exactly once.
+-/
+
+assert_kernel_only
+  BlueBookP94.P94MolecularCompleteCarbohydrateReport.molecularAssignmentsWithCarbohydrate_mem_iff_independent
+assert_kernel_only
+  BlueBookP94.P94MolecularCompleteCarbohydrateReport.baseAssignment_mem_molecularAssignmentsWithCarbohydrate
+assert_kernel_only
+  BlueBookP94.P94MolecularCompleteCarbohydrateReport.carbohydrateAssignment_mem_molecularAssignmentsWithCarbohydrate
+assert_kernel_only
+  BlueBookP94.P94MolecularCompleteCarbohydrateReport.molecularAssignmentsWithCarbohydrate_nodup
+assert_kernel_only
+  BlueBookP94.P94MolecularCompleteCarbohydrateReport.molecularAssignmentWithCarbohydrate_count_eq_one_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularCompleteCarbohydrateReport.molecularAssignmentWithCarbohydrate_count_eq_zero_iff
+
+end TetraStereo.OneCenter

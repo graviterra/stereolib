@@ -1,0 +1,11 @@
+import TetraStereo.OneCenter.LocalizedEvenCumuleneAxialAffineInvariance
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-! Kernel-only certificate for the complete one-axis even-cumulene affine theorem. -/
+
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedEvenCumuleneEndpointCursorFrame?_mapSpatialPoints
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedAxialEndpointPair?_mapSpatialPoints
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedAxialAssignmentOfEndpointFrames?_orientationPreservingAffine
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedEvenCumuleneAxialAssignment?_orientationPreservingAffine

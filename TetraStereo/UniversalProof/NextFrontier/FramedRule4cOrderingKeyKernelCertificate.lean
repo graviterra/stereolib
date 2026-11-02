@@ -1,0 +1,16 @@
+import TetraStereo.UniversalProof.NextFrontier.FramedRule4cOrderingKey
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+set_option maxHeartbeats 2000000
+set_option maxRecDepth 4096
+
+namespace TetraStereo.OneCenter.FramedRule4cOrderingKey
+
+assert_kernel_only pairWitness_ordering
+assert_kernel_only checkedPairWitness_ordering
+assert_kernel_only witness_ordering
+assert_kernel_only witness_success_factors
+assert_kernel_only compareOptionalKey_transCmp
+
+end TetraStereo.OneCenter.FramedRule4cOrderingKey

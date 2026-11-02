@@ -1,0 +1,21 @@
+import TetraStereo.OneCenter.CIPRule3DescriptorBearingRecursiveBuilderAffineInvariance
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-!
+# Kernel-only certificate for the production descriptor-bearing Rule-3 compiler
+
+This closure covers all node-reader branches and the mutually recursive molecule-to-key and
+physical-unit-frame builders.  It therefore certifies exact invariance of the emitted recursive
+Rule-3 key material under every invertible rational affine change of coordinate frame.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedRule3DescriptorBearingObservation_mapSpatialPoints
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedRule3OddCumuleneDescriptorBearingObservation_mapSpatialPoints
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedOccurrenceHasRule3DoubleBondEdge_mapSpatialPoints
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedDescriptorBearingRule3StructuralNode?_mapSpatialPoints
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedDescriptorBearingRule3NodeWith?_affine
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.buildLocalizedRerootDescriptorBearingRule3Key?_affine
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.buildLocalizedDescriptorBearingRule3Frame?_affine
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedDescriptorBearingRule3Node?_affine

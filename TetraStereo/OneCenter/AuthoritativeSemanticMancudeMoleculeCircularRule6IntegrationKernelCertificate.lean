@@ -1,0 +1,6 @@
+import TetraStereo.OneCenter.AuthoritativeSemanticMancudeMoleculeCircularRule6Integration
+import TetraStereo.KernelOnly
+
+/-! # Kernel-only certificate: scheduled circular Rule-6 refusal -/
+
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.aromaticCanonicalScheduledRule3Through6Descriptor?_eq_none_of_circularAmbiguity_at_twice

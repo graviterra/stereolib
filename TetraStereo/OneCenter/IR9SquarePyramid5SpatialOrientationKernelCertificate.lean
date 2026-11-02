@@ -1,0 +1,20 @@
+import TetraStereo.OneCenter.IR9SquarePyramid5SpatialOrientation
+import TetraStereo.KernelOnly
+
+open TetraStereo
+
+/-!
+# Kernel-only certificate: exact physical SPY-5 A/C reading
+
+This closure checks the Red Book axial-ligand viewpoint, its positive scaling to the exact basal
+centroid determinant, nondegeneracy on the idealized square-base domain, literal cyclic
+first-difference comparison, and executable/declarative success, refusal, and totality results.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SquarePyramid5SpatialOrientation.progressionDeterminant_eq_scaled_baseDeterminant
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SquarePyramid5SpatialOrientation.progressionDeterminant_ne_zero
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SquarePyramid5SpatialOrientation.senseOfDeterminant?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SquarePyramid5SpatialOrientation.seniorAdjacent_firstDifference
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SquarePyramid5SpatialOrientation.rotationSense?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SquarePyramid5SpatialOrientation.rotationSense?_exists_of_exactGeometry
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SquarePyramid5SpatialOrientation.rotationSense?_eq_none_iff

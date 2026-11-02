@@ -1,0 +1,19 @@
+import TetraStereo.OneCenter.IR9FaceMonocappedOctahedron7ExecutableIndex
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-!
+# Kernel-only certificate for executable OCF-7 relative indexing
+
+The executable index is certified only as a complete mathematical symmetry index with the same
+collision classes as the existing OCF-7 source completion.  No unpublished short syntax or
+absolute `A`/`C` convention is asserted.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.FaceMonocappedOctahedron7SourceIndexCompleteness.coordinatePermutation_mul
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.FaceMonocappedOctahedron7SourceIndexCompleteness.coordinateOrbitCodes_relabel
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.FaceMonocappedOctahedron7SourceIndexCompleteness.executableSourceIndex_relabel
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.FaceMonocappedOctahedron7SourceIndexCompleteness.executableSourceIndex_eq_iff_symmetryEquivalent
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.FaceMonocappedOctahedron7SourceIndexCompleteness.executableSourceIndex_sameClassification_as_source
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.FaceMonocappedOctahedron7SourceIndexCompleteness.executableFaceMonocappedOctahedronConfigurationIndex_sameClassification_as_mathematical

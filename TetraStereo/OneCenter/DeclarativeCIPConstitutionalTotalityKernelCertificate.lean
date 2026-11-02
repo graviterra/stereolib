@@ -1,0 +1,7 @@
+import TetraStereo.OneCenter.DeclarativeCIPConstitutionalTotality
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.ConstitutionalProblemData.withCanonicalAddressing_ruleOutcome_existsUnique

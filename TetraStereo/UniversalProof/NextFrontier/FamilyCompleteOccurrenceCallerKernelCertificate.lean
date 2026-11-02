@@ -1,0 +1,68 @@
+import TetraStereo.UniversalProof.NextFrontier.FamilyCompleteOccurrenceCaller
+import TetraStereo.KernelOnly
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+namespace TetraStereo.UniversalProof.FamilyCompleteOccurrenceCaller
+
+-- Strict shared-profile decision bridge
+assert_kernel_only decisionComplete_strict_of_neq
+
+-- Independent raw causal lemmas (copied/adapted from the frozen reference, unchanged statements)
+assert_kernel_only actual_hydrogen_carbon_first_pair
+assert_kernel_only actual_three_child_sphere_reverse_decision
+assert_kernel_only complete_atomic_decision
+assert_kernel_only actual_occurrence_child_eligible
+assert_kernel_only genuine_same_previous_cursor_unique
+assert_kernel_only helper_genuine_inventory_perm
+
+-- Closed numeral reductions of the generic compare
+assert_kernel_only role_compare_0_0
+assert_kernel_only role_compare_0_1
+assert_kernel_only role_compare_0_2
+assert_kernel_only role_compare_0_3
+assert_kernel_only role_compare_1_0
+assert_kernel_only role_compare_1_1
+assert_kernel_only role_compare_1_2
+assert_kernel_only role_compare_1_3
+assert_kernel_only role_compare_2_0
+assert_kernel_only role_compare_2_1
+assert_kernel_only role_compare_2_2
+assert_kernel_only role_compare_2_3
+assert_kernel_only role_compare_3_0
+assert_kernel_only role_compare_3_1
+assert_kernel_only role_compare_3_2
+assert_kernel_only role_compare_3_3
+
+-- Family raw-domain lemmas (copied from the reference caller's independent raw facts)
+assert_kernel_only family_actual_reverse_decisive_child_spheres
+assert_kernel_only family_actual_occurrence_atoms
+assert_kernel_only family_actual_occurrence_length
+assert_kernel_only family_actual_written_ligands
+assert_kernel_only family_actual_occurrence_frame
+assert_kernel_only family_actual_frame_roles
+assert_kernel_only helper_frame_role_representation
+assert_kernel_only family_role_atomic_labels
+assert_kernel_only family_actual_priority_positions
+
+-- Adapted complete caller helpers and headline
+assert_kernel_only helper_trackedSortComplete_four_permutation
+assert_kernel_only helper_adjacentComplete_priority_roles
+assert_kernel_only family_complete_role_decisions
+assert_kernel_only family_complete_sort_and_adjacent
+assert_kernel_only family_complete_occurrence_fact
+assert_kernel_only family_every_written_tag_complete_facts
+
+end TetraStereo.UniversalProof.FamilyCompleteOccurrenceCaller

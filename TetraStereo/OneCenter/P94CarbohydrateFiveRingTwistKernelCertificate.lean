@@ -1,0 +1,42 @@
+import TetraStereo.OneCenter.P94CarbohydrateFiveRingTwist
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+namespace TetraStereo.OneCenter
+
+/-!
+RED-first target for the carbohydrate-specific P-94.3.2.2 five-membered twist convention.  The
+certificate requires the source's exact three-adjacent-atom reference plane with the other two
+atoms on opposite sides, explicit finite carbohydrate applicability, exhaustive offset/plane
+search, exact success/refusal, and duplicate-free molecule-level public assignment semantics.
+-/
+
+assert_kernel_only BlueBookP94.carbohydrateFiveRingTwist_not_envelope
+assert_kernel_only p94CarbohydrateFiveRingTwistSupport_iff
+assert_kernel_only
+  BlueBookP94.P94CarbohydrateFiveRingTwist.mem_scheduledCarbohydrateFiveRingUnits_iff
+assert_kernel_only
+  BlueBookP94.P94CarbohydrateFiveRingTwist.coordinateCarbohydrateFiveRingTwistEvidence?_eq_some_iff
+assert_kernel_only
+  BlueBookP94.P94CarbohydrateFiveRingTwist.automaticCarbohydrateFiveRingTwistEvidence?_eq_some_iff
+assert_kernel_only
+  BlueBookP94.P94CarbohydrateFiveRingTwist.automaticCarbohydrateFiveRingTwistEvidence?_eq_none_iff
+assert_kernel_only
+  BlueBookP94.P94CarbohydrateFiveRingTwist.automaticCarbohydrateFiveRingTwistEvidenceJudgment_supports
+assert_kernel_only
+  BlueBookP94.P94CarbohydrateFiveRingTwist.automaticCarbohydrateFiveRingTwistAssignments_mem_iff
+assert_kernel_only
+  BlueBookP94.P94CarbohydrateFiveRingTwist.automaticCarbohydrateFiveRingTwistAssignments_nodup
+assert_kernel_only
+  BlueBookP94.P94CarbohydrateFiveRingTwist.automaticCarbohydrateFiveRingTwistAssignment_count_eq_one_iff
+assert_kernel_only
+  BlueBookP94.P94CarbohydrateFiveRingTwist.molecularCarbohydrateFiveRingTwistAssignments_mem_iff
+assert_kernel_only
+  BlueBookP94.P94CarbohydrateFiveRingTwist.molecularCarbohydrateFiveRingTwistAssignments_nodup
+assert_kernel_only
+  BlueBookP94.P94CarbohydrateFiveRingTwist.molecularCarbohydrateFiveRingTwistAssignment_count_eq_one_iff
+assert_kernel_only
+  BlueBookP94.P94CarbohydrateFiveRingTwist.molecularCarbohydrateFiveRingTwistAssignment_count_eq_zero_iff
+
+end TetraStereo.OneCenter

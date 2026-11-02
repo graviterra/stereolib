@@ -1,0 +1,15 @@
+import TetraStereo.OneCenter.GeometryAnnotatedCIPConformance
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-! # Kernel-only certificate for executable DD-8 production routing -/
+
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.dodecahedron_positionsFor?_exact
+assert_kernel_only TetraStereo.OneCenter.dodecahedronConfigurationIndex?_exact
+assert_kernel_only TetraStereo.OneCenter.dodecahedronMathematicalConfigurationIndex_conforms_IR9
+assert_kernel_only TetraStereo.OneCenter.dodecahedronAbsoluteConfiguration?_none
+assert_kernel_only TetraStereo.OneCenter.dodecahedronAbsoluteConfiguration?_some
+assert_kernel_only TetraStereo.OneCenter.polyhedralConfigurationIndexArity?_conforms_P93_IR9
+assert_kernel_only TetraStereo.OneCenter.polyhedralConfigurationIndex?_conforms_P93_IR9
+assert_kernel_only TetraStereo.OneCenter.polyhedralAbsoluteConfiguration?_conforms_P93_IR9

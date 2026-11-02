@@ -1,0 +1,4 @@
+import TetraStereo.UniversalProof.NextFrontier.ParsedParityThreeLeafProjection
+import TetraStereo.KernelOnly
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.ParsedParityThreeLeafProjection.source_three_leaf_observed_projection

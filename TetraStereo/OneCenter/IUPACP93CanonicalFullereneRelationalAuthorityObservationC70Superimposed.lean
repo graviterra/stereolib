@@ -1,0 +1,6 @@
+import TetraStereo.OneCenter.IUPACP93CanonicalFullereneRelationalAuthorityObservationC70SuperimposedFinal
+
+/-! Import-only facade for the bounded C70 superimposed relational observation proof. -/
+
+assert_kernel_only
+  TetraStereo.OneCenter.P93CanonicalProgramFullerene.iupacP93CanonicalFullereneC70SuperimposedAuthorityObservation_valid

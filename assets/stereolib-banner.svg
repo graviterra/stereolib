@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="260" viewBox="0 0 1200 260" role="img" aria-labelledby="title description">
+  <title id="title">Stereolib — machine-checked stereochemistry</title>
+  <desc id="description">A research library in Lean 4 and Mathlib. Universal correctness is the research goal. An abstract tetrahedral mark echoes the molecular geometry studied by the library.</desc>
+  <rect width="1200" height="260" rx="12" fill="#f6f2ea"/>
+  <path d="M54 32H1146" stroke="#d3c9b8"/>
+  <text x="54" y="68" fill="#a8361b" font-family="Arial, sans-serif" font-size="18" font-weight="bold" letter-spacing="3">LEAN 4 · MATHLIB · STEREOCHEMISTRY</text>
+  <text x="50" y="153" fill="#1b1c1e" font-family="Georgia, serif" font-size="82">Stereolib</text>
+  <text x="54" y="197" fill="#1b1c1e" font-family="Georgia, serif" font-size="30">Machine-checked stereochemistry.</text>
+  <text x="54" y="233" fill="#4f5357" font-family="Arial, sans-serif" font-size="20">Explicit domains. Checked proofs. A universal theorem in progress.</text>
+  <g transform="translate(875 45) scale(6)" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M16 3L28 25L4 25Z" stroke="#a8361b"/>
+    <path d="M16 3L18 18L28 25M18 18L4 25" stroke="#1d4f73"/>
+    <circle cx="16" cy="3" r="1.1" fill="#f6f2ea" stroke="#a8361b"/>
+    <circle cx="28" cy="25" r="1.1" fill="#f6f2ea" stroke="#a8361b"/>
+    <circle cx="4" cy="25" r="1.1" fill="#f6f2ea" stroke="#a8361b"/>
+    <circle cx="18" cy="18" r="1.1" fill="#f6f2ea" stroke="#1d4f73"/>
+  </g>
+</svg>

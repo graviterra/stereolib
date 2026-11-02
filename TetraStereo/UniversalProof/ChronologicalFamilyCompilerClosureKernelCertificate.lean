@@ -1,0 +1,19 @@
+import TetraStereo.UniversalProof.ChronologicalFamilyCompilerClosure
+import TetraStereo.KernelOnly
+
+
+namespace TetraStereo
+namespace Generated
+namespace ChronologicalStringFamilyCompilerExport
+
+theorem chronologicalStringFamilyCorrect : TetraStereo.UniversalProof.ChronologicalFamilyCompilerClosure.FamilyClaim := by
+  exact TetraStereo.UniversalProof.ChronologicalFamilyCompilerClosure.compiledArtifact_checked
+
+example : TetraStereo.UniversalProof.ChronologicalFamilyCompilerClosure.compiledArtifact.claim :=
+  chronologicalStringFamilyCorrect
+
+assert_kernel_only TetraStereo.Generated.ChronologicalStringFamilyCompilerExport.chronologicalStringFamilyCorrect
+
+end ChronologicalStringFamilyCompilerExport
+end Generated
+end TetraStereo

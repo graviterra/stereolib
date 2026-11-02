@@ -1,0 +1,13 @@
+import TetraStereo.OneCenter.CIPCircularOccurrenceBudgetRetirement
+import TetraStereo.KernelOnly
+
+assert_kernel_only
+  TetraStereo.OneCenter.exactCircularPositionSolutions_eq_capFree
+assert_kernel_only
+  TetraStereo.OneCenter.nearestShallowCircularOccurrence?_eq_capFree
+assert_kernel_only
+  TetraStereo.OneCenter.compareShallowCircularConstitution?_eq_authoritative
+assert_kernel_only
+  TetraStereo.OneCenter.sharedRule3UnitHasIndependentFarReference_fuel_irrelevant
+assert_kernel_only
+  TetraStereo.OneCenter.hasCoupledRule3PerfectMatching_fuel_irrelevant

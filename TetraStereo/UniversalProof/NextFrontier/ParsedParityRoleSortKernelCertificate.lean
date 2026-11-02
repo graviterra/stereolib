@@ -1,0 +1,9 @@
+import TetraStereo.UniversalProof.NextFrontier.ParsedParityRoleSort
+import TetraStereo.KernelOnly
+
+open TetraStereo.UniversalProof.NextFrontier.ParsedParityRoleSort
+
+assert_kernel_only roleCoherent_iff
+assert_kernel_only role_sort_summary
+assert_kernel_only actual_safe_sort_opposite
+assert_kernel_only actual_safe_sort_equal

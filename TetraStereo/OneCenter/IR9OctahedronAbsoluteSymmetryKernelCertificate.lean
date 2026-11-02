@@ -1,0 +1,22 @@
+import TetraStereo.OneCenter.IR9OctahedronAbsoluteSymmetry
+import TetraStereo.KernelOnly
+
+open TetraStereo
+
+/-!
+# Kernel-only certificate: OC-6 proper symmetry and absolute classes
+
+The asserted closures cover the exact determinant character of the full 48-element octahedral
+group, its 24-element proper subgroup, the exhaustive fixed-mirror coset decomposition, mirror
+nonsuperimposability for injective labels, and the resulting exact-two-absolute-indices theorem.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronAbsoluteSymmetry.orientationSign_mul_full
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronAbsoluteSymmetry.card_properSymmetryGroup
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronAbsoluteSymmetry.mirror_mem_fullSymmetryGroup
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronAbsoluteSymmetry.orientationSign_mirror
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronAbsoluteSymmetry.mirror_not_mem_properSymmetryGroup
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronAbsoluteSymmetry.fullSymmetryGroup_proper_or_mirror_coset
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronAbsoluteSymmetry.injectivePlacement_not_properEquivalent_to_mirror
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronAbsoluteSymmetry.injectivePlacement_has_exactlyTwoAbsoluteIndices
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronAbsoluteSymmetry.chiralitySymbol_oppositeRotationSense

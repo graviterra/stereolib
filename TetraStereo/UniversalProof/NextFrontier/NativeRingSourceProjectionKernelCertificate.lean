@@ -1,0 +1,6 @@
+import TetraStereo.UniversalProof.NextFrontier.NativeRingSourceProjection
+import TetraStereo.KernelOnly
+
+assert_kernel_only TetraStereo.UniversalProof.NativeRingSourceProjection.actual_projections
+assert_kernel_only TetraStereo.UniversalProof.NativeRingSourceProjection.actual_rule3_keys_both
+assert_kernel_only TetraStereo.UniversalProof.NativeRingSourceProjection.actual_carbon_callback_both

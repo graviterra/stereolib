@@ -1,0 +1,17 @@
+import TetraStereo.UniversalProof.NextFrontier.FramedOrderingKeyCore
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+set_option maxHeartbeats 2000000
+set_option maxRecDepth 4096
+
+namespace TetraStereo.OneCenter.FramedOrderingKeyCore
+
+assert_kernel_only insertTotal_success
+assert_kernel_only sortTotal_success
+assert_kernel_only children_length
+assert_kernel_only ranked_success
+assert_kernel_only validateCursors_success
+assert_kernel_only validatePairs_success
+
+end TetraStereo.OneCenter.FramedOrderingKeyCore

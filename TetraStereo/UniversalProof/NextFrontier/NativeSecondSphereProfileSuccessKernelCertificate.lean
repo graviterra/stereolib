@@ -1,0 +1,5 @@
+import TetraStereo.UniversalProof.NextFrontier.NativeSecondSphereProfileSuccess
+import TetraStereo.KernelOnly
+
+assert_kernel_only TetraStereo.UniversalProof.NativeSecondSphereProfileSuccess.family_profile_success
+assert_kernel_only TetraStereo.UniversalProof.NativeSecondSphereProfileSuccess.family_root_profile_success

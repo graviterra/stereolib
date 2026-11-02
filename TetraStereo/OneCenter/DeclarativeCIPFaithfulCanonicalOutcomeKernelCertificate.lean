@@ -1,0 +1,39 @@
+import TetraStereo.OneCenter.DeclarativeCIPFaithfulCanonicalOutcome
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.nodePathObservation_width_independent
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.ruleKey_le_iff_of_bounds
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.canonicalAddressing_iff_of_bounds
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.ruleKey_lt_iff
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.ruleKey_eq_iff
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.transGen_chain
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.faithful_ancestor_atoms_injective
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.faithful_ringDistance_unique
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.faithful_labelCount
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.faithful_labelCount_eq
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.faithful_child_bijection
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.faithful_ruleKey_eq_of_matched
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.faithful_root_ruleKey_eq
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.faithful_addressObservation_eq
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.faithful_hierarchyOutcome_iff
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.ConstitutionalProblemData.withCanonicalAddressing_canonicalOutcome_iff
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.ConstitutionalProblemData.withCanonicalAddressing_ruleOutcome_existsUnique

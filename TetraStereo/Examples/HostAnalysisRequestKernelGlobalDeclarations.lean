@@ -1,0 +1,28 @@
+import TetraStereo.Examples.HostAnalysisRequestKernelGlobalDeclarationNames
+import TetraStereo.Examples.HostAnalysisRequestKernelGlobalPackageKeys
+import TetraStereo.Examples.HostAnalysisRequestKernelGlobalDeclarationSeparation
+
+set_option autoImplicit false
+set_option maxRecDepth 10000
+
+namespace TetraStereo
+namespace Examples
+namespace HostAnalysisRequestKernelProof
+
+open Engine
+open OneCenter
+open HostAnalysisRequestBuilder
+
+noncomputable section
+
+theorem broadSurface_validateGlobalDeclarationNameShape :
+    broadSurfaceMoleculeAnalysisRequest.suiteRequest.validateGlobalDeclarationNameShape = .ok () := by
+  unfold Engine.HostAnalysisSuiteRequest.validateGlobalDeclarationNameShape
+  rw [broadSurface_validateUniqueSuiteDeclarationNames]
+  rw [broadSurface_validateUniquePackageKeys]
+  exact broadSurface_validateHostSuiteDeclarationSeparation
+
+end
+end HostAnalysisRequestKernelProof
+end Examples
+end TetraStereo

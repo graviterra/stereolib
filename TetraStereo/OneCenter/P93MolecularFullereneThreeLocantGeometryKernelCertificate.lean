@@ -1,0 +1,13 @@
+import TetraStereo.OneCenter.P93MolecularFullereneThreeLocantGeometry
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-! # Kernel-only certificate: fullerene numbered three-locant geometry -/
+
+assert_kernel_only TetraStereo.OneCenter.BlueBookP93.Cyclic.molecularFullereneThreeLocantTurnJudgment_functional
+assert_kernel_only TetraStereo.OneCenter.BlueBookP93.Cyclic.molecularFullereneThreeLocantTurn?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.BlueBookP93.Cyclic.molecularFullereneThreeLocantTurn?_eq_none_iff
+assert_kernel_only TetraStereo.OneCenter.BlueBookP93.Cyclic.spatiallyDerivedMolecularFullereneConfigurationInput?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.BlueBookP93.Cyclic.spatiallyDerivedMolecularFullereneConfigurationInput?_eq_none_iff
+assert_kernel_only TetraStereo.OneCenter.BlueBookP93.Cyclic.mem_validatedSpatiallyDerivedMolecularFullereneConfigurationInputs_iff

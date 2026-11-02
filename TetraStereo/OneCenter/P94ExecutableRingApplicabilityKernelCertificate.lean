@@ -1,0 +1,7 @@
+import TetraStereo.OneCenter.P94ExecutableRingApplicability
+import TetraStereo.KernelOnly
+
+assert_kernel_only TetraStereo.OneCenter.P94ConformationUnit.bonded?_eq_true_iff
+assert_kernel_only TetraStereo.OneCenter.P94ConformationUnit.consecutivelyBonded?_eq_true_iff
+assert_kernel_only TetraStereo.OneCenter.P94ConformationUnit.cyclicallyBonded?_eq_true_iff
+assert_kernel_only TetraStereo.OneCenter.P94ConformationUnit.ringValidFor?_eq_true_iff

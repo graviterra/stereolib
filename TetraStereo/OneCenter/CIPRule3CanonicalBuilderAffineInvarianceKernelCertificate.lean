@@ -1,0 +1,21 @@
+import TetraStereo.OneCenter.CIPRule3CanonicalBuilderAffineInvariance
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-!
+# Kernel-only certificate for canonical Rule-3 compiler affine naturality
+
+The closure covers injective physical-unit transport, deduplication and counting,
+coupled perfect matching, canonical exclusion, exclusion-aware recursive recompilation,
+and assembly of the complete canonical Rules-1a--3 key frame.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.eraseDups_map_injective
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedRule3PhysicalUnitIds_mapSpatialPoints
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedRule3PhysicalUnitKeyCount_mapSpatialPoints
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.hasLocalizedCoupledRule3PerfectMatching_mapSpatialPoints
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedRule3ExcludedPhysicalUnits_mapSpatialPoints
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedRule3SpatialNodeExcept?_affine
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.buildLocalizedRerootRecursiveRule3SpatialKeyExcept?_affine
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.buildLocalizedRule3CanonicalKeyFrame?_affine

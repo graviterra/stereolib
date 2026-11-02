@@ -1,0 +1,31 @@
+import TetraStereo.OneCenter.DeclarativeCIPConstitutionalOrderLaws
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.LexOutcome.gt_trans
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.LexOutcome.gt_eq_trans
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.LexOutcome.eq_gt_trans
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.LexOutcome.reverse_lt
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.LexOutcome.functional
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.ruleValueOutcome_iff_compare
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.hierarchyOutcome_iff_lexOutcome
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.ConstitutionalProblemData.ruleOutcome_iff_lexOutcome
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.ConstitutionalProblemData.withCanonicalAddressing_constitutionalOrderLaws
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.ConstitutionalRuleOutcomeOrderLaws.higher_trans
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.ConstitutionalRuleOutcomeOrderLaws.weakPriority_total
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.ConstitutionalRuleOutcomeOrderLaws.constitutionalPriorityIsTotalPreorder
+assert_kernel_only
+  TetraStereo.OneCenter.DeclarativeCIP.ConstitutionalProblemData.withCanonicalAddressing_constitutionalPriorityIsTotalPreorder

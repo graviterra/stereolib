@@ -1,0 +1,141 @@
+import TetraStereo.KernelOnly
+import TetraStereo.OneCenter.OrganicStereoFiniteEncoding
+import TetraStereo.OneCenter.OrganicStereoInteractionRoles
+import TetraStereo.OneCenter.OrganicStereoRealConfiguration
+
+/-!
+# Kernel-authority closure certificate for the organic-stereo foundation batch
+
+This module adds an independent `assert_kernel_only` check for the public constructive endpoints of
+the three foundation modules
+
+* `TetraStereo.OneCenter.OrganicStereoFiniteEncoding`,
+* `TetraStereo.OneCenter.OrganicStereoInteractionRoles`,
+* `TetraStereo.OneCenter.OrganicStereoRealConfiguration`,
+
+using only those three imports plus `TetraStereo.KernelOnly`.  It lists no umbrella import and does
+not import any earlier certificate, probe or evidence package.
+
+The endpoints asserted here are the general theorems of the three modules, not generated
+projections, `rfl`-shuffles or count-inflating auxiliary definitions:
+
+* finite encoding: exact atom lookup and all-fields preservation, exact interaction lookup and kind
+  preservation, participant incidence, structural well-formedness of both the bare molecule and the
+  certified authoritative input, constructive decoding round trips, relabelling compatibility under
+  a change of enumeration, and the no-interpreted-authority boundary;
+* typed roles: hapticity and participant-distinctness facts, erasure well-formedness and kind
+  preservation, the role-erasure non-injectivity counterexample and the two concrete
+  non-recovery theorems, decoration projections, ledger/source round trip, and the general enriched
+  molecule construction with exact own-index decoration and full atom-label preservation;
+* real configuration: exact rational-to-real coordinate casts and injectivity, the partial rational
+  view round trip, source-atom indexing without atom loss, the arbitrary-real-conformation
+  constructor, source projection preservation, reindexing inverse and naturality laws for
+  conformations and ensembles, and the certified finite-conformer-scope boundary (empty and unknown
+  scopes contribute the empty allowed set).
+
+Scope boundaries.  This certificate checks kernel closure of the stated declarations; it is not a
+claim of completed chemical coverage, perception, CIP fidelity or conformational completeness.
+`OrganicStereoRealConfiguration` deliberately contains no theorem asserting real/rational
+non-surjectivity (no `¬ Surjective (ℚ → ℝ)` or "some real conformation is irrational" statement);
+the rational boundary is certified only through the partial rational view and the conditional
+rational-locus round trip below.  No such missing theorem is fabricated or assumed here.
+
+This file contains only import and `assert_kernel_only` commands.  It defines no proofs, performs no
+evaluation, and adds no trust bypass.
+-/
+
+-- TetraStereo.OneCenter.OrganicStereoFiniteEncoding
+
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.encode_atomCount
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.encode_atomAt
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.encode_atom_fields
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.encode_interactions_length
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.encode_interactionAt
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.encode_participantAt
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.encode_participants_list
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.encode_interactionKinds
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.encodeInteraction_wellFormed
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.encode_structurallyWellFormed
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.encodeAuthoritative_structurallyWellFormed
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.certifiedEncoding_atomAt
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.certifiedEncoding_interactionAt
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.decodeIndex?_encode
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.decodeParticipants?_encodeInteraction
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.decodeInteraction?_encodeInteraction
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.decodeInteractions?_encode
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.decodeAtomLabel?_encode
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.decodeAtomLabels?_encode
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.encode_atomAt_relabel
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.encode_atomData_relabel
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.encode_participantAt_relabel
+assert_kernel_only TetraStereo.OneCenter.FiniteAtomInteractionHypergraph.encode_no_other
+
+-- TetraStereo.OneCenter.OrganicStereoInteractionRoles
+
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.HapticLigand.eta_pos
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.HapticLigand.participantLength
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.HapticLigand.participantList_nodup
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.Multicenter.card_ge_two
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.Delocalized.card_ge_two
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.TypedInteraction.erase_wellFormed
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.TypedInteraction.erase_multicenter_kind
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.TypedInteraction.erase_delocalized_kind
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.TypedInteraction.directed_roleErase_swap
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.TypedInteraction.directed_ne_swap
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.TypedInteraction.roleErase_not_injective
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.Decorates.participants_toFinset
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.Decorates.kind_eq
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.DecoratesExact.toDecorates
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.RoleDecoration.erased_kind
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.RoleDecoration.erased_participants_length
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.EnrichedSource.reattach
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.EnrichedSemanticMolecule.toSemanticMolecule_structurallyWellFormed
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.EnrichedSemanticMolecule.decoratesExact_own_index
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.EnrichedSemanticMolecule.source_labels_preserved
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.no_binary_source_role_recovery
+assert_kernel_only TetraStereo.OneCenter.InteractionRoles.no_roleErase_left_inverse
+
+-- TetraStereo.OneCenter.OrganicStereoRealConfiguration
+
+assert_kernel_only TetraStereo.OneCenter.CartesianPoint3.toEuclideanPoint_apply_zero
+assert_kernel_only TetraStereo.OneCenter.CartesianPoint3.toEuclideanPoint_apply_one
+assert_kernel_only TetraStereo.OneCenter.CartesianPoint3.toEuclideanPoint_apply_two
+assert_kernel_only TetraStereo.OneCenter.CartesianPoint3.toEuclideanPoint_injective
+assert_kernel_only TetraStereo.OneCenter.RealPoint.rationalView?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.RealPoint.rationalView?_toEuclideanPoint
+assert_kernel_only TetraStereo.OneCenter.RealPoint.rationalView?_isSome_iff
+assert_kernel_only TetraStereo.OneCenter.sourceAtom_surjective_on_mem
+assert_kernel_only TetraStereo.OneCenter.sourceAtomIndex_card
+assert_kernel_only TetraStereo.OneCenter.RealSourceGeometry.sourceOf_eq
+assert_kernel_only TetraStereo.OneCenter.RealSourceGeometry.sourceOf_input_eq
+assert_kernel_only TetraStereo.OneCenter.RealSourceGeometry.ofConformation_injective
+assert_kernel_only TetraStereo.OneCenter.RealSourceGeometry.exists_ofConformation
+assert_kernel_only TetraStereo.OneCenter.RealSourceGeometry.exists_zero
+assert_kernel_only TetraStereo.OneCenter.RealSourceGeometry.subsingleton_of_atomCount_eq_zero
+assert_kernel_only TetraStereo.OneCenter.RealSourceGeometry.conformation_ext_iff
+assert_kernel_only TetraStereo.OneCenter.SpatialConfiguration.rationalView?_toConformationAt
+assert_kernel_only TetraStereo.OneCenter.SpatialConfiguration.toConformationAt_injective
+assert_kernel_only TetraStereo.OneCenter.SpatialConfiguration.exists_toConformationAt_of_rational
+assert_kernel_only TetraStereo.OneCenter.SpatialConfiguration.toSourceGeometry_conformation
+assert_kernel_only TetraStereo.OneCenter.CertifiedAuthoritativeChemicalInput.spatialGeometry_conformation
+assert_kernel_only TetraStereo.OneCenter.MolecularConformation.reindex_reindex
+assert_kernel_only TetraStereo.OneCenter.MolecularConformation.reindex_reindex_symm
+assert_kernel_only TetraStereo.OneCenter.MolecularConformation.reindex_trans
+assert_kernel_only TetraStereo.OneCenter.MolecularConformation.reindex_bijective
+assert_kernel_only TetraStereo.OneCenter.MolecularConformation.Ensemble.reindex_reindex
+assert_kernel_only TetraStereo.OneCenter.MolecularConformation.Ensemble.reindex_reindex_symm
+assert_kernel_only TetraStereo.OneCenter.MolecularConformation.Ensemble.reindex_mem_iff_of_source
+assert_kernel_only TetraStereo.OneCenter.RealSourceGeometry.reindex_reindex
+assert_kernel_only TetraStereo.OneCenter.RealSourceEnsemble.reindex_reindex
+assert_kernel_only TetraStereo.OneCenter.FiniteConformerCollection.mem_toEnsemble
+assert_kernel_only TetraStereo.OneCenter.FiniteConformerCollection.distinct_members
+assert_kernel_only TetraStereo.OneCenter.FiniteConformerCollection.embedInto_allowed_subset
+assert_kernel_only TetraStereo.OneCenter.FiniteConformerCollection.empty_toEnsemble_allowed
+assert_kernel_only TetraStereo.OneCenter.FiniteConformerCollection.unknown_toEnsemble_allowed
+assert_kernel_only TetraStereo.OneCenter.CertifiedFiniteConformerCollection.count_eq_zero_of_empty_scope
+assert_kernel_only TetraStereo.OneCenter.CertifiedFiniteConformerCollection.count_eq_zero_of_unknown_scope
+assert_kernel_only TetraStereo.OneCenter.CertifiedFiniteConformerCollection.toEnsemble_allowed_eq_empty_of_empty_scope
+assert_kernel_only TetraStereo.OneCenter.CertifiedFiniteConformerCollection.toEnsemble_allowed_eq_empty_of_unknown_scope
+assert_kernel_only TetraStereo.OneCenter.CertifiedFiniteConformerCollection.toEnsemble_allowed_eq_empty_of_not_selected
+assert_kernel_only TetraStereo.OneCenter.CertifiedFiniteConformerCollection.mem_toEnsemble
+assert_kernel_only TetraStereo.OneCenter.CertifiedFiniteConformerCollection.mem_embedInto

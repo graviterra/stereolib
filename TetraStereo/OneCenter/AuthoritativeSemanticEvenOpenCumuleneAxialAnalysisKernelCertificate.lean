@@ -1,0 +1,12 @@
+import TetraStereo.OneCenter.AuthoritativeSemanticEvenOpenCumuleneAxialAnalysis
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-!
+# Kernel-only certificate for source-canonical even-open-cumulene axial analysis
+-/
+
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.aromaticCanonicalEvenOpenCumuleneAxialAssignment?_sound
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.mem_analyzeAromaticCanonicalEvenOpenCumuleneAxial_iff
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.analyzeAromaticCanonicalEvenOpenCumuleneAxial_member_sound

@@ -1,0 +1,6 @@
+import TetraStereo.UniversalProof.FamilyExportBridge
+import TetraStereo.KernelOnly
+
+assert_kernel_only TetraStereo.UniversalProof.FamilyExportBridge.sourceEntry_source
+assert_kernel_only TetraStereo.UniversalProof.FamilyExportBridge.write_emits_renderer
+assert_kernel_only TetraStereo.UniversalProof.FamilyExportBridge.inhabited_artifact

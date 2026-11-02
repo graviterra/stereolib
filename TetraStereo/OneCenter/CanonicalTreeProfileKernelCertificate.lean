@@ -1,0 +1,4 @@
+import TetraStereo.OneCenter.CanonicalTreeProfile
+import TetraStereo.KernelOnly
+
+assert_kernel_only TetraStereo.OneCenter.CanonicalTreeProfile.collect_empty

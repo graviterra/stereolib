@@ -1,0 +1,7 @@
+import TetraStereo.UniversalProof.NextFrontier.ParsedParityRule3NoDouble
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.declarativeRule3SpatialKeyExceptList_rule3_eq_nil_of_noDouble
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.declarativeRule3SpatialKeyExcept_rule3_eq_nil_of_noDouble

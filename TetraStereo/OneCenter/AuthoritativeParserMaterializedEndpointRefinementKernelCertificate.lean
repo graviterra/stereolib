@@ -1,0 +1,17 @@
+import TetraStereo.OneCenter.AuthoritativeParserMaterializedEndpointRefinement
+import TetraStereo.KernelOnly
+
+/-!
+# Kernel-only certificate: parser materialized-endpoint refinement
+-/
+
+assert_kernel_only
+  TetraStereo.OneCenter.RawMolecule.originalAtomIndex_val
+assert_kernel_only
+  TetraStereo.OneCenter.RawMolecule.convertedAtomIndex_originalAtomIndex
+assert_kernel_only
+  TetraStereo.OneCenter.RawMolecule.fullyRepresentedCanonicalIndividualDoubleBondEndpoints_of_materialized
+assert_kernel_only
+  TetraStereo.OneCenter.RawMolecule.representedOnlyEndpointClassifierOfMaterialized
+assert_kernel_only
+  TetraStereo.OneCenter.RawMolecule.certifiedVirtualEndpointsOfMaterializedParser

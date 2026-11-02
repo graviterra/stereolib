@@ -1,0 +1,40 @@
+import TetraStereo.UniversalProof.SourceNativePlanarAlkeneWitnessProofs.SourceNativePlanarAlkeneWitness
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-!
+# Kernel-authority certificate for the closed planar-alkene witness
+
+Every assertion below is checked to have a kernel-only proof closure: no `sorryAx`, no project
+axioms and no native-evaluation trust.  The two structural comparison facts, the derived strict
+canonical senior references, the four actual diagram positions, the emitted `seqcis`/`seqtrans`
+labels, the collinear refusal and the `spatial? = none` refusal of the old reader are all covered.
+-/
+
+namespace TetraStereo.UniversalProof.SourceNativePlanarAlkeneWitnessProofs.SourceNativePlanarAlkeneWitness
+
+assert_kernel_only exactCompareTrace_outcome_eq_rule1a_of_decisive
+assert_kernel_only exactCompare_terminalRootKey_gt
+assert_kernel_only canonicalBranchKey_of_children_nil
+assert_kernel_only adjacent_zero_iff
+assert_kernel_only adjacent_one_iff
+assert_kernel_only children_nil_left
+assert_kernel_only children_nil_right
+assert_kernel_only rankedSubstituents_forall₂_left
+assert_kernel_only rankedSubstituents_forall₂_right
+assert_kernel_only canonicalSeniorReference_left
+assert_kernel_only canonicalSeniorReference_right
+assert_kernel_only seniorReference_left
+assert_kernel_only seniorReference_right
+assert_kernel_only planarPointAt?_sourceOfPositions
+assert_kernel_only all_variants_structurallyWellFormed
+assert_kernel_only actual_source_shape
+assert_kernel_only ordinaryDoubleBond
+assert_kernel_only sourceCis_emits_seqcis
+assert_kernel_only sourceTrans_emits_seqtrans
+assert_kernel_only sourceCollinear_refuses
+assert_kernel_only spatialUnit?_eq_none_of_spatial?_eq_none
+assert_kernel_only sourceCis_spatialUnit_refuses
+
+end TetraStereo.UniversalProof.SourceNativePlanarAlkeneWitnessProofs.SourceNativePlanarAlkeneWitness

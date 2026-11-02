@@ -1,0 +1,27 @@
+import TetraStereo.OneCenter.P94MolecularCoordinateFrameCompleteTransactionConsistency
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+namespace TetraStereo.OneCenter
+
+/-!
+RED-first target connecting the two descriptor-facing fields of the complete coordinate-frame
+transaction.  A public deduplicated assignment must occur exactly when an accepted typed outcome
+in the same transaction independently supports it.  The result's exact one/zero assignment counts
+must be equivalent to existence/nonexistence of such an accepted outcome; refused outcomes must
+never support an assignment.
+-/
+
+assert_kernel_only
+  BlueBookP94.P94MolecularCoordinateFrameCompleteTransactionConsistency.descriptorOutcomeSupportsAssignment_refused
+assert_kernel_only
+  BlueBookP94.P94MolecularCoordinateFrameCompleteTransactionConsistency.coordinateFrameCompleteTransaction_assignment_mem_iff_supported_descriptorOutcome
+assert_kernel_only
+  BlueBookP94.P94MolecularCoordinateFrameCompleteTransactionConsistency.coordinateFrameCompleteTransaction_assignment_count_eq_one_iff_supported_descriptorOutcome
+assert_kernel_only
+  BlueBookP94.P94MolecularCoordinateFrameCompleteTransactionConsistency.coordinateFrameCompleteTransaction_assignment_count_eq_zero_iff_no_supported_descriptorOutcome
+assert_kernel_only
+  BlueBookP94.P94MolecularCoordinateFrameCompleteTransactionConsistency.coordinateFrameCompleteTransaction_acceptedDescriptorOutcome_has_public_assignment
+
+end TetraStereo.OneCenter

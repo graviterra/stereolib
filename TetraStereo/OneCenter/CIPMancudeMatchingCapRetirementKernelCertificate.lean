@@ -1,0 +1,9 @@
+import TetraStereo.OneCenter.CIPMancudeMatchingCapRetirement
+import TetraStereo.KernelOnly
+
+assert_kernel_only
+  TetraStereo.OneCenter.RawMolecule.generalMancudeRule1aLabel?_eq_authoritative
+assert_kernel_only
+  TetraStereo.OneCenter.RawMolecule.mancudeRule1aLabel?_eq_authoritative
+assert_kernel_only
+  TetraStereo.OneCenter.RawMolecule.canonicalRule1aLabel?_eq_authoritative

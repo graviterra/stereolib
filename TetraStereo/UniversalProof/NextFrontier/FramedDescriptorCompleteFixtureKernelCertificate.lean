@@ -1,0 +1,5 @@
+import TetraStereo.UniversalProof.NextFrontier.FramedDescriptorCompleteFixture
+import TetraStereo.KernelOnly
+
+assert_kernel_only TetraStereo.UniversalProof.FramedDescriptorCompleteFixture.fixture_fast_trace
+assert_kernel_only TetraStereo.UniversalProof.FramedDescriptorCompleteFixture.fixture_authoritative_trace

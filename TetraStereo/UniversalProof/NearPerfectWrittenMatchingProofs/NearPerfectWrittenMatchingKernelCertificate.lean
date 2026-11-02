@@ -1,0 +1,87 @@
+import TetraStereo.UniversalProof.NearPerfectWrittenMatchingProofs.NearPerfectWrittenMatching
+import TetraStereo.KernelOnly
+
+/-!
+# Kernel-authority certificate for the near-perfect written matching module
+
+Every load-bearing declaration of `NearPerfectWrittenMatching` is registered with
+`assert_kernel_only`, so none of them depends on `sorryAx`, project axioms, or the native evaluator.
+-/
+
+open TetraStereo
+
+assert_kernel_only
+  TetraStereo.OneCenter.MoleculeGraph.saturation_subset_mancudeComponentAtoms
+assert_kernel_only
+  TetraStereo.OneCenter.MoleculeGraph.mancudeSaturation_le_mancudeComponentAtoms_card
+assert_kernel_only
+  TetraStereo.OneCenter.RawMolecule.mancudeComponentAtoms_card_le_localizedMancudeComponentVertices_length
+assert_kernel_only
+  TetraStereo.OneCenter.RawMolecule.mancudeSaturation_le_localizedMancudeComponentVertices_length
+assert_kernel_only
+  TetraStereo.OneCenter.RawMolecule.writtenMancudeComponentEdges_isMaximum_of_nearPerfect
+assert_kernel_only
+  TetraStereo.OneCenter.RawMolecule.localizedMancudeKekuleAdmissible_of_nearPerfect
+assert_kernel_only
+  TetraStereo.OneCenter.RawMolecule.generalMancudeRule1aLabel?_exists_of_nearPerfect
+assert_kernel_only
+  TetraStereo.OneCenter.RawMolecule.mancudeRule1aLabel?_exists_of_nearPerfect_pointwise
+assert_kernel_only
+  TetraStereo.OneCenter.RawMolecule.mancudeRule1aLabel?_exists_of_nearPerfect
+assert_kernel_only
+  TetraStereo.OneCenter.RawMolecule.mancudeRule1aProductionSupported_of_nearPerfect
+assert_kernel_only
+  TetraStereo.OneCenter.RawMolecule.mancudeRule1aLabel?_exact_of_nearPerfect
+assert_kernel_only
+  TetraStereo.OneCenter.RawMolecule.mancudeRule1aSupported_of_nearPerfect
+assert_kernel_only
+  TetraStereo.OneCenter.NearPerfectExamples.evenRing_wellFormed
+assert_kernel_only
+  TetraStereo.OneCenter.NearPerfectExamples.evenRing_bondRecordsUnique
+assert_kernel_only
+  TetraStereo.OneCenter.NearPerfectExamples.oddRing_wellFormed
+assert_kernel_only
+  TetraStereo.OneCenter.NearPerfectExamples.oddRing_bondRecordsUnique
+assert_kernel_only
+  TetraStereo.OneCenter.NearPerfectExamples.heterogeneousRing_wellFormed
+assert_kernel_only
+  TetraStereo.OneCenter.NearPerfectExamples.heterogeneousRing_bondRecordsUnique
+assert_kernel_only
+  TetraStereo.OneCenter.NearPerfectExamples.evenRing_near
+assert_kernel_only
+  TetraStereo.OneCenter.NearPerfectExamples.oddRing_near
+assert_kernel_only
+  TetraStereo.OneCenter.NearPerfectExamples.heterogeneousRing_near
+assert_kernel_only
+  TetraStereo.OneCenter.NearPerfectExamples.evenRing_writtenMaximum
+assert_kernel_only
+  TetraStereo.OneCenter.NearPerfectExamples.oddRing_writtenMaximum
+assert_kernel_only
+  TetraStereo.OneCenter.NearPerfectExamples.heterogeneousRing_writtenMaximum
+assert_kernel_only
+  TetraStereo.OneCenter.NearPerfectExamples.evenRing_exact
+assert_kernel_only
+  TetraStereo.OneCenter.NearPerfectExamples.oddRing_exact
+assert_kernel_only
+  TetraStereo.OneCenter.NearPerfectExamples.heterogeneousRing_exact
+
+assert_kernel_only TetraStereo.OneCenter.NearPerfectExamples.evenRing_general_numeric
+
+assert_kernel_only TetraStereo.OneCenter.NearPerfectExamples.heterogeneousRing_general_numeric
+
+assert_kernel_only TetraStereo.OneCenter.NearPerfectExamples.fallbackGraph_wellFormed
+
+assert_kernel_only TetraStereo.OneCenter.NearPerfectExamples.fallbackGraph_bondRecordsUnique
+
+assert_kernel_only TetraStereo.OneCenter.NearPerfectExamples.fallbackGraph_near
+
+assert_kernel_only TetraStereo.OneCenter.NearPerfectExamples.fallbackGraph_no_shortcut
+
+assert_kernel_only TetraStereo.OneCenter.NearPerfectExamples.fallbackGraph_general_numeric
+
+assert_kernel_only TetraStereo.OneCenter.NearPerfectExamples.fallbackGraph_dispatcher_numeric
+
+assert_kernel_only TetraStereo.OneCenter.NearPerfectExamples.fallbackGraph_exact
+
+assert_kernel_only TetraStereo.OneCenter.RawMolecule.nearPerfectMancudeComponent?_eq_true_iff
+assert_kernel_only TetraStereo.OneCenter.RawMolecule.writtenMancudeComponentEdges_isMaximum_of_nearPerfectCheck

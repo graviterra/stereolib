@@ -1,0 +1,96 @@
+import TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/-! ## Honest exclusion boundaries -/
+
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.tiedAtomicNumber_compare_eq
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.compareCanonicalNodeRule?_rule1a_realAtom_tied
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.bothCyclic_iff_not_acyclic
+
+/-! ## Exact real-atom Rule-1a labels -/
+
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.canonicalRule1aLabel?_realAtom
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.canonicalRule1aLabelAuthoritative?_realAtom
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.compareCanonicalNodeRule?_rule1a_realAtom
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.compareCanonicalNodeRuleAuthoritative?_rule1a_realAtom
+
+/-! ## Source-bounded pair laws (actual materialized source atomic numbers) -/
+
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.atomAt?_exists_of_lt_atomCount
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.sourceBounded_mem_atoms
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.atomZAt_eq_of_atomAt?
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.compareCanonicalNodeRule?_rule1a_realAtom_sourceBounded
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.compareCanonicalNodeRuleAuthoritative?_rule1a_realAtom_sourceBounded
+
+/-! ## Rule-major and cursor sphere comparison -/
+
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.compareCanonicalNodeThrough?_eq_of_rule1a
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.compareCanonicalNodeThroughAuthoritative?_eq_of_rule1a
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.compareCursorPairLabels_rule1a_single_real
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.compareCursorPairLabelsAuthoritative?_rule1a_single_real
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.compareCursorRule_rule1a_single_real
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.compareCursorRuleAuthoritative?_rule1a_single_real
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.compareCursorBranchAt_eq_of_rule1a
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.compareCursorBranchAtAuthoritative?_eq_of_rule1a
+
+/-! ## Conflict gate, constitutional stage and complete callbacks -/
+
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.occurrenceRootsProvedAutomorphic_eq_false_of_acyclic
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.certifiedConstitutionalStage?_eq_of_rule1a
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.certifiedConstitutionalStageAuthoritative?_eq_of_rule1a
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.compareOccurrenceBranches?_eq_of_rule1a
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.compareOccurrenceBranchesAuthoritative?_eq_of_rule1a
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.compareOccurrenceBranchesComplete?_eq_of_rule1a
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.compareOccurrenceBranchesComplete?_eq_of_rule1a_sourceBounded
+
+/-! ## General tracked insertion and sorting completeness -/
+
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.insertOccurrenceTrackedAuthoritative?_rankDomain
+assert_kernel_only
+  TetraStereo.UniversalProof.NativeRawAtomicNumberProofs.RuntimeAtomicPriorityRecovery.sortOccurrencesTrackedAuthoritative?_rankDomain

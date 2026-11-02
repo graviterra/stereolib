@@ -1,0 +1,21 @@
+import TetraStereo.OneCenter.AuthoritativeSemanticOrdinaryDoubleBondSpatialAssignment
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-!
+# Kernel-only certificate for source ordinary-double-bond spatial assignment
+
+These assertions cover the exact descriptor-family evaluator, the executable success and refusal
+boundaries, and the independent occurrence/geometry soundness theorem.  They do not claim that
+implicit ligands or endpoint Rule-5 parity have already been synthesized from arbitrary source
+molecules.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.aromaticCanonicalOrdinaryDoubleBondPlanarOutcome?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.aromaticCanonicalOrdinaryDoubleBondSpatialAssignment?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.aromaticCanonicalOrdinaryDoubleBondSpatialAssignment?_isSome_iff
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.aromaticCanonicalOrdinaryDoubleBondSpatialAssignment?_eq_none_iff
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.aromaticCanonicalOrdinaryDoubleBondSpatialAssignment?_sound
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.aromaticCanonicalOrdinaryDoubleBondAutomaticSpatialAssignment?_sound
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.exists_aromaticCanonicalOrdinaryDoubleBondAutomaticSpatialAssignment_of_dependencies

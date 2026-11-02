@@ -1,0 +1,9 @@
+import TetraStereo.OneCenter.P93PracticalSpatialUnitBatchPerception
+import TetraStereo.KernelOnly
+
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP93.PracticalSpatialUnitPerception.mem_perceiveSpatialUnits_iff
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP93.PracticalSpatialUnitPerception.perceiveSpatialUnits_nodup
+assert_kernel_only
+  TetraStereo.OneCenter.BlueBookP93.PracticalSpatialUnitPerception.publicReady_candidate_occurs_exactly_once

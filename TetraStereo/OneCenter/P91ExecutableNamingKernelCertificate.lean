@@ -1,0 +1,17 @@
+import TetraStereo.OneCenter.P91ExecutableNaming
+import TetraStereo.KernelOnly
+
+assert_kernel_only
+  TetraStereo.OneCenter.IUPACBlueBookP91.ExecutableNaming.descriptorApplies?_eq_true_iff
+assert_kernel_only
+  TetraStereo.OneCenter.IUPACBlueBookP91.ExecutableNaming.strictlyIncreasingLocants?_eq_true_iff
+assert_kernel_only
+  TetraStereo.OneCenter.IUPACBlueBookP91.ExecutableNaming.namingRequestReady?_eq_true_iff
+assert_kernel_only
+  TetraStereo.OneCenter.IUPACBlueBookP91.ExecutableNaming.namingRequestReady_inIncreasingLocantOrder
+assert_kernel_only
+  TetraStereo.OneCenter.IUPACBlueBookP91.ExecutableNaming.compileCitation_correctPlacement
+assert_kernel_only
+  TetraStereo.OneCenter.IUPACBlueBookP91.ExecutableNaming.compileName?_eq_some_iff
+assert_kernel_only
+  TetraStereo.OneCenter.IUPACBlueBookP91.ExecutableNaming.compileName?_eq_none_iff

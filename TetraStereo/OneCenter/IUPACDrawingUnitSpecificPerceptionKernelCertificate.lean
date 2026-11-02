@@ -1,0 +1,17 @@
+import TetraStereo.OneCenter.IUPACDrawingUnitSpecificPerception
+import TetraStereo.KernelOnly
+
+assert_kernel_only
+  TetraStereo.OneCenter.IUPACDrawing2006.UnitSpecificPerception.perceiveBondUnitEvidence?_eq_some_iff
+assert_kernel_only
+  TetraStereo.OneCenter.IUPACDrawing2006.UnitSpecificPerception.perceiveBondUnitEvidence?_eq_none_iff
+assert_kernel_only
+  TetraStereo.OneCenter.IUPACDrawing2006.UnitSpecificPerception.perceiveAtomUnitEvidence_iff
+assert_kernel_only
+  TetraStereo.OneCenter.IUPACDrawing2006.UnitSpecificPerception.filterMap_perceiveBondUnitEvidence?_iff
+assert_kernel_only
+  TetraStereo.OneCenter.IUPACDrawing2006.UnitSpecificPerception.map_perceiveAtomUnitEvidence_iff
+assert_kernel_only
+  TetraStereo.OneCenter.IUPACDrawing2006.UnitSpecificPerception.perceiveUnitSpecificDrawing?_eq_some_iff
+assert_kernel_only
+  TetraStereo.OneCenter.IUPACDrawing2006.UnitSpecificPerception.perceiveUnitSpecificDrawing?_eq_none_iff

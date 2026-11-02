@@ -1,0 +1,26 @@
+name: Software bug
+description: Report an executable, CLI, build, or certificate-generation defect.
+title: "bug: "
+labels: [bug]
+body:
+  - type: textarea
+    attributes:
+      label: Reproducer
+      description: Provide the smallest command and input that demonstrates the defect.
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Version
+      description: Release tag or commit hash.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected and observed behavior
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Environment
+      description: Lean version, operating system, and relevant external tools.

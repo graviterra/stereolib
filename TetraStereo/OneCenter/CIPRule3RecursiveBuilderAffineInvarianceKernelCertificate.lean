@@ -1,0 +1,21 @@
+import TetraStereo.OneCenter.CIPRule3RecursiveBuilderAffineInvariance
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-!
+# Kernel-only certificate for recursive Rule-3 compiler affine naturality
+
+The closure covers transport of the finite occurrence carrier and reroot zipper, comparator-
+preserving bottom-up sorting, sparse observation and priority layer merging, and the full
+recursive Rules-1a--3 compiler across every invertible rational affine coordinate change.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedOccurrenceSubtree_mapSpatialPoints
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedOccurrences_mapSpatialPoints
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.intendedLocalizedRerootChildFrames_mapSpatialPoints
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedRerootChildren?_mapSpatialPoints
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.sortLocalizedRerootRecursiveRule3SpatialKeys_mapSpatialPoints
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.mergeLocalizedRerootRule3ObservationChildren_mapSpatialPoints
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.mergeLocalizedRerootRule3PriorityChildren_mapSpatialPoints
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.buildLocalizedRerootRecursiveRule3SpatialKey?_affine

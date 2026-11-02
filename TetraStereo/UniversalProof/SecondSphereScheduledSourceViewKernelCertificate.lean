@@ -1,0 +1,48 @@
+import TetraStereo.UniversalProof.SecondSphereScheduledSourceView
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+open TetraStereo.OneCenter TetraStereo.OneCenter.RawMolecule
+open TetraStereo.UniversalProof.SecondSpherePhysicalFamilyRecordsProofs.SecondSpherePhysicalFamilyRecords
+open TetraStereo.UniversalProof.SecondSphereOwnSourceOrdering
+open TetraStereo.UniversalProof.SecondSphereScheduledSourceView
+
+assert_kernel_only computed_rule3_frame
+assert_kernel_only computed_rule3_frame_view_invariant
+assert_kernel_only keyAt_rule3_eq_of_frame_eq
+assert_kernel_only family_view_keys_exist
+assert_kernel_only family_view_keys_computed
+assert_kernel_only family_view_rule3_frame
+assert_kernel_only family_view_rule3_key
+assert_kernel_only family_view_production_projections
+assert_kernel_only family_view_rule3_carbon_both
+assert_kernel_only family_view_carbon_callback_both
+assert_kernel_only family_view_unequal_role_callback
+assert_kernel_only family_view_callback_strictRank
+assert_kernel_only family_view_safe_tracked_order
+assert_kernel_only family_scheduled_model
+assert_kernel_only family_scheduled_evaluation
+assert_kernel_only family_scheduled_projections
+assert_kernel_only family_scheduled_safe_tracked_order
+assert_kernel_only family_returned_id_at
+assert_kernel_only family_alignment_exists
+assert_kernel_only family_slots_computed
+assert_kernel_only family_slots_matching
+assert_kernel_only family_aligned_written_lookup
+assert_kernel_only family_aligned_priority_positions
+assert_kernel_only family_aligned_role_positions
+assert_kernel_only family_view_tracked_properties
+assert_kernel_only family_view_written_descriptor
+assert_kernel_only family_view_evidence_computed
+assert_kernel_only family_view_descriptor_computed
+assert_kernel_only family_scheduled_descriptor
+assert_kernel_only family_scheduled_descriptor_meaning
+
+example (ps : List TetrahedralInputParity) (i : Fin ps.length) :
+    familyScheduledState ps ((familySource ps).aromaticCanonicalFinalOccurrence 1 (familyCenter ps i)) =
+      some (.chiral (descriptorOfParity (ps.get i) false)) := family_scheduled_descriptor ps i
+
+example (ps : List TetrahedralInputParity) (i : Fin ps.length) :
+    (familyPrioritySlots ps i).map (fun slot => (familySlots ps i).getD slot.val 0) = [2, 0, 3, 1] :=
+  family_aligned_role_positions ps i

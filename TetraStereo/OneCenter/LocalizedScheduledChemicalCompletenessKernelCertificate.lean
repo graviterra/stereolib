@@ -1,0 +1,9 @@
+import TetraStereo.OneCenter.LocalizedScheduledChemicalCompleteness
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-! # Kernel-only certificate: molecule-wide scheduled chemical completeness -/
+
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.every_chemicallyApplicable_scheduledPhysicalUnit_public_exactly_once
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.analyzeLocalizedScheduledStereochemistry_endToEnd_chemicalCompleteness

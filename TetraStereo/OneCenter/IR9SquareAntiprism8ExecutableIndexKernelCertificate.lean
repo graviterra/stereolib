@@ -1,0 +1,18 @@
+import TetraStereo.OneCenter.IR9SquareAntiprism8ExecutableIndex
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-!
+# Kernel-only certificate for executable SAPR-8 relative indexing
+
+The executable index is certified as the complete sixteen-frame mathematical symmetry index with
+the same collision classes as the established ideal square-antiprism completion.  No unpublished
+short syntax or absolute `A`/`C` convention is asserted.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SquareAntiprism8SourceIndexCompleteness.coordinateOrbitCodes_relabel
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SquareAntiprism8SourceIndexCompleteness.executableSourceIndex_relabel
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SquareAntiprism8SourceIndexCompleteness.executableSourceIndex_eq_iff_symmetryEquivalent
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SquareAntiprism8SourceIndexCompleteness.executableSourceIndex_sameClassification_as_source
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SquareAntiprism8SourceIndexCompleteness.executableSquareAntiprismConfigurationIndex_sameClassification_as_mathematical

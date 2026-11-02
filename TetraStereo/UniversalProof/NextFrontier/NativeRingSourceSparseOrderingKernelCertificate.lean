@@ -1,0 +1,4 @@
+import TetraStereo.UniversalProof.NextFrontier.NativeRingSourceSparseOrdering
+import TetraStereo.KernelOnly
+
+assert_kernel_only TetraStereo.UniversalProof.NativeRingSourceSparseOrdering.chlorinated_arm_above_saturated

@@ -1,0 +1,12 @@
+import TetraStereo.UniversalProof.NextFrontier.NativeNitrileCanonicalChildren
+import TetraStereo.KernelOnly
+
+/-! Actual nitrile child multiplicity, atom identities and duplicate provenance. Runtime sorting
+and the official source-key projection remain separate obligations. -/
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.expanded_nitrile_incident_records
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.expanded_nitrile_bond_orders
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.expanded_nitrile_canonical_orders
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.expanded_nitrile_child_copies
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.expanded_nitrile_children
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.expanded_nitrile_child_atom_ids

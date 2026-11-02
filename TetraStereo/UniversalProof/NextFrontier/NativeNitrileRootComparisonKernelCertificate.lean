@@ -1,0 +1,4 @@
+import TetraStereo.UniversalProof.NextFrontier.NativeNitrileRootComparison
+import TetraStereo.KernelOnly
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.actual_root_priority_callbacks

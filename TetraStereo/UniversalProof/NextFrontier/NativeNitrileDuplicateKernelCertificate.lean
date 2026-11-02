@@ -1,0 +1,23 @@
+import TetraStereo.UniversalProof.NextFrontier.NativeNitrileDuplicateProvenance
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-! Actual multiple-bond duplication and legacy dispatch: kernel axiom closure.
+This certificate does not yet identify the decisive duplicate in a successful runtime comparison. -/
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.bond_record_order_lower_bound
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.actual_nitrile_duplicate_of_bond
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.expanded_nitrile_duplicate
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.expanded_nitrile_root_generated
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.expanded_duplicate_generated
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.expanded_profile_none
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.actual_fast_dispatch_legacy
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.actual_authoritative_dispatch_legacy

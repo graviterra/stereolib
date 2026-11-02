@@ -1,0 +1,15 @@
+import TetraStereo.Examples.HostAnalysisRequestKernelCertificateCollisionSupport
+
+set_option autoImplicit false
+
+namespace TetraStereo.Examples.HostAnalysisRequestKernelProof
+
+open TetraStereo.Engine
+
+theorem certificateKeyCollisionSuiteRequest_unique_package_keys_rejected :
+    validationRejected certificateKeyCollisionSuiteRequest.validateUniquePackageKeys = true := by
+  unfold HostAnalysisSuiteRequest.validateUniquePackageKeys
+  rw [certificateKeyCollisionSuiteRequest_duplicate_package_keys]
+  rfl
+
+end TetraStereo.Examples.HostAnalysisRequestKernelProof

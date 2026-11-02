@@ -1,0 +1,30 @@
+import TetraStereo.OneCenter.P94MolecularDirectRotationAuditLedger
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+namespace TetraStereo.OneCenter
+
+
+
+
+
+
+
+
+assert_kernel_only
+  BlueBookP94.P94MolecularDirectRotationAuditLedger.auditMolecularDirectRotationAssertion_request
+assert_kernel_only
+  BlueBookP94.P94MolecularDirectRotationAuditLedger.molecularDirectRotationOutcomes_map_request
+assert_kernel_only
+  BlueBookP94.P94MolecularDirectRotationAuditLedger.molecularDirectRotationOutcomes_length
+assert_kernel_only
+  BlueBookP94.P94MolecularDirectRotationAuditLedger.molecularDirectRotationOutcomes_all_correct
+assert_kernel_only
+  BlueBookP94.P94MolecularDirectRotationAuditLedger.molecularDirectRotationAccepted_mem_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularDirectRotationAuditLedger.molecularDirectRotationRefused_mem_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularDirectRotationAuditLedger.rotationAboutMolecularSingleBond_iff_accepted_outcome
+
+end TetraStereo.OneCenter

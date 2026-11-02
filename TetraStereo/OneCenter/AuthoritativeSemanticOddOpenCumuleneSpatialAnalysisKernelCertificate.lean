@@ -1,0 +1,13 @@
+import TetraStereo.OneCenter.AuthoritativeSemanticOddOpenCumuleneSpatialAnalysis
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-!
+# Kernel-only certificate for source-canonical odd-open-cumulene spatial analysis
+-/
+
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.aromaticCanonicalOpenCumuleneTerminals?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.aromaticCanonicalOddOpenCumuleneSpatialAssignment?_sound
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.mem_analyzeAromaticCanonicalOddOpenCumuleneSpatial_iff
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.analyzeAromaticCanonicalOddOpenCumuleneSpatial_member_sound

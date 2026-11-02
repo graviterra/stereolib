@@ -1,0 +1,14 @@
+import TetraStereo.UniversalProof.NextFrontier.FramedSuccessfulOrderingTransitivity
+import TetraStereo.KernelOnly
+
+/-! Exact closure assertions for the constructed full key and actual runtime composition theorem.
+Acceptance requires the bounded gate; no external scientific approval is represented. -/
+
+namespace TetraStereo.OneCenter.FramedSuccessfulOrderingTransitivity
+
+assert_kernel_only compareTailKey_transCmp
+assert_kernel_only compareFullKey_transCmp
+assert_kernel_only decisionComplete?_success_factors
+assert_kernel_only decisionComplete?_ordering_compose_of_three_success
+
+end TetraStereo.OneCenter.FramedSuccessfulOrderingTransitivity

@@ -1,0 +1,13 @@
+import TetraStereo.Examples.CarbohydrateImage362FixtureSucraloseFixedPointCore
+
+set_option autoImplicit false
+set_option maxRecDepth 8192
+set_option maxHeartbeats 2000000
+
+namespace TetraStereo.Examples.CarbohydrateImage362ExternalFixtures.Internal
+namespace SucraloseDescriptorCertificate
+
+theorem update22 : updateExpectedAt expectedDescriptorState 22 = expectedDescriptorState := by rfl
+
+end SucraloseDescriptorCertificate
+end TetraStereo.Examples.CarbohydrateImage362ExternalFixtures.Internal

@@ -1,0 +1,25 @@
+import TetraStereo.UniversalProof.NextFrontier.FramedConstitutionalOrderingKey
+import TetraStereo.KernelOnly
+
+/-! Proposed kernel-only closure assertions; acceptance requires the bounded gate. -/
+
+namespace TetraStereo.OneCenter.FramedConstitutionalOrderingKey
+
+assert_kernel_only distance_success
+assert_kernel_only label_success
+assert_kernel_only pairLabels_success
+assert_kernel_only next_success
+assert_kernel_only rule_success_sparse
+assert_kernel_only atomicLabel_padding
+assert_kernel_only mass_padding
+assert_kernel_only padding_tied
+assert_kernel_only silent_children
+assert_kernel_only sparse_dense_eq
+assert_kernel_only denseRule_frontiers
+assert_kernel_only compareKey_transCmp
+assert_kernel_only buildAt_zero_rule
+assert_kernel_only rule_success_key
+assert_kernel_only branch_success_key
+assert_kernel_only compareBranch?_success_factors
+
+end TetraStereo.OneCenter.FramedConstitutionalOrderingKey

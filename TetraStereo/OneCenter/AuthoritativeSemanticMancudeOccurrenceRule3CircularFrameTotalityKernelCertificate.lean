@@ -1,0 +1,8 @@
+import TetraStereo.OneCenter.AuthoritativeSemanticMancudeOccurrenceRule3CircularFrameTotality
+import TetraStereo.KernelOnly
+
+/-! # Kernel-only certificate: exact circular Rule-3 frame totality -/
+
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.exists_buildAromaticCanonicalRule3CanonicalKeyFrame?_iff_unambiguous_at_twice
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.buildAromaticCanonicalRule3CanonicalKeyFrame?_eq_none_iff_ambiguous_at_twice
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.exists_canonicalRule3Frame_or_exact_ambiguity_at_twice

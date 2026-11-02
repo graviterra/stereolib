@@ -1,0 +1,20 @@
+import TetraStereo.OneCenter.IR9TrigonalPrismAbsoluteSymmetry
+import TetraStereo.KernelOnly
+
+open TetraStereo
+
+/-!
+# Kernel-only certificate: proper TPR-6 symmetry and absolute classes
+
+The assertions below inspect the complete theorem closures for the derived six-element proper
+rotation subgroup, its mirror-coset decomposition, and the exact-two-absolute-indices theorem.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.TrigonalPrismAbsoluteSymmetry.coordinatePermutation_mul
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.TrigonalPrismAbsoluteSymmetry.coordinatePermutation_inv
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.TrigonalPrismAbsoluteSymmetry.card_properSymmetryGroup
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.TrigonalPrismAbsoluteSymmetry.verticalReflection_not_mem_properSymmetryGroup
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.TrigonalPrismAbsoluteSymmetry.fullSymmetryGroup_proper_or_mirror_coset
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.TrigonalPrismAbsoluteSymmetry.injectivePlacement_not_properEquivalent_to_mirror
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.TrigonalPrismAbsoluteSymmetry.injectivePlacement_has_exactlyTwoAbsoluteIndices
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.TrigonalPrismAbsoluteSymmetry.chiralitySymbol_oppositeRotationSense

@@ -1,0 +1,22 @@
+import TetraStereo.UniversalProof.NextFrontier.FramedDescriptorOrderingKey
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+set_option maxHeartbeats 2000000
+set_option maxRecDepth 4096
+
+namespace TetraStereo.OneCenter.FramedDescriptorOrderingKey
+
+assert_kernel_only pairLabels_eq
+assert_kernel_only next_success
+assert_kernel_only rule_success_sparse
+assert_kernel_only children_terminal
+assert_kernel_only terminal_padding
+assert_kernel_only priority_padding
+assert_kernel_only silent_children
+assert_kernel_only sparse_dense_eq
+assert_kernel_only denseRule_frontiers
+assert_kernel_only compareKey_transCmp
+assert_kernel_only rule_success_factors
+
+end TetraStereo.OneCenter.FramedDescriptorOrderingKey

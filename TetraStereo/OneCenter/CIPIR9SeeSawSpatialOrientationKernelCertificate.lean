@@ -1,0 +1,27 @@
+import TetraStereo.OneCenter.CIPIR9SeeSawSpatialOrientationIntegration
+import TetraStereo.KernelOnly
+
+open TetraStereo
+
+/-!
+# Kernel-only certificate: physical SS-4 A/C derivation
+
+This closure contains the executable/declarative exactness proofs for both CIP pair orderings, the
+right-handed scalar-triple sign convention, exact refusal, affine determinant scaling, and the
+public molecule/coordinate-to-final-descriptor theorem with no caller-supplied A/C sense.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SeeSawSpatialOrientation.outranks_asymmetric
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SeeSawSpatialOrientation.strictOrderPair?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SeeSawSpatialOrientation.complementaryPair?_exists_of_mem_unorderedPairs
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SeeSawSpatialOrientation.progressionDeterminant_eq_scalarTriple
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SeeSawSpatialOrientation.progressionDeterminant_map
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SeeSawSpatialOrientation.senseOfDeterminant?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SeeSawSpatialOrientation.senseOfDeterminant?_positive_scale
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SeeSawSpatialOrientation.progressionSense_map_of_positiveDeterminant
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SeeSawSpatialOrientation.rotationSense?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.SeeSawSpatialOrientation.rotationSense?_eq_none_iff
+
+assert_kernel_only TetraStereo.OneCenter.IndexedSeeSawSpatialObservation.derivedRecord?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.ChemistryNormalizationResult.seeSawSpatialOrientationAssignment?_eq_none_iff
+assert_kernel_only TetraStereo.OneCenter.ChemistryNormalizationResult.seeSawSpatialOrientation_exact

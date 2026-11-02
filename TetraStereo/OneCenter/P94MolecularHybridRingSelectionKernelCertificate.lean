@@ -1,0 +1,30 @@
+import TetraStereo.OneCenter.P94MolecularHybridRingSelection
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+namespace TetraStereo.OneCenter
+
+/-!
+RED-first target for hybrid P-94 ring selection.  Every scheduled request whose chordless carrier
+has no overlapping alternative must be selected automatically; external authority is restricted
+to genuinely ambiguous overlapping carriers.  Their exact finite union must feed the established
+four-branch molecule report with duplicate-free count-one/count-zero semantics.
+-/
+
+assert_kernel_only
+  BlueBookP94.P94MolecularHybridRingSelection.unambiguousRingAuthority_applies_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularHybridRingSelection.ambiguousRingAuthority_applies_ambiguous
+assert_kernel_only
+  BlueBookP94.P94MolecularHybridRingSelection.hybridRingAuthority_applies_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularHybridRingSelection.molecularAssignmentsWithHybridRings_mem_iff_independent
+assert_kernel_only
+  BlueBookP94.P94MolecularHybridRingSelection.molecularAssignmentsWithHybridRings_nodup
+assert_kernel_only
+  BlueBookP94.P94MolecularHybridRingSelection.molecularAssignmentWithHybridRings_count_eq_one_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularHybridRingSelection.molecularAssignmentWithHybridRings_count_eq_zero_iff
+
+end TetraStereo.OneCenter

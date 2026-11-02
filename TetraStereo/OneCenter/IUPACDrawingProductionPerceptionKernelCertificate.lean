@@ -1,0 +1,9 @@
+import TetraStereo.OneCenter.IUPACDrawingProductionPerception
+import TetraStereo.KernelOnly
+
+assert_kernel_only
+  TetraStereo.OneCenter.IUPACDrawing2006.ProductionPerception.diagramWellFormed?_eq_true_iff
+assert_kernel_only
+  TetraStereo.OneCenter.IUPACDrawing2006.ProductionPerception.perceiveDiagram?_eq_some_iff
+assert_kernel_only
+  TetraStereo.OneCenter.IUPACDrawing2006.ProductionPerception.perceiveDiagram?_eq_none_iff

@@ -1,0 +1,34 @@
+import TetraStereo.OneCenter.P94MolecularAuditedHybridTransaction
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+namespace TetraStereo.OneCenter
+
+/-!
+RED-first target for the final audited P-94 transaction.  The final hybrid report and typed
+outcome ledger must consume molecule-bound direct-rotation ledgers, every twist request must
+recover its audited source and single-bond soundness, and the established exact public assignment
+and request/outcome theorems must remain intact.
+-/
+
+assert_kernel_only
+  BlueBookP94.P94MolecularAuditedHybridTransaction.mem_scheduledAuditedMolecularTwistInputs_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularAuditedHybridTransaction.auditedHybridMolecularRequests_twist_mem_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularAuditedHybridTransaction.auditedHybridMolecularRequest_twist_rotation_sound
+assert_kernel_only
+  BlueBookP94.P94MolecularAuditedHybridTransaction.auditedHybridMolecularOutcomes_map_request
+assert_kernel_only
+  BlueBookP94.P94MolecularAuditedHybridTransaction.auditedHybridMolecularOutcomes_all_correct
+assert_kernel_only
+  BlueBookP94.P94MolecularAuditedHybridTransaction.auditedMolecularAssignmentsWithHybridRings_mem_iff_independent
+assert_kernel_only
+  BlueBookP94.P94MolecularAuditedHybridTransaction.auditedMolecularAssignmentsWithHybridRings_nodup
+assert_kernel_only
+  BlueBookP94.P94MolecularAuditedHybridTransaction.auditedMolecularAssignmentWithHybridRings_count_eq_one_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularAuditedHybridTransaction.auditedMolecularAssignmentWithHybridRings_count_eq_zero_iff
+
+end TetraStereo.OneCenter

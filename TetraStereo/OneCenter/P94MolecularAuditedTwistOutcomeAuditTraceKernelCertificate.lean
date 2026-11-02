@@ -1,0 +1,25 @@
+import TetraStereo.OneCenter.P94MolecularAuditedTwistOutcomeAuditTrace
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+namespace TetraStereo.OneCenter
+
+
+
+
+
+
+
+assert_kernel_only
+  BlueBookP94.P94MolecularAuditedTwistOutcomeAuditTrace.acceptedMolecularDirectRotation_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularAuditedTwistOutcomeAuditTrace.scheduledAuditedCoordinateTwistInput_rotation_accepted
+assert_kernel_only
+  BlueBookP94.P94MolecularAuditedTwistOutcomeAuditTrace.scheduledAuditedCoordinateTwistInput_boundedDirectRotationStep_audited
+assert_kernel_only
+  BlueBookP94.P94MolecularAuditedTwistOutcomeAuditTrace.scheduledAuditedCoordinateTwistInput_directedRotationPath_audited
+assert_kernel_only
+  BlueBookP94.P94MolecularAuditedTwistOutcomeAuditTrace.auditedHybridTwistAccepted_paths_audited
+
+end TetraStereo.OneCenter

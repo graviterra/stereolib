@@ -1,0 +1,11 @@
+import TetraStereo.OneCenter.AuthoritativeSemanticMancudeConcreteUnifiedOpenCumuleneAnalysis
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-!
+# Kernel-only certificate for unified analysis through both open-cumulene routes
+-/
+
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.mem_analyzeAromaticCanonicalConcreteStereochemistryWithOpenCumulenes_iff_executableMember
+assert_kernel_only TetraStereo.OneCenter.AuthoritativeChemicalInput.analyzeAromaticCanonicalConcreteStereochemistryWithOpenCumulenes_member_sound

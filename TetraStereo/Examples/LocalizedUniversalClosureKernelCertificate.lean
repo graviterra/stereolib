@@ -1,0 +1,79 @@
+import TetraStereo.KernelOnly
+import TetraStereo.OneCenter.LocalizedRule4aRankedProjection
+import TetraStereo.OneCenter.LocalizedRankedPopulationMerge
+import TetraStereo.OneCenter.LocalizedRule4aRankPopulation
+import TetraStereo.OneCenter.LocalizedUniversalSemanticClosure
+
+/-!
+# Kernel-only certificate for the localized universal closure
+
+This module asserts kernel authority for every public authored declaration of the four
+modules that constitute the localized universal closure kernel:
+
+1. `TetraStereo.OneCenter.LocalizedRule4aRankedProjection` (7 public theorems);
+2. `TetraStereo.OneCenter.LocalizedRankedPopulationMerge` (8 public theorems);
+3. `TetraStereo.OneCenter.LocalizedRule4aRankPopulation` (1 public definition, 2 public
+   theorems);
+4. `TetraStereo.OneCenter.LocalizedUniversalSemanticClosure` (14 public declarations: 4 in
+   `CertifiedLocalizedCIPInput`, 10 in `LocalizedUniversalReference`).
+
+Private helper theorems are deliberately excluded, as are automatically generated
+structure/inductive projections (none of the four modules authors a structure or inductive).
+No imports beyond `TetraStereo.KernelOnly` and the four modules are made; in particular the
+prior 20-module semantic certificate and runtime probes are not imported.
+
+The statements certified include the unconditional exact-label iff and refusal iff, the
+unique `IndependentSemanticReferenceModel`, and the agreement of the runnable evaluator's
+checked and generated branches with the independent declarative semantics.  Scope is the
+existing localized formal input domain only.
+-/
+
+/-! ## `LocalizedRule4aRankedProjection` -/
+
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.rule4aEqSingletonOfLengthOne
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.rule4aDeclarativeKeyList_member
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.rule4aSortedMemberDerivation
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.rule4aObservableAssembledRootCongr
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.rule4aTerminalRankedProjectionEq
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.rule4aBranchRankedProjectionEq
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.declarative_rule4a_rankedLabels_projection_eq
+
+/-! ## `LocalizedRankedPopulationMerge` -/
+
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedChiralDescriptorsAtRank_append
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedChiralDescriptorsAtRank_flatMap
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedChiralDescriptorsAtRank_prefixLayer_nil
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedChiralDescriptorsAtRank_prefixLayer_cons
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.getD_mergeLocalizedRerootRankedLabelChildren
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.mergeLocalizedRerootRankedLabelChildren_population_perm_of_forall₂
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.mergeLocalizedRerootRankedLabelChildren_population_perm_of_forall₂_population
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.mergeLocalizedRerootRankedLabelChildren_population_perm_of_perm_of_descending
+
+/-! ## `LocalizedRule4aRankPopulation` -/
+
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.LocalizedRule4aRankedPopulationAgrees
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.declarative_rule4a_rankedPopulationAgrees
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.declarative_rule4a_rankedLabels_population_perm
+
+/-! ## `LocalizedUniversalSemanticClosure`: compound agreement and exact-label/refusal iff -/
+
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.declarative_rule4a_referenceList_agreement
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.localizedRerootCompoundRule45ComparisonAgreement
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.universalDescriptor?_eq_some_iff_exists_declarativeUniversalDescriptor_of_derived
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.universalDescriptor?_eq_none_iff_forall_not_declarativeUniversalDescriptor_of_derived
+
+/-! ## `LocalizedUniversalSemanticClosure`: independent semantic reference model -/
+
+assert_kernel_only TetraStereo.OneCenter.LocalizedUniversalReference.referenceState_eq_some_iff_exists_declarativeUniversalDescriptor_unconditional
+assert_kernel_only TetraStereo.OneCenter.LocalizedUniversalReference.referenceState_eq_none_iff_forall_not_declarativeUniversalDescriptor_unconditional
+assert_kernel_only TetraStereo.OneCenter.LocalizedUniversalReference.IndependentSemanticReferenceModel
+assert_kernel_only TetraStereo.OneCenter.LocalizedUniversalReference.referenceState_realizes_independentSemanticReferenceModel
+assert_kernel_only TetraStereo.OneCenter.LocalizedUniversalReference.independentSemanticReferenceModel_unique
+assert_kernel_only TetraStereo.OneCenter.LocalizedUniversalReference.existsUnique_independentSemanticReferenceModel
+
+/-! ## `LocalizedUniversalSemanticClosure`: runnable evaluation branches -/
+
+assert_kernel_only TetraStereo.OneCenter.LocalizedUniversalReference.evaluation_lookup_eq_some_iff_exists_declarativeUniversalDescriptor
+assert_kernel_only TetraStereo.OneCenter.LocalizedUniversalReference.evaluation_lookup_eq_none_iff_forall_not_declarativeUniversalDescriptor
+assert_kernel_only TetraStereo.OneCenter.LocalizedUniversalReference.evaluate_lookup_eq_some_iff_exists_declarativeUniversalDescriptor
+assert_kernel_only TetraStereo.OneCenter.LocalizedUniversalReference.checked_lookup_eq_some_iff_exists_declarativeUniversalDescriptor

@@ -1,0 +1,35 @@
+import TetraStereo.OneCenter.P94MolecularCompleteInOutRequestScheduler
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+namespace TetraStereo.OneCenter
+
+/-!
+RED-first target for molecule-wide P-94 in/out request scheduling.  The certificate requires exact
+enumeration of every bridge unit from every graph-derived theta framework, exact flattening of
+each unit's complete atom/lone-pair observation pairs, coverage of every independently accepted
+pair represented by the supplied finite ledgers, and correctness of every resulting whole-molecule
+outcome.
+-/
+
+assert_kernel_only
+  BlueBookP94.P94MolecularCompleteInOutRequestScheduler.mem_thetaBridgeUnits_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularCompleteInOutRequestScheduler.mem_scheduledMolecularCompleteInOutInputs_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularCompleteInOutRequestScheduler.acceptedCoveredInOutInput_mem_scheduled
+assert_kernel_only
+  BlueBookP94.P94MolecularCompleteInOutRequestScheduler.completeInOutEvidencePlan_inOutInputs
+assert_kernel_only
+  BlueBookP94.P94MolecularCompleteInOutRequestScheduler.molecularOutcomesFromCompleteInOutLedgers_all_correct
+assert_kernel_only
+  BlueBookP94.P94MolecularCompleteInOutRequestScheduler.molecularAssignmentsFromCompleteInOutLedgers_mem_iff_independent
+assert_kernel_only
+  BlueBookP94.P94MolecularCompleteInOutRequestScheduler.molecularAssignmentsFromCompleteInOutLedgers_nodup
+assert_kernel_only
+  BlueBookP94.P94MolecularCompleteInOutRequestScheduler.molecularAssignmentFromCompleteInOutLedgers_count_eq_one_iff
+assert_kernel_only
+  BlueBookP94.P94MolecularCompleteInOutRequestScheduler.molecularAssignmentFromCompleteInOutLedgers_count_eq_zero_iff
+
+end TetraStereo.OneCenter

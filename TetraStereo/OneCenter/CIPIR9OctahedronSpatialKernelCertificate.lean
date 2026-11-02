@@ -1,0 +1,31 @@
+import TetraStereo.OneCenter.CIPIR9OctahedronSpatialIntegration
+import TetraStereo.KernelOnly
+
+open TetraStereo
+
+/-!
+# Kernel-only certificate: public exact OC-6 perception and A/C assignment
+
+This closure checks exact six-donor coordinate perception, unique central-opposite partners,
+reference-axis and perpendicular-plane construction, molecule-derived source roles, physical
+cyclic orientation, and the exact final two-entry OC-6 index and A/C descriptor.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronSpatialPerception.remainingPositions_length
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronSpatialPerception.remainingOriginalPosition_ne_axial
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronSpatialPerception.remainingOriginalPosition_ne_trans
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronSpatialPerception.remainingOriginalPosition_injective
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronSpatialPerception.isOppositePair?_eq_true_iff
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronSpatialPerception.oppositePosition?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronSpatialPerception.axialPartition?_eq_true_iff
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronSpatialPerception.recognize?_eq_true_iff
+assert_kernel_only TetraStereo.OneCenter.RedBookIR9.OctahedronSpatialPerception.axialPartition_of_opposite
+
+assert_kernel_only TetraStereo.OneCenter.sixPriorityPlacement_lookup
+assert_kernel_only TetraStereo.OneCenter.isStrictSenior6?_eq_true_iff
+assert_kernel_only TetraStereo.OneCenter.strictSeniorPosition6?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.octahedron_trans_planePosition_distinct
+assert_kernel_only TetraStereo.OneCenter.IndexedOctahedronSpatialObservation.derivedRecord?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.ChemistryNormalizationResult.octahedronSpatialAssignment?_eq_none_iff
+assert_kernel_only TetraStereo.OneCenter.ChemistryNormalizationResult.octahedronSpatial_exact
+assert_kernel_only TetraStereo.OneCenter.ChemistryNormalizationResult.octahedronSpatial_exists_exact

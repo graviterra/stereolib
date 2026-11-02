@@ -1,0 +1,54 @@
+import TetraStereo.UniversalProof.NextFrontier.NativeNitrileHydrogenAtoms
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-! Independent family shape, actual hydrogen counts and unique annotation: kernel axiom closure. -/
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.raw_atomCount
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.raw_bondCount
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.raw_rowCount
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.raw_center
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.raw_fluorine
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.raw_nitrile_carbon
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.raw_nitrile_nitrogen
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.raw_amino_carbon
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.raw_amino_nitrogen
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.raw_center_hydrogen
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.raw_nitrile_hydrogens
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.raw_wellFormed
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.raw_bond_kinds
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.raw_known_elements
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.raw_triple_present
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.family_unbounded
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.raw_inline_counts
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.actual_hydrogen_counts
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.actual_total_hydrogens
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.expanded_atomCount
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.expanded_original_atom
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.expanded_fresh_hydrogen
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.raw_only_center_tagged
+
+assert_kernel_only TetraStereo.UniversalProof.NextFrontier.NativeNitrileFamily.expanded_only_center_tagged

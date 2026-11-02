@@ -1,0 +1,22 @@
+import TetraStereo.OneCenter.CIPObservedHelicalSpatialConformance
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-!
+# Kernel-only certificate for exact helical-observation refinement
+
+This certificate covers the exact terminal-reference torsion route and the public analyzer that
+coordinate-validates both axial and helical senses.  It does not claim automatic perception of
+every chemical helix or close the planar/polyhedral coordinate boundaries.
+-/
+
+assert_kernel_only TetraStereo.OneCenter.CartesianPoint3.helicalReferenceMeasure_swap
+assert_kernel_only TetraStereo.OneCenter.helicalPathEndpoints?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.helicalDescriptorOfSpatialReferences?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.rationalHelicalSpatialDescriptor_swap
+assert_kernel_only TetraStereo.OneCenter.helicalDescriptorOfSpatialReferences?_swap
+assert_kernel_only TetraStereo.OneCenter.IndexedHelicalGeometryObservation.spatialDescriptor?_eq_some_iff
+assert_kernel_only TetraStereo.OneCenter.IndexedHelicalGeometryObservation.spatiallyValid?_eq_true_iff
+assert_kernel_only TetraStereo.OneCenter.independentlyJudgedSpatiallyValidatedAxialHelicalAssignment_of_filtered
+assert_kernel_only TetraStereo.OneCenter.analyzeCertifiedNormalizedWithSpatiallyValidatedAxialHelicalGeometry_member_judged

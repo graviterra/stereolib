@@ -1,0 +1,9 @@
+import TetraStereo.OneCenter.LocalizedOrdinaryMonocyclicChemicalCompleteness
+import TetraStereo.KernelOnly
+
+set_option autoImplicit false
+
+/-! # Kernel-only certificate: public ordinary-monocycle chemical completeness -/
+
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.LocalizedOrdinaryMonocyclicChemicalDependencyEvidenceWithState.toProductionEvidence
+assert_kernel_only TetraStereo.OneCenter.CertifiedLocalizedCIPInput.every_chemicallyApplicable_localizedOrdinaryMonocyclicEZ_public_exactly_once
