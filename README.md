@@ -19,19 +19,20 @@ intended domain.
 
 ## Current source status — 20 November 2026
 
-This update expands the source inventory from 3,714 to **4,129 maintained Lean modules**;
-with the umbrella, the distribution contains **4,130 Lean source files**.
+This update expands the source inventory from 3,714 to **4,131 maintained Lean modules**;
+with the umbrella, the distribution contains **4,132 Lean source files**.
 The explicit `accumulatedReferencesRegenerated` ring engine now connects its cached execution
 to the prepared detected-centre report, including refusals. Independent source-profile
 existence and uniqueness, all-root report agreement, and all-root cancellation equality are
 established under their stated hypotheses. The concrete DoubleC3 fixture has exact lowercase
 `s`, derived auxiliary descriptors and report membership.
 
-Physical results cover transitive roots and roots with at most one moving physical class;
-the remaining nontransitive refusals without odd symmetry are necessarily localized to two
-moving pairs. Exact independent orientation across those pairs, letters and casing beyond
-pairwise proper distinguishability, and normative fidelity of nested reference handling remain
-open. These are finite single-bond, constant-charge results with explicit structural admission
+The [two-pair report theorem](TetraStereo/OneCenter/LocalizedChemicalRingTwoPairReport.lean)
+now derives the exact entry, including refusal, absolute letter and casing, from the parity of
+source priority orders on the three tetrahedral pairings. The same module combines the physical
+cases into success/refusal criteria at every detected root, using one unique source profile.
+Exact chemical letter/casing interpretation across the other classes and normative fidelity of
+nested reference handling remain open. These are finite single-bond, constant-charge results with explicit structural admission
 and physical calibration hypotheses, not full chemical completion or a release claim.
 See [RING_STATUS.md](RING_STATUS.md) for scope, source links and validation limits.
 
@@ -129,11 +130,12 @@ to chemistry is a separate scientific question, and we want experts to press on 
 
 ## The proof frontier
 
-The ring programme has moved beyond the earlier source-profile and all-root cancellation
-obligations. Its remaining frontier is independent two-pair physical orientation, exact letters
-and casing outside the pairwise-properly-distinguishable domain, and chemical fidelity of the
-accumulated-reference/regeneration policy at nested occurrences. The detailed boundary and
-current endpoints are in [RING_STATUS.md](RING_STATUS.md).
+The ring programme now includes exact two-pair entries and exhaustive detected-root
+success/refusal criteria for the named accumulated-reference procedure. Its remaining scientific
+frontier is exact chemical letter/casing interpretation across the other physical classes and
+chemical fidelity of the accumulated-reference/regeneration policy at nested occurrences.
+The new outcome theorems also need packaging in the public API's physical theorem interface.
+The detailed boundary and current endpoints are in [RING_STATUS.md](RING_STATUS.md).
 
 The domain hypotheses, including single bonds and constant formal charge, also need separate
 extensions toward the intended molecular domain. The earlier acyclic results and fixture above
@@ -144,8 +146,8 @@ remain useful scoped results; they do not by themselves establish the full indep
 Start with one claim, one hypothesis or one molecule. Contributions can review a rule
 interpretation, simplify a proof, supply a counterexample, or take ownership of a larger argument.
 
-- **Lean and formal-methods researchers:** independent two-pair orientation, exact non-PPD
-  descriptors, the full specification join, and simplifying existing proofs.
+- **Lean and formal-methods researchers:** remaining exact non-PPD descriptor meanings,
+  public theorem integration, the full specification join, and simplifying existing proofs.
 - **Stereochemists:** whether the concrete rule judgments capture the sequence rules, counterexamples
   (rings, pseudoasymmetry, multiple references), and the intended molecular domain.
 
@@ -179,8 +181,8 @@ in the result field. Counterexamples are useful without a repair. See
 Sources live in [OneCenter](TetraStereo/OneCenter) (models, algorithms, proofs),
 [Engine](TetraStereo/Engine), [Certificate](TetraStereo/Certificate),
 [Examples](TetraStereo/Examples) and [UniversalProof](TetraStereo/UniversalProof). The
-[module inventory](source-modules.json) lists all 4,129 maintained Lean modules. Together with
-the original `TetraStereo.lean` umbrella, there are 4,130 Lean source files. A module count is
+[module inventory](source-modules.json) lists all 4,131 maintained Lean modules. Together with
+the original `TetraStereo.lean` umbrella, there are 4,132 Lean source files. A module count is
 not a theorem count, and the words "complete" or
 "universal" in a name do not override the hypotheses of its declarations.
 
