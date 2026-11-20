@@ -135,7 +135,7 @@ private theorem indexEquiv_cons {α : Type _} {l₁ l₂ : List α} (x : α)
     · exact List.get_cons_succ'.trans ((he j).trans (List.get_cons_succ' (i := e j)).symm)
     · exact congrArg ((x :: l₂).get) (consIndex_succ hlen e j).symm
 
-private theorem indexEquiv_of_perm {α : Type _} :
+theorem sourceTreeIndexEquiv_of_perm {α : Type _} :
     ∀ {left right : List α}, left.Perm right →
       ∃ e : Fin left.length ≃ Fin right.length,
         ∀ i : Fin left.length, left.get i = right.get (e i) := by
@@ -504,7 +504,8 @@ private theorem childImage_cast
   subst h
   rfl
 
-private noncomputable def siblingGraphIso :
+/-- Assemble source-tree graph isomorphisms across a permutation of sibling subtrees. -/
+noncomputable def sourceTreeSiblingGraphIso :
     RootedDigraph.Iso
       (OfficialCIPSourceTree.node source leftChildren).toDeclarativeDigraph
       (OfficialCIPSourceTree.node source rightChildren).toDeclarativeDigraph where
@@ -846,7 +847,7 @@ theorem ruleMajorTreeGraph_iso_nonempty_of_sameSourceCrossReaderTraces
                 (sortedTreesR.map fun tree => tree.source).Perm frameR := by
               simpa [childEqR] using permR
             exact permL'.trans (frameEq ▸ permR'.symm)
-          obtain ⟨eSrc, eSpec⟩ := indexEquiv_of_perm sourcePerm
+          obtain ⟨eSrc, eSpec⟩ := sourceTreeIndexEquiv_of_perm sourcePerm
           have lenSrcL :
               (sortedTreesL.map (fun tree => tree.source)).length = sortedTreesL.length :=
             List.length_map
@@ -928,7 +929,7 @@ theorem ruleMajorTreeGraph_iso_nonempty_of_sameSourceCrossReaderTraces
             simp [offR, treeEqR, toOfficialSourceTree_localizedRootTree,
               toOfficialSourceTreeList_eq_map]
           have iso :=
-            siblingGraphIso cursorL.occurrence.1.node offL offR eOff childIsoOff
+            sourceTreeSiblingGraphIso cursorL.occurrence.1.node offL offR eOff childIsoOff
           have graphL :
               ruleMajorTreeGraph treeL =
                 (OfficialCIPSourceTree.node cursorL.occurrence.1.node offL).toDeclarativeDigraph := by

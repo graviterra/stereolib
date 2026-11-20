@@ -237,16 +237,19 @@ variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
 
 /-- **The source-context adapter.**  The detected occurrence read at a node whose ancestor atom path
 is `steps`, in the hierarchy of the ranked unit `unit`.  It is defined when the reroot walk ends
-strictly deeper than the ranked unit, at a detected center. -/
-def contextOccurrence (molecule : MoleculeGraph Atom) (unit : DetectedOccurrence molecule)
+strictly deeper than the ranked unit, at a detected center.
+
+The ranked context `unit` is any occurrence unit: only its root and path are read. A detected
+occurrence is used through its underlying unit. -/
+def contextOccurrence (molecule : MoleculeGraph Atom) (unit : OccurrenceUnit Atom)
     (steps : List Atom) : Option (DetectedOccurrence molecule) :=
   let occurrence : OccurrenceUnit Atom :=
-    ⟨unit.1.root, rerootWalk unit.1.root unit.1.path steps⟩
-  if h : unit.1.path.length < occurrence.path.length ∧ IsDetectedCenter molecule occurrence.atom
+    ⟨unit.root, rerootWalk unit.root unit.path steps⟩
+  if h : unit.path.length < occurrence.path.length ∧ IsDetectedCenter molecule occurrence.atom
   then some ⟨occurrence, h.2⟩ else none
 
 variable (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 /-- The reading of a real occurrence with ancestor atom path `steps`. -/
 def readContext (steps : List Atom) : OccurrenceReading :=
@@ -327,7 +330,7 @@ def HasMultipleBond (molecule : MoleculeGraph Atom) (label : NodeLabel Atom) : P
   ∃ atom other, label.atom? = some atom ∧ 2 ≤ molecule.bond atom other
 
 variable (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 def rule3Observation (node : graph.Node) : Option Rule3Signature :=
   if HasMultipleBond molecule (graph.label node) then
@@ -424,7 +427,7 @@ variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
 /-- **Molecular evidence at a fixed descriptor map.** -/
 def molecularEvidence (molecule : MoleculeGraph Atom)
     (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom) :
+    (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom) :
     StereochemicalEvidence graph := fun node =>
   { rule3 := rule3Observation molecule descriptorMap unit graph node
     rule4a := rule4aObservation molecule descriptorMap unit graph node
@@ -437,7 +440,7 @@ graph carries a Rule-3 observation. -/
 theorem molecularEvidence_rule3_eq_none (molecule : MoleculeGraph Atom)
     (hsingle : ∀ atom other, molecule.bond atom other ≤ 1)
     (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom) (node : graph.Node) :
+    (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom) (node : graph.Node) :
     (molecularEvidence molecule descriptorMap unit graph node).rule3 = none := by
   show rule3Observation molecule descriptorMap unit graph node = none
   unfold rule3Observation
@@ -448,7 +451,7 @@ theorem molecularEvidence_rule3_eq_none (molecule : MoleculeGraph Atom)
 /-- Unavailable nodes observe nothing. -/
 theorem molecularEvidence_of_unavailable (molecule : MoleculeGraph Atom)
     (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom) (node : graph.Node)
+    (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom) (node : graph.Node)
     (h : occurrenceReading molecule descriptorMap unit graph node = .unavailable) :
     molecularEvidence molecule descriptorMap unit graph node = ⟨none, none, none, none, none⟩ := by
   have helig : eligibleSense molecule descriptorMap unit graph node = none := by

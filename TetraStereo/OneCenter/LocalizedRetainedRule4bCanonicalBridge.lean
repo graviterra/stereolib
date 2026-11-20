@@ -41,7 +41,7 @@ variable {input : CertifiedLocalizedCIPInput} {carrierFuel : Nat}
 structure RetainedRule4bFieldFacts
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) : Prop where
+    (unit : OccurrenceUnit input.Atom) : Prop where
   label : ∀ (node : (ruleMajorTreeGraph tree).Node)
       (actual : LocalizedCumulativeDecoratedTree input carrierFuel),
       subtreeAt? tree node.1 = some actual →
@@ -59,7 +59,7 @@ structure RetainedRule4bFieldFacts
 the present nonstereogenic code, which is the runtime priority of `none`. -/
 theorem retainedRule4b_nil4a
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) (graph : RootedDigraph input.Atom)
+    (unit : OccurrenceUnit input.Atom) (graph : RootedDigraph input.Atom)
     (observe : ConstitutionalRule → graph.Node → ℤ) (W D : Nat) (node : graph.Node)
     {actual : LocalizedCumulativeDecoratedTree input carrierFuel}
     {key : input.LocalizedRerootCumulativeRule45Key} {ρ : RS}
@@ -112,7 +112,7 @@ theorem retainedRule4b_nil4a
 duplicate stays absent. Availability is not required. -/
 theorem retainedRule4b_nil4b
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) (graph : RootedDigraph input.Atom)
+    (unit : OccurrenceUnit input.Atom) (graph : RootedDigraph input.Atom)
     (observe : ConstitutionalRule → graph.Node → ℤ) (W D : Nat) (node : graph.Node)
     {actual : LocalizedCumulativeDecoratedTree input carrierFuel}
     {key : input.LocalizedRerootCumulativeRule45Key} {ρ : RS}
@@ -143,7 +143,7 @@ theorem retainedRule4b_nil4b
 theorem retainedRule4b_rule4abOnly_of_simpleBonded
     (singleBonded : input.moleculeGraph.SimpleBonded)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) (graph : RootedDigraph input.Atom)
+    (unit : OccurrenceUnit input.Atom) (graph : RootedDigraph input.Atom)
     (reference : DescriptorSense) :
     Rule4abOnly graph
       (retainedReadingEvidence input.moleculeGraph descriptorMap unit graph reference) := by
@@ -278,7 +278,7 @@ theorem retainedContextTree_terminal_bridge4b
     (observations : ∀ rule node actual, tree.decoratedSubtreeAt? node.1 = some actual →
       observe rule node = priorityValue rule (armObservation rule actual))
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (hyp : RetainedRule4bFieldFacts tree descriptorMap unit)
     {ρ : RS} (cursor : input.LocalizedRerootCursor carrierFuel)
     (fullMatch : LocalizedCumulativeTreeFullMatch (.rule4b ρ)
@@ -375,7 +375,7 @@ theorem retainedContextTree_node_bridge4b
     (observations : ∀ rule node actual, tree.decoratedSubtreeAt? node.1 = some actual →
       observe rule node = priorityValue rule (armObservation rule actual))
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (hyp : RetainedRule4bFieldFacts tree descriptorMap unit)
     {ρ : RS}
     (mask : Rule4abOnly (ruleMajorTreeGraph tree)
@@ -632,7 +632,7 @@ theorem retainedContextTree_keySorted4b
     (observations : ∀ rule node actual, tree.decoratedSubtreeAt? node.1 = some actual →
       observe rule node = priorityValue rule (armObservation rule actual))
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (hyp : RetainedRule4bFieldFacts tree descriptorMap unit)
     {ρ : RS}
     (mask : Rule4abOnly (ruleMajorTreeGraph tree)

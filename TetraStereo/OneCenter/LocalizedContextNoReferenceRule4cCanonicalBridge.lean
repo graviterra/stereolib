@@ -125,7 +125,7 @@ private theorem observedRule4acKey_le_of_ruleMajor_compare_ne_lt
 
 private theorem context_nil4a_noReference
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) (graph : RootedDigraph input.Atom)
+    (unit : OccurrenceUnit input.Atom) (graph : RootedDigraph input.Atom)
     (observe : ConstitutionalRule → graph.Node → ℤ) (W D : Nat) (node : graph.Node)
     {actual : LocalizedCumulativeDecoratedTree input carrierFuel}
     {key : input.LocalizedRerootCumulativeRule45Key}
@@ -146,7 +146,7 @@ private theorem context_nil4a_noReference
 
 private theorem context_nil4c_noReference
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) (graph : RootedDigraph input.Atom)
+    (unit : OccurrenceUnit input.Atom) (graph : RootedDigraph input.Atom)
     (observe : ConstitutionalRule → graph.Node → ℤ) (W D : Nat) (node : graph.Node)
     {actual : LocalizedCumulativeDecoratedTree input carrierFuel}
     {key : input.LocalizedRerootCumulativeRule45Key}
@@ -174,7 +174,7 @@ theorem contextTree_terminal_bridge_noReference4c
     (observations : ∀ rule node actual, tree.decoratedSubtreeAt? node.1 = some actual →
       observe rule node = priorityValue rule (armObservation rule actual))
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (hyp : ContextTreeRankReadback tree descriptorMap unit)
     (cursor : input.LocalizedRerootCursor carrierFuel)
     (fullMatch : LocalizedCumulativeTreeFullMatch .rule4cNoReference
@@ -277,7 +277,7 @@ theorem contextTree_node_bridge_noReference4c
     (observations : ∀ rule node actual, tree.decoratedSubtreeAt? node.1 = some actual →
       observe rule node = priorityValue rule (armObservation rule actual))
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (hyp : ContextTreeRankReadback tree descriptorMap unit)
     (mask : Rule4acOnly (ruleMajorTreeGraph tree)
       (noReferenceEvidence4c input.moleculeGraph descriptorMap unit (ruleMajorTreeGraph tree)))
@@ -537,7 +537,7 @@ theorem contextTree_keySorted_noReference4c
     (observations : ∀ rule node actual, tree.decoratedSubtreeAt? node.1 = some actual →
       observe rule node = priorityValue rule (armObservation rule actual))
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (hyp : ContextTreeRankReadback tree descriptorMap unit)
     (mask : Rule4acOnly (ruleMajorTreeGraph tree)
       (noReferenceEvidence4c input.moleculeGraph descriptorMap unit (ruleMajorTreeGraph tree)))

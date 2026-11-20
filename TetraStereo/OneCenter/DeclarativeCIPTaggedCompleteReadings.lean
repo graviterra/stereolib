@@ -20,7 +20,7 @@ abbrev TaggedCompleteReading := Option DescriptorSense × CompleteReadingKey
 section Reading
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 /-- Reference identities in the independent complete-reading order.  Empty and singleton
 populations keep their selected identity; two alternatives sort by complete Rule-4b/4c value,
@@ -78,7 +78,7 @@ end Reading
 section Iso
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) {left right : RootedDigraph Atom}
+  (unit : OccurrenceUnit Atom) {left right : RootedDigraph Atom}
   (iso : RootedDigraph.Iso left right)
 
 include iso in
@@ -110,7 +110,7 @@ end Iso
 section Faithful
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (externalParent ligand : Atom)
+  (unit : OccurrenceUnit Atom) (externalParent ligand : Atom)
   {left right : RootedDigraph Atom}
   (faithfulL : RootedDigraph.FaithfulExactExpansion molecule externalParent ligand left)
   (faithfulR : RootedDigraph.FaithfulExactExpansion molecule externalParent ligand right)

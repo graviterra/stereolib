@@ -279,7 +279,10 @@ theorem retainedCompleteLigandRule5KeyAt_congr (graph : RootedDigraph Atom)
     reads (identityRelabel molecule graph) W D
   have rule5 := retainedCompleteRule5ReadingsAt_relabel molecule unit 1 parentUnique first second
     reads (identityRelabel molecule graph) W D .senior
-  rw [mapDetected_one] at prior rule5
+  have unitId : mapOccurrence ((1 : molecule.Aut) : Equiv.Perm Atom) unit.1 = unit.1 := by
+    rcases unit with ⟨⟨root, path⟩, detected⟩
+    simp [mapOccurrence]
+  rw [unitId] at prior rule5
   unfold retainedCompleteLigandRule5KeyAt
   rw [prior, rule5]
 

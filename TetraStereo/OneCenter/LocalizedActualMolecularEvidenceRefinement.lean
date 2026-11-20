@@ -299,25 +299,25 @@ variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom] (molecule : MoleculeG
 
 /-- At a top occurrence (empty path), an outward simple ancestor path is read at the occurrence
 with exactly that path. -/
-theorem readContext_top_toLocalizedLabel (unit : DetectedOccurrence molecule)
-    (hpath : unit.1.path = []) (steps : List Atom) (hsimple : (unit.1.root :: steps).Nodup)
+theorem readContext_top_toLocalizedLabel (unit : OccurrenceUnit Atom)
+    (hpath : unit.path = []) (steps : List Atom) (hsimple : (unit.root :: steps).Nodup)
     (hne : steps ≠ []) :
     (readContext molecule descriptorMap unit steps).toLocalizedLabel =
-      if h : IsDetectedCenter molecule (OccurrenceUnit.atom ⟨unit.1.root, steps⟩) then
-        (descriptorMap ⟨⟨unit.1.root, steps⟩, h⟩).bind Descriptor.toLocalizedLabel
+      if h : IsDetectedCenter molecule (OccurrenceUnit.atom ⟨unit.root, steps⟩) then
+        (descriptorMap ⟨⟨unit.root, steps⟩, h⟩).bind Descriptor.toLocalizedLabel
       else none := by
-  have hwalk : rerootWalk unit.1.root unit.1.path steps = steps := by
+  have hwalk : rerootWalk unit.root unit.path steps = steps := by
     rw [hpath]
-    simpa using rerootWalk_eq_append unit.1.root steps [] (by simpa using hsimple)
-  have hlength : unit.1.path.length < steps.length := by
+    simpa using rerootWalk_eq_append unit.root steps [] (by simpa using hsimple)
+  have hlength : unit.path.length < steps.length := by
     rw [hpath]
     exact List.length_pos_of_ne_nil hne
   unfold readContext contextOccurrence
   simp only [hwalk]
-  by_cases hcenter : IsDetectedCenter molecule (OccurrenceUnit.atom ⟨unit.1.root, steps⟩)
+  by_cases hcenter : IsDetectedCenter molecule (OccurrenceUnit.atom ⟨unit.root, steps⟩)
   · rw [dif_pos ⟨hlength, hcenter⟩, dif_pos hcenter]
     dsimp only
-    cases descriptorMap ⟨⟨unit.1.root, steps⟩, hcenter⟩ <;> rfl
+    cases descriptorMap ⟨⟨unit.root, steps⟩, hcenter⟩ <;> rfl
   · rw [dif_neg (fun h => hcenter h.2), dif_neg hcenter]
     rfl
 
@@ -433,17 +433,17 @@ molecular evidence's reading at that path. -/
 theorem molecularReader_eq_readContext
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)) {fuel : Nat}
     (target : input.LocalizedCIPOccurrence fuel) (cursor : input.LocalizedRerootCursor fuel)
-    (unit : DetectedOccurrence input.moleculeGraph) (hpath : unit.1.path = [])
-    (htargetRoot : target.1.root = unit.1.root) (htargetAddress : target.1.address = [])
-    (hroot : cursor.occurrence.1.root = unit.1.root) (haddress : cursor.occurrence.1.address ≠ [])
+    (unit : OccurrenceUnit input.Atom) (hpath : unit.path = [])
+    (htargetRoot : target.1.root = unit.root) (htargetAddress : target.1.address = [])
+    (hroot : cursor.occurrence.1.root = unit.root) (haddress : cursor.occurrence.1.address ≠ [])
     (hreal : cursor.occurrence.1.node.provenance = .realAtom) (steps : List input.Atom)
-    (hhistory : cursor.occurrence.1.node.history = (unit.1.root :: steps).reverse)
-    (hsimple : (unit.1.root :: steps).Nodup) (hne : steps ≠ []) :
+    (hhistory : cursor.occurrence.1.node.history = (unit.root :: steps).reverse)
+    (hsimple : (unit.root :: steps).Nodup) (hne : steps ≠ []) :
     input.molecularReader descriptorMap target cursor =
       (readContext input.moleculeGraph descriptorMap unit steps).toLocalizedLabel := by
   have hdependency : input.LocalizedDepthDependency cursor.occurrence target :=
     ⟨hroot.trans htargetRoot.symm, by rw [htargetAddress]; exact List.length_pos_of_ne_nil haddress⟩
-  have hunit : input.molecularFrameUnit cursor.occurrence.1 = ⟨unit.1.root, steps⟩ := by
+  have hunit : input.molecularFrameUnit cursor.occurrence.1 = ⟨unit.root, steps⟩ := by
     simp [molecularFrameUnit, hroot, hhistory]
   rw [readContext_top_toLocalizedLabel input.moleculeGraph descriptorMap unit hpath steps hsimple hne]
   unfold molecularReader localizedDependencyLabel molecularView

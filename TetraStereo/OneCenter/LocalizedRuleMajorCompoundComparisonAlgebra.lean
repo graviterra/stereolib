@@ -57,7 +57,7 @@ universe u
 signature is its harmless singleton empty Rule-4b entry when there are no references. -/
 def unmaskedCompletePriorSignatureAt {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
     (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom) (W D : Nat) :
+    (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom) (W D : Nat) :
     CompletePriorSignature :=
   let selection := referenceSelection molecule descriptorMap unit graph
   let readings := completeReadingsAt molecule descriptorMap unit graph W D
@@ -69,7 +69,7 @@ for every pair of molecular ligands, including heterogeneous reference populatio
 theorem compare_unmaskedCompletePriorSignature_eq
     {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
     (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (left right : RootedDigraph Atom) (W D : Nat) :
+    (unit : OccurrenceUnit Atom) (left right : RootedDigraph Atom) (W D : Nat) :
     compare (unmaskedCompletePriorSignatureAt molecule descriptorMap unit left W D)
         (unmaskedCompletePriorSignatureAt molecule descriptorMap unit right W D) =
       compare (completePriorSignatureAt molecule descriptorMap unit left W D)

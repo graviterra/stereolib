@@ -36,7 +36,7 @@ structure RuleMajorTreeReadback4c
     {input : CertifiedLocalizedCIPInput} {carrierFuel : Nat}
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) (ρ : RS) : Prop where
+    (unit : OccurrenceUnit input.Atom) (ρ : RS) : Prop where
   label : ∀ (node : (ruleMajorTreeGraph tree).Node)
     (actual : LocalizedCumulativeDecoratedTree input carrierFuel),
     tree.decoratedSubtreeAt? node.1 = some actual →
@@ -273,7 +273,7 @@ molecular pseudo-value read from the actual localized label.  This includes both
 theorem stereoNodePathObservation_nil_eq_pseudoValueOfLabel
     {input : CertifiedLocalizedCIPInput} {carrierFuel : Nat}
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) (graph : RootedDigraph input.Atom)
+    (unit : OccurrenceUnit input.Atom) (graph : RootedDigraph input.Atom)
     (W D : Nat) (reference : DescriptorSense) (node : graph.Node)
     (dsub : LocalizedCumulativeDecoratedTree input carrierFuel)
     (hlabel : dsub.label =
@@ -308,7 +308,7 @@ reference-dependent Rule-4b component. -/
 theorem stereoNodePathObservation_nil_eq_pseudoValueOfLabel_noReference
     {input : CertifiedLocalizedCIPInput} {carrierFuel : Nat}
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) (graph : RootedDigraph input.Atom)
+    (unit : OccurrenceUnit input.Atom) (graph : RootedDigraph input.Atom)
     (W D : Nat) (node : graph.Node) (dsub : LocalizedCumulativeDecoratedTree input carrierFuel)
     (hlabel : dsub.label =
       (occurrenceReading input.moleculeGraph descriptorMap unit graph node).toLocalizedLabel)
@@ -343,7 +343,7 @@ theorem stereoNodePathObservation_nil_eq_encoded4a_rule4c
     {tree : LocalizedCumulativeDecoratedTree input carrierFuel}
     {key : input.LocalizedRerootCumulativeRule45Key}
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) (graph : RootedDigraph input.Atom)
+    (unit : OccurrenceUnit input.Atom) (graph : RootedDigraph input.Atom)
     (W D : Nat) (node : graph.Node)
     (tableMatch : LocalizedCumulativeTreeTableMatch (.rule4c ρ) tree key)
     (realizes : LocalizedCumulativeTreeRealizes input read tree)
@@ -372,7 +372,7 @@ theorem stereoNodePathObservation_nil_eq_encoded4b_rule4c
     {tree : LocalizedCumulativeDecoratedTree input carrierFuel}
     {key : input.LocalizedRerootCumulativeRule45Key}
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) (graph : RootedDigraph input.Atom)
+    (unit : OccurrenceUnit input.Atom) (graph : RootedDigraph input.Atom)
     (W D : Nat) (node : graph.Node)
     (tableMatch : LocalizedCumulativeTreeTableMatch (.rule4c ρ) tree key)
     (realizes : LocalizedCumulativeTreeRealizes input read tree)
@@ -403,7 +403,7 @@ variable {input : CertifiedLocalizedCIPInput} {center : input.TetrahedralCenter}
   {ρ : RS}
 variable (arm : input.RuleMajorRootArm center index (.rule4c ρ) read)
   {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-  {unit : DetectedOccurrence input.moleculeGraph}
+  {unit : OccurrenceUnit input.Atom}
 
 /-- Terminal stage-4c keys read all three active independent stereochemical columns at the root. -/
 theorem ruleMajorRootArm_terminal_bridge4c

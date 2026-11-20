@@ -24,7 +24,7 @@ variable {input : CertifiedLocalizedCIPInput} {carrierFuel : Nat}
 def ObservedRepresented (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (observe : ConstitutionalRule → (ruleMajorTreeGraph tree).Node → ℤ)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) (W D : Nat)
+    (unit : OccurrenceUnit input.Atom) (W D : Nat)
     (key : input.LocalizedRerootCumulativeRule45Key)
     (node : (ruleMajorTreeGraph tree).Node) : Prop :=
   ∃ actual : LocalizedCumulativeDecoratedTree input carrierFuel,
@@ -41,7 +41,7 @@ theorem ObservedRepresented.tie_iff
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (observe : ConstitutionalRule → (ruleMajorTreeGraph tree).Node → ℤ)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     (h4a : Rule4aOnly (ruleMajorTreeGraph tree)
       (rankEvidence input.moleculeGraph descriptorMap unit (ruleMajorTreeGraph tree)))
     {W D : Nat} {keyI keyJ : input.LocalizedRerootCumulativeRule45Key}
@@ -142,7 +142,7 @@ theorem observedRankedChildTail_snd_eq_tailRanks
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (observe : ConstitutionalRule → (ruleMajorTreeGraph tree).Node → ℤ)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     (h4a : Rule4aOnly (ruleMajorTreeGraph tree)
       (rankEvidence input.moleculeGraph descriptorMap unit (ruleMajorTreeGraph tree)))
     {W D : Nat} :
@@ -179,7 +179,7 @@ theorem observedRankedChildren_snd_eq_headRanks
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (observe : ConstitutionalRule → (ruleMajorTreeGraph tree).Node → ℤ)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     (h4a : Rule4aOnly (ruleMajorTreeGraph tree)
       (rankEvidence input.moleculeGraph descriptorMap unit (ruleMajorTreeGraph tree)))
     {W D : Nat}
@@ -201,7 +201,7 @@ def contextualSphereEntry
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (observe : ConstitutionalRule → (ruleMajorTreeGraph tree).Node → ℤ)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     (start : (ruleMajorTreeGraph tree).Node)
     (chain : List (ruleMajorTreeGraph tree).Node) :
     OfficialSparseEntry (Option LocalizedAuxiliaryLabel) :=
@@ -215,7 +215,7 @@ def contextualSphereOf
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (observe : ConstitutionalRule → (ruleMajorTreeGraph tree).Node → ℤ)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     (depth : Nat) (start : (ruleMajorTreeGraph tree).Node) :
     List (OfficialSparseEntry (Option LocalizedAuxiliaryLabel)) :=
   (depthChains (ruleMajorTreeGraph tree)
@@ -226,7 +226,7 @@ theorem contextualSphereOf_zero
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (observe : ConstitutionalRule → (ruleMajorTreeGraph tree).Node → ℤ)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     (start : (ruleMajorTreeGraph tree).Node) :
     contextualSphereOf tree observe descriptorMap unit 0 start =
       [( [], (occurrenceReading input.moleculeGraph descriptorMap unit
@@ -236,7 +236,7 @@ theorem contextualSphereOf_succ_of_no_children
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (observe : ConstitutionalRule → (ruleMajorTreeGraph tree).Node → ℤ)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     (start : (ruleMajorTreeGraph tree).Node)
     (noChildren : (ruleMajorTreeGraph tree).childList start = []) (depth : Nat) :
     contextualSphereOf tree observe descriptorMap unit (depth + 1) start = [] := by
@@ -247,7 +247,7 @@ theorem contextualTerminal_sphere
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (observe : ConstitutionalRule → (ruleMajorTreeGraph tree).Node → ℤ)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     (hyp : ContextTreeRankReadback tree descriptorMap unit)
     (node : (ruleMajorTreeGraph tree).Node)
     (cursor : input.LocalizedRerootCursor carrierFuel)
@@ -291,7 +291,7 @@ theorem contextualStep_sphere
     (observations : ∀ rule node actual, tree.decoratedSubtreeAt? node.1 = some actual →
       observe rule node = priorityValue rule (armObservation rule actual))
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     (hyp : ContextTreeRankReadback tree descriptorMap unit)
     {fuel : Nat}
     (ih : ∀ (node : (ruleMajorTreeGraph tree).Node)
@@ -458,7 +458,7 @@ theorem contextTree_rankedLabels_getD
     (observations : ∀ rule node actual, tree.decoratedSubtreeAt? node.1 = some actual →
       observe rule node = priorityValue rule (armObservation rule actual))
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     (hyp : ContextTreeRankReadback tree descriptorMap unit)
     {rootFuel : Nat} {rootKey : input.LocalizedRerootCumulativeRule45Key}
     (rootTrace : LocalizedRuleMajorSortTrace input .rule4a read rootFuel tree rootKey) :
@@ -497,7 +497,7 @@ theorem contextTree_root_rankedLabels_getD
     (observations : ∀ rule node actual, tree.decoratedSubtreeAt? node.1 = some actual →
       observe rule node = priorityValue rule (armObservation rule actual))
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     (hyp : ContextTreeRankReadback tree descriptorMap unit)
     {fuel : Nat} {key : input.LocalizedRerootCumulativeRule45Key}
     (trace : LocalizedRuleMajorSortTrace input .rule4a read fuel tree key)

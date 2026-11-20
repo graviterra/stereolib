@@ -284,7 +284,7 @@ theorem node_minimal
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
     (target : input.LocalizedCIPOccurrence (input.certified.input.molecule.atomCount + 1))
     (arm : input.OriginalRootArm center index .rule4a (input.molecularReader descriptorMap target))
-    {unit : DetectedOccurrence input.moleculeGraph} (hyp : ArmReadback arm descriptorMap unit)
+    {unit : OccurrenceUnit input.Atom} (hyp : ArmReadback arm descriptorMap unit)
     {fuel : Nat}
     (ih : ∀ (node : (armGraph arm).Node)
       (dsub : LocalizedCumulativeDecoratedTree input (input.certified.input.molecule.atomCount + 1))
@@ -494,7 +494,7 @@ theorem arm_firstChiralRank_minimal
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
     (target : input.LocalizedCIPOccurrence (input.certified.input.molecule.atomCount + 1))
     (arm : input.OriginalRootArm center index .rule4a (input.molecularReader descriptorMap target))
-    {unit : DetectedOccurrence input.moleculeGraph} (hyp : ArmReadback arm descriptorMap unit) :
+    {unit : OccurrenceUnit input.Atom} (hyp : ArmReadback arm descriptorMap unit) :
     ∀ {fuel : Nat} (node : (armGraph arm).Node)
       (dsub : LocalizedCumulativeDecoratedTree input (input.certified.input.molecule.atomCount + 1))
       (key : input.LocalizedRerootCumulativeRule45Key),

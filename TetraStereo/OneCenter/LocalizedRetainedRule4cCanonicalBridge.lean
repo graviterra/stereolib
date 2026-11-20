@@ -37,7 +37,7 @@ variable {input : CertifiedLocalizedCIPInput} {carrierFuel : Nat}
 structure RetainedRule4cFieldFacts
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) : Prop where
+    (unit : OccurrenceUnit input.Atom) : Prop where
   label : ∀ (node : (ruleMajorTreeGraph tree).Node)
       (actual : LocalizedCumulativeDecoratedTree input carrierFuel),
       subtreeAt? tree node.1 = some actual →
@@ -73,7 +73,7 @@ private theorem retainedRule4c_encoded4a_nil
 
 theorem retainedRule4c_nil4a
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) (graph : RootedDigraph input.Atom)
+    (unit : OccurrenceUnit input.Atom) (graph : RootedDigraph input.Atom)
     (observe : ConstitutionalRule → graph.Node → ℤ) (W D : Nat) (node : graph.Node)
     {actual : LocalizedCumulativeDecoratedTree input carrierFuel}
     {key : input.LocalizedRerootCumulativeRule45Key} {ρ : RS}
@@ -125,7 +125,7 @@ theorem retainedRule4c_nil4a
 
 theorem retainedRule4c_nil4b
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) (graph : RootedDigraph input.Atom)
+    (unit : OccurrenceUnit input.Atom) (graph : RootedDigraph input.Atom)
     (observe : ConstitutionalRule → graph.Node → ℤ) (W D : Nat) (node : graph.Node)
     {actual : LocalizedCumulativeDecoratedTree input carrierFuel}
     {key : input.LocalizedRerootCumulativeRule45Key} {ρ : RS}
@@ -155,7 +155,7 @@ theorem retainedRule4c_nil4b
 
 theorem retainedRule4c_nil4c
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) (graph : RootedDigraph input.Atom)
+    (unit : OccurrenceUnit input.Atom) (graph : RootedDigraph input.Atom)
     (observe : ConstitutionalRule → graph.Node → ℤ) (W D : Nat) (node : graph.Node)
     {actual : LocalizedCumulativeDecoratedTree input carrierFuel}
     {key : input.LocalizedRerootCumulativeRule45Key} {ρ : RS}
@@ -476,7 +476,7 @@ theorem retainedContextTree_terminal_bridge4c
     (observations : ∀ rule node actual, tree.decoratedSubtreeAt? node.1 = some actual →
       observe rule node = priorityValue rule (armObservation rule actual))
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (hyp : RetainedRule4cFieldFacts tree descriptorMap unit)
     {ρ : RS} (cursor : input.LocalizedRerootCursor carrierFuel)
     (fullMatch : LocalizedCumulativeTreeFullMatch (.rule4c ρ)
@@ -610,7 +610,7 @@ theorem retainedContextTree_node_bridge4c
     (observations : ∀ rule node actual, tree.decoratedSubtreeAt? node.1 = some actual →
       observe rule node = priorityValue rule (armObservation rule actual))
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (hyp : RetainedRule4cFieldFacts tree descriptorMap unit)
     {ρ : RS}
     (mask : Rule4abcOnly (ruleMajorTreeGraph tree)
@@ -894,7 +894,7 @@ theorem retainedContextTree_keySorted4c
     (observations : ∀ rule node actual, tree.decoratedSubtreeAt? node.1 = some actual →
       observe rule node = priorityValue rule (armObservation rule actual))
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (hyp : RetainedRule4cFieldFacts tree descriptorMap unit)
     {ρ : RS}
     (mask : Rule4abcOnly (ruleMajorTreeGraph tree)

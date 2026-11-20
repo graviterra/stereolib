@@ -31,9 +31,9 @@ local instance contextStageTreeNodeFintype {input : CertifiedLocalizedCIPInput}
 decorated subtree. -/
 def ContextTreeContextualObservationsAt {input : CertifiedLocalizedCIPInput}
     {carrierFuel : Nat} (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
-    (unit : DetectedOccurrence input.moleculeGraph) : Prop :=
+    (unit : OccurrenceUnit input.Atom) : Prop :=
   ∀ rule node actual, tree.decoratedSubtreeAt? node.1 = some actual →
-    contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph tree) unit.1.root rule node =
+    contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph tree) unit.root rule node =
       priorityValue rule (armObservation rule actual)
 
 /-- Readback facts for all six actual Rule-4a/4b/4c/no-reference graphs in one shared context. -/
@@ -42,7 +42,7 @@ structure RuleMajorContextReadingReadbacks {input : CertifiedLocalizedCIPInput}
       Option LocalizedAuxiliaryLabel} {cursor : input.LocalizedRerootCursor carrierFuel}
     (stages : input.RuleMajorContextStages carrierFuel read cursor)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) : Prop where
+    (unit : OccurrenceUnit input.Atom) : Prop where
   aReadback : ContextTreeRankReadback stages.a.tree descriptorMap unit
   aObservations : ContextTreeContextualObservationsAt stages.a.tree unit
   bReadback : ∀ reference, ContextTreeRankReadback (stages.b reference).tree descriptorMap unit
@@ -77,7 +77,7 @@ theorem ruleMajorContextStages_RS_completeReading_compare
     (singleBonded : input.moleculeGraph.SimpleBonded)
     (stages : input.RuleMajorContextStages carrierFuel read cursor)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     {W D : Nat}
     (width : stages.widthBound ≤ W)
     (depth : stages.depthBound ≤ D)
@@ -250,7 +250,7 @@ def ruleMajorContextBranchReadings {input : CertifiedLocalizedCIPInput}
       Option LocalizedAuxiliaryLabel} {cursor : input.LocalizedRerootCursor carrierFuel}
     (stages : input.RuleMajorContextStages carrierFuel read cursor)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) :
+    (unit : OccurrenceUnit input.Atom) :
     List input.LocalizedRerootRule4bcReading :=
   (localizedRule4bcReferenceAlternatives
     (toReferenceList (contextualReferenceSelection input.moleculeGraph descriptorMap unit
@@ -266,7 +266,7 @@ theorem ruleMajorContextStages_rankReadings_observations
     (singleBonded : input.moleculeGraph.SimpleBonded)
     (stages : input.RuleMajorContextStages carrierFuel read cursor)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     {W D : Nat}
     (width : stages.widthBound ≤ W)
     (depth : stages.depthBound ≤ D)
@@ -328,7 +328,7 @@ theorem ruleMajorContextStages_rankedReferenceTags
     (singleBonded : input.moleculeGraph.SimpleBonded)
     (stages : input.RuleMajorContextStages carrierFuel read cursor)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     (readbacks : RuleMajorContextReadingReadbacks stages descriptorMap unit)
     (isomorphisms : RuleMajorContextStageGraphIsoBundle stages) {W D : Nat}
     (width : stages.widthBound ≤ W) (depth : stages.depthBound ≤ D) :

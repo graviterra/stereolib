@@ -40,7 +40,7 @@ required. -/
 structure RuleMajorTreeReadback4b
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) (ρ : RS) : Prop where
+    (unit : OccurrenceUnit input.Atom) (ρ : RS) : Prop where
   label : ∀ (node : (ruleMajorTreeGraph tree).Node)
     (actual : LocalizedCumulativeDecoratedTree input carrierFuel),
     tree.decoratedSubtreeAt? node.1 = some actual →
@@ -852,7 +852,7 @@ variable {input : CertifiedLocalizedCIPInput} {center : input.TetrahedralCenter}
   {ρ : RS}
 variable (arm : input.RuleMajorRootArm center index (.rule4b ρ) read)
   {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-  {unit : DetectedOccurrence input.moleculeGraph}
+  {unit : OccurrenceUnit input.Atom}
 
 theorem ruleMajorRootArm_terminal_bridge4b (hyp : RuleMajorTreeReadback4b arm.tree descriptorMap unit ρ)
     (cursor : input.LocalizedRerootCursor (input.certified.input.molecule.atomCount + 1))

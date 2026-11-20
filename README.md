@@ -7,15 +7,33 @@ molecular centre. The **Cahn–Ingold–Prelog (CIP)** sequence rules rank the g
 Stereolib aims to prove that a program assigns these labels correctly throughout an explicitly
 defined molecular domain. That universal theorem is **not yet proved**.
 
-The contribution is a checked connection between executable comparisons, separately stated
+The contribution is a formal connection between executable comparisons, separately stated
 priority rules, and physical geometry. For a restricted class of molecules without rings, it
 proves the whole detected-centre report, including both assigned descriptors and justified
 refusals. A 33-atom example derives the lowercase **r** of a pseudoasymmetric centre by comparing
 mirror-related branches. We are looking for collaborators to extend this connection to the full
 intended domain.
 
-[What is proved](#what-is-proved) · [The proof frontier](#the-proof-frontier) ·
+[Current ring status](RING_STATUS.md) · [What is proved](#what-is-proved) · [The proof frontier](#the-proof-frontier) ·
 [Collaborate](#collaborate) · [Concept map](#concept-map) · [Working with the source](#working-with-the-source)
+
+## Current source status — 20 November 2026
+
+This update expands the source inventory from 3,714 to **4,129 maintained Lean modules**;
+with the umbrella, the distribution contains **4,130 Lean source files**.
+The explicit `accumulatedReferencesRegenerated` ring engine now connects its cached execution
+to the prepared detected-centre report, including refusals. Independent source-profile
+existence and uniqueness, all-root report agreement, and all-root cancellation equality are
+established under their stated hypotheses. The concrete DoubleC3 fixture has exact lowercase
+`s`, derived auxiliary descriptors and report membership.
+
+Physical results cover transitive roots and roots with at most one moving physical class;
+the remaining nontransitive refusals without odd symmetry are necessarily localized to two
+moving pairs. Exact independent orientation across those pairs, letters and casing beyond
+pairwise proper distinguishability, and normative fidelity of nested reference handling remain
+open. These are finite single-bond, constant-charge results with explicit structural admission
+and physical calibration hypotheses, not full chemical completion or a release claim.
+See [RING_STATUS.md](RING_STATUS.md) for scope, source links and validation limits.
 
 ## The proved connection
 
@@ -111,29 +129,23 @@ to chemistry is a separate scientific question, and we want experts to press on 
 
 ## The proof frontier
 
-These four connections are the current frontier:
+The ring programme has moved beyond the earlier source-profile and all-root cancellation
+obligations. Its remaining frontier is independent two-pair physical orientation, exact letters
+and casing outside the pairwise-properly-distinguishable domain, and chemical fidelity of the
+accumulated-reference/regeneration policy at nested occurrences. The detailed boundary and
+current endpoints are in [RING_STATUS.md](RING_STATUS.md).
 
-1. **Independent canonical ordering for recursive comparisons:** an evaluator-independent order
-   and a proof that the evaluator agrees with it.
-2. **Chemical meaning of generated auxiliary labels:** proof that labels produced during
-   recursion denote the descriptors the specification intends.
-3. **Inherited reference handling:** a justified policy for references inherited during
-   recursion, in place of the current immediate-frame policy, together with its proof.
-4. **Physical and whole-molecule joins:** per-centre results assembled into a whole-molecule
-   `CIPSpec` fixed point, including rings with stereochemically dependent centres.
-
-The frontier is not the whole remaining task. The domain hypotheses, such as single bonds and
-constant formal charge, must also be widened toward the intended domain, and each extension needs
-its own proof. The [experimental marked recursive operations](TetraStereo/OneCenter/LocalizedMarkedRetainedPromotedOperations.lean)
-show the current approach to recursion. They are not a correctness theorem.
+The domain hypotheses, including single bonds and constant formal charge, also need separate
+extensions toward the intended molecular domain. The earlier acyclic results and fixture above
+remain useful scoped results; they do not by themselves establish the full independent `CIPSpec`.
 
 ## Collaborate
 
 Start with one claim, one hypothesis or one molecule. Contributions can review a rule
 interpretation, simplify a proof, supply a counterexample, or take ownership of a larger argument.
 
-- **Lean and formal-methods researchers:** the canonical-ordering invariant, the fixed-point
-  join, ring induction, and restructuring existing proofs.
+- **Lean and formal-methods researchers:** independent two-pair orientation, exact non-PPD
+  descriptors, the full specification join, and simplifying existing proofs.
 - **Stereochemists:** whether the concrete rule judgments capture the sequence rules, counterexamples
   (rings, pseudoasymmetry, multiple references), and the intended molecular domain.
 
@@ -167,8 +179,9 @@ in the result field. Counterexamples are useful without a repair. See
 Sources live in [OneCenter](TetraStereo/OneCenter) (models, algorithms, proofs),
 [Engine](TetraStereo/Engine), [Certificate](TetraStereo/Certificate),
 [Examples](TetraStereo/Examples) and [UniversalProof](TetraStereo/UniversalProof). The
-[module inventory](source-modules.json) lists all 3,714 maintained Lean modules plus the umbrella
-imports in `TetraStereo.lean`. A module count is not a theorem count, and the words "complete" or
+[module inventory](source-modules.json) lists all 4,129 maintained Lean modules. Together with
+the original `TetraStereo.lean` umbrella, there are 4,130 Lean source files. A module count is
+not a theorem count, and the words "complete" or
 "universal" in a name do not override the hypotheses of its declarations.
 
 The toolchain is Lean 4.28.0 with Mathlib v4.28.0. The safe first step is a static check that
@@ -179,8 +192,10 @@ python3 -B tools/check_source_tree.py
 ```
 
 Build only selected modules, under an enforced memory limit, as described in
-[BUILDING.md](BUILDING.md). Never start an unrestricted whole-library build. This distribution
-has not yet been rebuilt from a clean checkout, and CI runs static checks only.
+[BUILDING.md](BUILDING.md). Never start an unrestricted whole-library build. This transformed
+source distribution has not been freshly compiled here or rebuilt from a
+clean checkout. Publication validation is static only; CI runs static checks only. The
+original-source checkpoint and its limits are described in [RING_STATUS.md](RING_STATUS.md).
 
 ## Citation and license
 

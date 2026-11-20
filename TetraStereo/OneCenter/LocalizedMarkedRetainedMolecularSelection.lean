@@ -46,8 +46,8 @@ variable {input : CertifiedLocalizedCIPInput}
   (tetrahedralMap : ∀ unit value, descriptorMap unit = some value → value.IsTetrahedral)
   (singleBonded : input.moleculeGraph.SimpleBonded)
   (target : input.LocalizedRerootCursor (retainedCarrierFuel input))
-  (unit : DetectedOccurrence input.moleculeGraph)
-  (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit.1)
+  (unit : OccurrenceUnit input.Atom)
+  (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit)
 
 include tetrahedralMap singleBonded targetUnit
 
@@ -188,7 +188,7 @@ variable {input : CertifiedLocalizedCIPInput} {carrierFuel : Nat}
 private def unmaskedRetainedPriorAt
     (molecule : MoleculeGraph input.Atom)
     (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (graph : RootedDigraph input.Atom) (W D : Nat) :
+    (unit : OccurrenceUnit input.Atom) (graph : RootedDigraph input.Atom) (W D : Nat) :
     CompletePriorSignature :=
   let selection := retainedReferenceSelection molecule descriptorMap unit graph
   let readings := retainedCompleteReadingsAt molecule descriptorMap unit graph W D
@@ -198,7 +198,7 @@ private def unmaskedRetainedPriorAt
 private theorem compare_localUnmaskedRetainedPrior_eq
     (molecule : MoleculeGraph input.Atom)
     (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (left right : RootedDigraph input.Atom) (W D : Nat) :
+    (unit : OccurrenceUnit input.Atom) (left right : RootedDigraph input.Atom) (W D : Nat) :
     compare (unmaskedRetainedPriorAt molecule descriptorMap unit left W D)
         (unmaskedRetainedPriorAt molecule descriptorMap unit right W D) =
       compare (retainedCompletePriorSignatureAt molecule descriptorMap unit left W D)
@@ -218,7 +218,7 @@ variable {read : input.LocalizedRerootCursor carrierFuel → Option LocalizedAux
   (leftStages : input.RuleMajorContextStages carrierFuel read cursorL)
   (rightStages : input.RuleMajorContextStages carrierFuel read cursorR)
   (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-  (unit : DetectedOccurrence input.moleculeGraph)
+  (unit : OccurrenceUnit input.Atom)
   (readL : RetainedStageReadingFacts leftStages descriptorMap unit)
   (readR : RetainedStageReadingFacts rightStages descriptorMap unit)
   (isoL : RuleMajorContextStageGraphIsoBundle leftStages)
@@ -354,8 +354,8 @@ variable {input : CertifiedLocalizedCIPInput}
   (tetrahedralMap : ∀ unit value, descriptorMap unit = some value → value.IsTetrahedral)
   (singleBonded : input.moleculeGraph.SimpleBonded)
   (target : input.LocalizedRerootCursor (retainedCarrierFuel input))
-  (unit : DetectedOccurrence input.moleculeGraph)
-  (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit.1)
+  (unit : OccurrenceUnit input.Atom)
+  (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit)
 
 include tetrahedralMap singleBonded targetUnit
 

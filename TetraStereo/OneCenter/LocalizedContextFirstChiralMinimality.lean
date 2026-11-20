@@ -83,7 +83,7 @@ theorem contextTree_node_minimal
     {treeFuel : Nat} {treeKey : input.LocalizedRerootCumulativeRule45Key}
     (treeTrace : LocalizedRuleMajorSortTrace input .rule4a
       (input.molecularReader descriptorMap target) treeFuel tree treeKey)
-    {unit : DetectedOccurrence input.moleculeGraph} (hyp : ContextTreeRankReadback tree descriptorMap unit)
+    {unit : OccurrenceUnit input.Atom} (hyp : ContextTreeRankReadback tree descriptorMap unit)
     {fuel : Nat}
     (ih : ∀ (node : (ruleMajorTreeGraph tree).Node)
       (dsub : LocalizedCumulativeDecoratedTree input (input.certified.input.molecule.atomCount + 1))
@@ -306,7 +306,7 @@ theorem contextTree_firstChiralRank_minimal
     {treeFuel : Nat} {treeKey : input.LocalizedRerootCumulativeRule45Key}
     (treeTrace : LocalizedRuleMajorSortTrace input .rule4a
       (input.molecularReader descriptorMap target) treeFuel tree treeKey)
-    {unit : DetectedOccurrence input.moleculeGraph} (hyp : ContextTreeRankReadback tree descriptorMap unit) :
+    {unit : OccurrenceUnit input.Atom} (hyp : ContextTreeRankReadback tree descriptorMap unit) :
     ∀ {fuel : Nat} (node : (ruleMajorTreeGraph tree).Node)
       (dsub : LocalizedCumulativeDecoratedTree input (input.certified.input.molecule.atomCount + 1))
       (key : input.LocalizedRerootCumulativeRule45Key),

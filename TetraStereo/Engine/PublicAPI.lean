@@ -2,6 +2,8 @@ import TetraStereo.OneCenter.CertificateExport
 import TetraStereo.OneCenter.OfficialCIPEngine
 import TetraStereo.OneCenter.CIPRules
 import TetraStereo.OneCenter.RS
+import TetraStereo.Engine.LocalizedChemicalRingPublic
+import TetraStereo.Engine.LocalizedChemicalRingPhysicalCertificate
 
 set_option autoImplicit false
 

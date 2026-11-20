@@ -31,7 +31,7 @@ variable {input : CertifiedLocalizedCIPInput} {carrierFuel : Nat}
 structure RuleMajorTreeReadbackNoReference4c
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) : Prop where
+    (unit : OccurrenceUnit input.Atom) : Prop where
   label : ∀ (node : (ruleMajorTreeGraph tree).Node)
     (actual : LocalizedCumulativeDecoratedTree input carrierFuel),
     tree.decoratedSubtreeAt? node.1 = some actual →
@@ -152,7 +152,7 @@ theorem stereoNodePathObservation_nil_eq_encoded4a_noReference
     {tree : LocalizedCumulativeDecoratedTree input carrierFuel}
     {key : input.LocalizedRerootCumulativeRule45Key}
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) (graph : RootedDigraph input.Atom)
+    (unit : OccurrenceUnit input.Atom) (graph : RootedDigraph input.Atom)
     (W D : Nat) (node : graph.Node)
     (tableMatch : LocalizedCumulativeTreeTableMatch .rule4cNoReference tree key)
     (realizes : LocalizedCumulativeTreeRealizes input read tree)
@@ -182,7 +182,7 @@ variable {input : CertifiedLocalizedCIPInput} {center : input.TetrahedralCenter}
     Option LocalizedAuxiliaryLabel}
 variable (arm : input.RuleMajorRootArm center index .rule4cNoReference read)
   {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-  {unit : DetectedOccurrence input.moleculeGraph}
+  {unit : OccurrenceUnit input.Atom}
 
 /-- Terminal no-reference keys read the actual Rule-4a and molecular Rule-4c columns. -/
 theorem ruleMajorRootArm_terminal_bridge_noReference4c

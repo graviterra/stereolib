@@ -154,7 +154,7 @@ theorem actualReferenceDescriptorMap_tetrahedral (input : LocalizedUniversalRefe
 
 theorem occurrenceReading_tetrahedral_of_map {Atom : Type} [Fintype Atom] [DecidableEq Atom]
     (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+    (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
     (htetra : ∀ u d, descriptorMap u = some d → d.IsTetrahedral) (node : graph.Node) :
     (occurrenceReading molecule descriptorMap unit graph node).IsTetrahedral := by
   unfold occurrenceReading
@@ -174,7 +174,7 @@ theorem occurrenceReading_tetrahedral_of_map {Atom : Type} [Fintype Atom] [Decid
 theorem rule4aOnly_rankEvidence_of_simpleBonded {input : CertifiedLocalizedCIPInput}
     (singleBonded : input.moleculeGraph.SimpleBonded)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) (graph : RootedDigraph input.Atom) :
+    (unit : OccurrenceUnit input.Atom) (graph : RootedDigraph input.Atom) :
     Rule4aOnly graph (rankEvidence input.moleculeGraph descriptorMap unit graph) := by
   intro rule hrule node
   cases rule with

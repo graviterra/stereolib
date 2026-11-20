@@ -195,7 +195,7 @@ theorem occurrenceReading_ne_unavailable_of_real_and_ancestorAtoms
     {Atom : Type} [Fintype Atom] [DecidableEq Atom]
     (molecule : MoleculeGraph Atom)
     (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+    (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
     {node : graph.Node} {steps : List Atom}
     (real : (graph.label node).provenance = .realAtom)
     (path : ancestorAtoms graph node = some steps) :
@@ -219,8 +219,8 @@ theorem realizedTree_node_label_eq_occurrenceReading
     (acyclic : input.moleculeGraph.Acyclic)
     {carrierFuel : Nat}
     (target : input.LocalizedRerootCursor carrierFuel)
-    (unit : DetectedOccurrence input.moleculeGraph)
-    (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit.1)
+    (unit : OccurrenceUnit input.Atom)
+    (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit)
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (realizes : LocalizedCumulativeTreeRealizes input
       (input.molecularReader descriptorMap target.occurrence) tree)
@@ -260,7 +260,7 @@ theorem realizedTree_node_label_eq_occurrenceReading
     singleBonded acyclic (input.molecularReader descriptorMap target.occurrence)
     realizes rootChild hactual rootCurrent stepsEq
   have cursorUnit : input.molecularFrameUnit actual.source.occurrence.1 =
-      ⟨unit.1.root, rerootWalk unit.1.root unit.1.path steps⟩ := by
+      ⟨unit.root, rerootWalk unit.root unit.path steps⟩ := by
     rw [← targetUnit]
     cases actualFrame : input.molecularFrameUnit actual.source.occurrence.1 with
     | mk actualRoot actualPath =>
@@ -293,8 +293,8 @@ theorem ruleMajorArm_node_label_eq_occurrenceReading
     (acyclic : input.moleculeGraph.Acyclic)
     (target : input.LocalizedRerootCursor
       (input.certified.input.molecule.atomCount + 1))
-    (unit : DetectedOccurrence input.moleculeGraph)
-    (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit.1)
+    (unit : OccurrenceUnit input.Atom)
+    (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit)
     (center : input.TetrahedralCenter) (index : Fin 4)
     (stage : LocalizedCumulativeRule45Stage)
     (arm : input.RuleMajorRootArm center index stage

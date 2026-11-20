@@ -194,7 +194,7 @@ variable {read : input.LocalizedRerootCursor (input.certified.input.molecule.ato
     Option LocalizedAuxiliaryLabel}
   (arm : input.OriginalRootArm center index .rule4a read)
   (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-  (unit : DetectedOccurrence input.moleculeGraph)
+  (unit : OccurrenceUnit input.Atom)
 
 /-- The sphere entry contributed by a chain below `start`: its rank list and the reading at its
 endpoint. -/
@@ -408,7 +408,7 @@ theorem arm_rankedLabels_getD
       Option LocalizedAuxiliaryLabel}
     (arm : input.OriginalRootArm center index .rule4a read)
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (hyp : ArmReadback arm descriptorMap unit) :
     ∀ {fuel : Nat} (node : (armGraph arm).Node)
       (dsub : LocalizedCumulativeDecoratedTree input (input.certified.input.molecule.atomCount + 1))
@@ -442,7 +442,7 @@ theorem arm_root_rankedLabels_getD
       Option LocalizedAuxiliaryLabel}
     (arm : input.OriginalRootArm center index .rule4a read)
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (hyp : ArmReadback arm descriptorMap unit) (d : Nat) :
     arm.key.rankedLabels.getD d [] = sphereOf arm descriptorMap unit d (armGraph arm).root :=
   arm_rankedLabels_getD arm hyp (armGraph arm).root arm.tree arm.key arm.trace rfl d

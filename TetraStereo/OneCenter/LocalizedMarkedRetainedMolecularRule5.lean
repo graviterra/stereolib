@@ -35,8 +35,8 @@ variable {input : CertifiedLocalizedCIPInput}
   (tetrahedralMap : ∀ unit value, descriptorMap unit = some value → value.IsTetrahedral)
   (singleBonded : input.moleculeGraph.SimpleBonded)
   (target : input.LocalizedRerootCursor (retainedCarrierFuel input))
-  (unit : DetectedOccurrence input.moleculeGraph)
-  (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit.1)
+  (unit : OccurrenceUnit input.Atom)
+  (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit)
 
 include tetrahedralMap singleBonded targetUnit
 

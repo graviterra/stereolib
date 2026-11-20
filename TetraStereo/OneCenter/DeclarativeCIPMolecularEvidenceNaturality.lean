@@ -94,7 +94,7 @@ end Context
 section Evidence
 
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom] (molecule : MoleculeGraph Atom)
-  (descriptorMap : DescriptorMap (DetectedOccurrence molecule)) (unit : DetectedOccurrence molecule)
+  (descriptorMap : DescriptorMap (DetectedOccurrence molecule)) (unit : OccurrenceUnit Atom)
   {left right : RootedDigraph Atom} (iso : RootedDigraph.Iso left right)
 
 theorem occurrenceReading_iso (node : left.Node) :
@@ -209,7 +209,7 @@ def ConstitutionalProblemData.withMolecularEvidence {molecule : MoleculeGraph At
     (base : ConstitutionalProblemData Atom (DetectedOccurrence molecule)) :
     StereochemicalProblemData Atom (DetectedOccurrence molecule) :=
   { base with
-    evidence := molecularEvidence molecule
+    evidence := fun descriptorMap unit graph => molecularEvidence molecule descriptorMap unit graph
     evidence_invariant := fun descriptorMap unit _ _ iso =>
       molecularEvidence_preserved molecule descriptorMap unit iso
     hierarchy_compatible := by
@@ -254,7 +254,8 @@ theorem detectedMolecularData_evidence (molecule : MoleculeGraph Atom)
     (frame : DetectedFrame molecule)
     (extra : ConstitutionalProblemData Atom (DetectedOccurrence molecule)) :
     (detectedMolecularData molecule frame extra).withOrdinaryCanonicalAddressing.evidence =
-      molecularEvidence molecule :=
+      fun descriptorMap (unit : DetectedOccurrence molecule) graph =>
+        molecularEvidence molecule descriptorMap unit graph :=
   rfl
 
 theorem detectedMolecularData_expansionsFaithful (molecule : MoleculeGraph Atom)

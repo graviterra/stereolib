@@ -88,7 +88,7 @@ def signatureOf (sel : ReferenceSelection) (f : DescriptorSense → Key StereoLa
 
 theorem ligandSignatureAt_eq_signatureOf {Atom : Type} [Fintype Atom] [DecidableEq Atom]
     (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom) (W D : ℕ) :
+    (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom) (W D : ℕ) :
     ligandSignatureAt molecule descriptorMap unit graph W D =
       signatureOf (referenceSelection molecule descriptorMap unit graph)
         (readingAt molecule descriptorMap unit graph W D) := by

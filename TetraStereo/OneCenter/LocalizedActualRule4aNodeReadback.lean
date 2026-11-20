@@ -151,7 +151,7 @@ theorem encoded4a_cons_of_key {input : CertifiedLocalizedCIPInput} {carrierFuel 
 
 theorem stereoLabel_rankEvidence_rule4a {input : CertifiedLocalizedCIPInput}
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) (graph : RootedDigraph input.Atom)
+    (unit : OccurrenceUnit input.Atom) (graph : RootedDigraph input.Atom)
     (node : graph.Node)
     (havail : occurrenceReading input.moleculeGraph descriptorMap unit graph node ≠ .unavailable) :
     stereoLabel graph (rankEvidence input.moleculeGraph descriptorMap unit graph)
@@ -177,7 +177,7 @@ theorem prio4a_eq_kindPriority {input : CertifiedLocalizedCIPInput} {carrierFuel
 theorem stereoNodePathObservation_nil_eq_encoded4a {input : CertifiedLocalizedCIPInput}
     {carrierFuel : Nat} {read : input.LocalizedRerootCursor carrierFuel → Option LocalizedAuxiliaryLabel}
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) (graph : RootedDigraph input.Atom) (W D : Nat)
+    (unit : OccurrenceUnit input.Atom) (graph : RootedDigraph input.Atom) (W D : Nat)
     (node : graph.Node) {dsub : LocalizedCumulativeDecoratedTree input carrierFuel}
     {key : input.LocalizedRerootCumulativeRule45Key}
     (tableMatch : LocalizedCumulativeTreeTableMatch .rule4a dsub key)

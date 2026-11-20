@@ -198,7 +198,7 @@ theorem encoded4b_cons_of_key (tableMatch : LocalizedCumulativeTreeTableMatch (.
 /-! ## The independent Rule-4b label of a molecular reading -/
 
 variable (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-  (unit : DetectedOccurrence input.moleculeGraph) (graph : RootedDigraph input.Atom)
+  (unit : OccurrenceUnit input.Atom) (graph : RootedDigraph input.Atom)
 
 /-- The Rule-4a label is the same under the reading evidence and the rank evidence. -/
 theorem stereoLabel_readingEvidence_rule4a (reference : DescriptorSense) (node : graph.Node) :

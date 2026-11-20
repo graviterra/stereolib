@@ -16,13 +16,13 @@ abbrev MolecularRankPair := Lex (List (Key ℤ) × Key StereoLabel)
 
 def molecularRankPairAt {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
     (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom) (W D : Nat) :
+    (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom) (W D : Nat) :
     MolecularRankPair :=
   pairKey molecule graph (rankEvidence molecule descriptorMap unit graph) W D graph.root
 
 theorem molecularRankPairAt_iso {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
     (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) {left right : RootedDigraph Atom}
+    (unit : OccurrenceUnit Atom) {left right : RootedDigraph Atom}
     (iso : RootedDigraph.Iso left right) (W D : Nat) :
     molecularRankPairAt molecule descriptorMap unit right W D =
       molecularRankPairAt molecule descriptorMap unit left W D := by
@@ -32,7 +32,7 @@ theorem molecularRankPairAt_iso {Atom : Type u} [Fintype Atom] [DecidableEq Atom
 
 theorem molecularRankPairAt_eq_of_faithful {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
     (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (externalParent ligand : Atom)
+    (unit : OccurrenceUnit Atom) (externalParent ligand : Atom)
     {left right : RootedDigraph Atom}
     (faithfulL : left.FaithfulExactExpansion molecule externalParent ligand)
     (faithfulR : right.FaithfulExactExpansion molecule externalParent ligand) (W D : Nat) :

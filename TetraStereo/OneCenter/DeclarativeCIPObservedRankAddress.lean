@@ -545,7 +545,7 @@ section ObservedReferenceRankAddress
 variable {Atom : Type} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom)
   (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
   (observe : ConstitutionalRule → graph.Node → ℤ)
 
 local instance observedReferenceRankAddressNodeFintype : Fintype graph.Node := graph.nodeFintype

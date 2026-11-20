@@ -154,7 +154,7 @@ section Molecular
 
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom] (molecule : MoleculeGraph Atom)
   (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 theorem rule4abOnly_readingEvidence_of_single (hsingle : ∀ atom other, molecule.bond atom other ≤ 1)
     (reference : DescriptorSense) :

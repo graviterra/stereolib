@@ -42,7 +42,7 @@ section Generic
 variable {input : CertifiedLocalizedCIPInput} {carrierFuel : Nat}
   {read : input.LocalizedRerootCursor carrierFuel → Option LocalizedAuxiliaryLabel}
   {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-  {unit : DetectedOccurrence input.moleculeGraph}
+  {unit : OccurrenceUnit input.Atom}
 
 /-- Actual Rule-4b scalar order agrees with the independently projected contextual Rule-4b
 component. The readback and local observer equations are the only semantic inputs. -/
@@ -59,10 +59,10 @@ theorem contextTrees_ruleMajor_scalar4b_compare
     (readbackLeft : ContextTreeRankReadback left descriptorMap unit)
     (readbackRight : ContextTreeRankReadback right descriptorMap unit)
     (observationsLeft : ∀ rule node actual, left.decoratedSubtreeAt? node.1 = some actual →
-      contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph left) unit.1.root
+      contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph left) unit.root
         rule node = priorityValue rule (armObservation rule actual))
     (observationsRight : ∀ rule node actual, right.decoratedSubtreeAt? node.1 = some actual →
-      contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph right) unit.1.root
+      contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph right) unit.root
         rule node = priorityValue rule (armObservation rule actual))
     {W D : Nat}
     (widthLeft : (ruleMajorTreeGraph left).width ≤ W)
@@ -77,17 +77,17 @@ theorem contextTrees_ruleMajor_scalar4b_compare
         (scalar4b keyLeft) (scalar4b keyRight) =
       compare
         (observedRule4bComponent (ruleMajorTreeGraph left)
-          (contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph left) unit.1.root)
+          (contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph left) unit.root)
           (readingEvidence input.moleculeGraph descriptorMap unit (ruleMajorTreeGraph left)
             (senseOf leftReference)) W D (ruleMajorTreeGraph left).root)
         (observedRule4bComponent (ruleMajorTreeGraph right)
-          (contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph right) unit.1.root)
+          (contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph right) unit.root)
           (readingEvidence input.moleculeGraph descriptorMap unit (ruleMajorTreeGraph right)
             (senseOf rightReference)) W D (ruleMajorTreeGraph right).root) := by
   let graphLeft := ruleMajorTreeGraph left
   let graphRight := ruleMajorTreeGraph right
-  let observeLeft := contextualNodeObservation input.moleculeGraph graphLeft unit.1.root
-  let observeRight := contextualNodeObservation input.moleculeGraph graphRight unit.1.root
+  let observeLeft := contextualNodeObservation input.moleculeGraph graphLeft unit.root
+  let observeRight := contextualNodeObservation input.moleculeGraph graphRight unit.root
   let evidenceLeft := readingEvidence input.moleculeGraph descriptorMap unit graphLeft
     (senseOf leftReference)
   let evidenceRight := readingEvidence input.moleculeGraph descriptorMap unit graphRight
@@ -129,10 +129,10 @@ theorem contextTrees_ruleMajor_scalar4c_compare
     (readbackLeft : ContextTreeRankReadback left descriptorMap unit)
     (readbackRight : ContextTreeRankReadback right descriptorMap unit)
     (observationsLeft : ∀ rule node actual, left.decoratedSubtreeAt? node.1 = some actual →
-      contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph left) unit.1.root
+      contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph left) unit.root
         rule node = priorityValue rule (armObservation rule actual))
     (observationsRight : ∀ rule node actual, right.decoratedSubtreeAt? node.1 = some actual →
-      contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph right) unit.1.root
+      contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph right) unit.root
         rule node = priorityValue rule (armObservation rule actual))
     {W D : Nat}
     (widthLeft : (ruleMajorTreeGraph left).width ≤ W)
@@ -147,17 +147,17 @@ theorem contextTrees_ruleMajor_scalar4c_compare
         (scalar4c keyLeft) (scalar4c keyRight) =
       compare
         (observedRule4cComponent (ruleMajorTreeGraph left)
-          (contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph left) unit.1.root)
+          (contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph left) unit.root)
           (readingEvidence4c input.moleculeGraph descriptorMap unit (ruleMajorTreeGraph left)
             (senseOf leftReference)) W D (ruleMajorTreeGraph left).root)
         (observedRule4cComponent (ruleMajorTreeGraph right)
-          (contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph right) unit.1.root)
+          (contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph right) unit.root)
           (readingEvidence4c input.moleculeGraph descriptorMap unit (ruleMajorTreeGraph right)
             (senseOf rightReference)) W D (ruleMajorTreeGraph right).root) := by
   let graphLeft := ruleMajorTreeGraph left
   let graphRight := ruleMajorTreeGraph right
-  let observeLeft := contextualNodeObservation input.moleculeGraph graphLeft unit.1.root
-  let observeRight := contextualNodeObservation input.moleculeGraph graphRight unit.1.root
+  let observeLeft := contextualNodeObservation input.moleculeGraph graphLeft unit.root
+  let observeRight := contextualNodeObservation input.moleculeGraph graphRight unit.root
   let evidenceLeft := readingEvidence4c input.moleculeGraph descriptorMap unit graphLeft
     (senseOf leftReference)
   let evidenceRight := readingEvidence4c input.moleculeGraph descriptorMap unit graphRight
@@ -198,10 +198,10 @@ theorem contextTrees_ruleMajor_noReference4c_compare
     (readbackLeft : ContextTreeRankReadback left descriptorMap unit)
     (readbackRight : ContextTreeRankReadback right descriptorMap unit)
     (observationsLeft : ∀ rule node actual, left.decoratedSubtreeAt? node.1 = some actual →
-      contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph left) unit.1.root
+      contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph left) unit.root
         rule node = priorityValue rule (armObservation rule actual))
     (observationsRight : ∀ rule node actual, right.decoratedSubtreeAt? node.1 = some actual →
-      contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph right) unit.1.root
+      contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph right) unit.root
         rule node = priorityValue rule (armObservation rule actual))
     {W D : Nat}
     (widthLeft : (ruleMajorTreeGraph left).width ≤ W)
@@ -216,17 +216,17 @@ theorem contextTrees_ruleMajor_noReference4c_compare
         (scalar4b keyLeft) (scalar4b keyRight) =
       compare
         (observedRule4cComponent (ruleMajorTreeGraph left)
-          (contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph left) unit.1.root)
+          (contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph left) unit.root)
           (noReferenceEvidence4c input.moleculeGraph descriptorMap unit
             (ruleMajorTreeGraph left)) W D (ruleMajorTreeGraph left).root)
         (observedRule4cComponent (ruleMajorTreeGraph right)
-          (contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph right) unit.1.root)
+          (contextualNodeObservation input.moleculeGraph (ruleMajorTreeGraph right) unit.root)
           (noReferenceEvidence4c input.moleculeGraph descriptorMap unit
             (ruleMajorTreeGraph right)) W D (ruleMajorTreeGraph right).root) := by
   let graphLeft := ruleMajorTreeGraph left
   let graphRight := ruleMajorTreeGraph right
-  let observeLeft := contextualNodeObservation input.moleculeGraph graphLeft unit.1.root
-  let observeRight := contextualNodeObservation input.moleculeGraph graphRight unit.1.root
+  let observeLeft := contextualNodeObservation input.moleculeGraph graphLeft unit.root
+  let observeRight := contextualNodeObservation input.moleculeGraph graphRight unit.root
   let evidenceLeft := noReferenceEvidence4c input.moleculeGraph descriptorMap unit graphLeft
   let evidenceRight := noReferenceEvidence4c input.moleculeGraph descriptorMap unit graphRight
   have hsingle := molecule_bond_le_one singleBonded

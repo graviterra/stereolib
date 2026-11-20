@@ -134,7 +134,7 @@ variable {input : CertifiedLocalizedCIPInput} {carrierFuel : Nat}
   (leftStages : input.RuleMajorContextStages carrierFuel read cursorL)
   (rightStages : input.RuleMajorContextStages carrierFuel read cursorR)
   (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-  (unit : DetectedOccurrence input.moleculeGraph)
+  (unit : OccurrenceUnit input.Atom)
   (readL : RuleMajorContextReadingReadbacks leftStages descriptorMap unit)
   (readR : RuleMajorContextReadingReadbacks rightStages descriptorMap unit)
   (isoL : RuleMajorContextStageGraphIsoBundle leftStages)

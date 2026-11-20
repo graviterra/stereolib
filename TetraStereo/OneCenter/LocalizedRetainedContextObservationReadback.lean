@@ -344,8 +344,8 @@ theorem retainedContextRuleValue_eq_armObservation
     {carrierFuel : Nat}
     {read : input.LocalizedRerootCursor carrierFuel → Option LocalizedAuxiliaryLabel}
     (target : input.LocalizedRerootCursor carrierFuel)
-    (unit : DetectedOccurrence input.moleculeGraph)
-    (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit.1)
+    (unit : OccurrenceUnit input.Atom)
+    (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit)
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (realizes : LocalizedCumulativeTreeRealizes input read tree)
     (rootChild : tree.source ∈ input.executableLocalizedRerootChildren target)
@@ -378,12 +378,12 @@ theorem retainedContextRuleValue_eq_armObservation
       obtain ⟨steps, stepsEq, _rootEq, pathEq⟩ :=
         input.retainedCursorFrame_eq_ancestorWalk singleBonded target tree realizes rootChild
           node actual lookup
-      have targetRoot : (input.molecularFrameUnit target.occurrence.1).root = unit.1.root :=
+      have targetRoot : (input.molecularFrameUnit target.occurrence.1).root = unit.root :=
         congrArg OccurrenceUnit.root targetUnit
-      have targetPath : (input.molecularFrameUnit target.occurrence.1).path = unit.1.path :=
+      have targetPath : (input.molecularFrameUnit target.occurrence.1).path = unit.path :=
         congrArg OccurrenceUnit.path targetUnit
       have walkEq : (input.molecularFrameUnit actual.source.occurrence.1).path =
-          rerootWalk unit.1.root unit.1.path steps := by
+          rerootWalk unit.root unit.path steps := by
         rw [pathEq, targetRoot, targetPath]
       cases input.carrierOccurrence_provenance_simple_or_ring singleBonded
           actual.source.occurrence with
@@ -395,7 +395,7 @@ theorem retainedContextRuleValue_eq_armObservation
           have distance :=
             input.retainedRealRule1bRootDistance_eq_framePathLength singleBonded
               actual.source.occurrence real
-          have walkLength : (rerootWalk unit.1.root unit.1.path steps).length =
+          have walkLength : (rerootWalk unit.root unit.path steps).length =
               actual.source.occurrence.1.node.rule1bRootDistance := by
             rw [← walkEq]
             exact distance.symm
@@ -419,8 +419,8 @@ theorem retainedContextNodeObservation_eq_armObservation
     {carrierFuel : Nat}
     {read : input.LocalizedRerootCursor carrierFuel → Option LocalizedAuxiliaryLabel}
     (target : input.LocalizedRerootCursor carrierFuel)
-    (unit : DetectedOccurrence input.moleculeGraph)
-    (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit.1)
+    (unit : OccurrenceUnit input.Atom)
+    (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit)
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (realizes : LocalizedCumulativeTreeRealizes input read tree)
     (rootChild : tree.source ∈ input.executableLocalizedRerootChildren target)
@@ -441,8 +441,8 @@ theorem retainedContextArm_nodeObservation
     {carrierFuel : Nat}
     (target cursor : input.LocalizedRerootCursor carrierFuel)
     (child : cursor ∈ input.executableLocalizedRerootChildren target)
-    (unit : DetectedOccurrence input.moleculeGraph)
-    (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit.1)
+    (unit : OccurrenceUnit input.Atom)
+    (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit)
     {stage : LocalizedCumulativeRule45Stage}
     {read : input.LocalizedRerootCursor carrierFuel → Option LocalizedAuxiliaryLabel}
     (arm : input.RuleMajorContextArm carrierFuel stage read cursor)
@@ -464,8 +464,8 @@ private theorem retainedCursorUnit_of_ancestorWalk
     {carrierFuel : Nat}
     {target : input.LocalizedRerootCursor carrierFuel}
     {actual : LocalizedCumulativeDecoratedTree input carrierFuel}
-    (unit : DetectedOccurrence input.moleculeGraph)
-    (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit.1)
+    (unit : OccurrenceUnit input.Atom)
+    (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit)
     {steps : List input.Atom}
     (rootEq : (input.molecularFrameUnit actual.source.occurrence.1).root =
       (input.molecularFrameUnit target.occurrence.1).root)
@@ -473,20 +473,20 @@ private theorem retainedCursorUnit_of_ancestorWalk
       rerootWalk (input.molecularFrameUnit target.occurrence.1).root
         (input.molecularFrameUnit target.occurrence.1).path steps) :
     input.molecularFrameUnit actual.source.occurrence.1 =
-      ⟨unit.1.root, rerootWalk unit.1.root unit.1.path steps⟩ := by
-  have targetRoot : (input.molecularFrameUnit target.occurrence.1).root = unit.1.root :=
+      ⟨unit.root, rerootWalk unit.root unit.path steps⟩ := by
+  have targetRoot : (input.molecularFrameUnit target.occurrence.1).root = unit.root :=
     congrArg OccurrenceUnit.root targetUnit
-  have targetPath : (input.molecularFrameUnit target.occurrence.1).path = unit.1.path :=
+  have targetPath : (input.molecularFrameUnit target.occurrence.1).path = unit.path :=
     congrArg OccurrenceUnit.path targetUnit
-  have rootField : (input.molecularFrameUnit actual.source.occurrence.1).root = unit.1.root :=
+  have rootField : (input.molecularFrameUnit actual.source.occurrence.1).root = unit.root :=
     rootEq.trans targetRoot
   have pathField : (input.molecularFrameUnit actual.source.occurrence.1).path =
-      rerootWalk unit.1.root unit.1.path steps := by
+      rerootWalk unit.root unit.path steps := by
     rw [pathEq, targetRoot, targetPath]
   cases frameEq : input.molecularFrameUnit actual.source.occurrence.1 with
   | mk frameRoot framePath =>
-      have rootEq' : frameRoot = unit.1.root := by simpa [frameEq] using rootField
-      have pathEq' : framePath = rerootWalk unit.1.root unit.1.path steps := by
+      have rootEq' : frameRoot = unit.root := by simpa [frameEq] using rootField
+      have pathEq' : framePath = rerootWalk unit.root unit.path steps := by
         simpa [frameEq] using pathField
       simp [rootEq', pathEq']
 
@@ -499,8 +499,8 @@ theorem retainedRealizedTree_label_eq_occurrenceReading
     (singleBonded : input.moleculeGraph.SimpleBonded)
     {carrierFuel : Nat}
     (target : input.LocalizedRerootCursor carrierFuel)
-    (unit : DetectedOccurrence input.moleculeGraph)
-    (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit.1)
+    (unit : OccurrenceUnit input.Atom)
+    (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit)
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (realizes : LocalizedCumulativeTreeRealizes input
       (input.molecularReader descriptorMap target.occurrence) tree)
@@ -573,8 +573,8 @@ theorem retainedContextArm_label_eq_occurrenceReading
     {carrierFuel : Nat}
     (target cursor : input.LocalizedRerootCursor carrierFuel)
     (child : cursor ∈ input.executableLocalizedRerootChildren target)
-    (unit : DetectedOccurrence input.moleculeGraph)
-    (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit.1)
+    (unit : OccurrenceUnit input.Atom)
+    (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit)
     {stage : LocalizedCumulativeRule45Stage}
     (arm : input.RuleMajorContextArm carrierFuel stage
       (input.molecularReader descriptorMap target.occurrence) cursor)

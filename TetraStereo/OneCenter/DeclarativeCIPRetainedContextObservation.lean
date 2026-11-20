@@ -254,7 +254,7 @@ section Observation
 
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom) (graph : RootedDigraph Atom)
-  (unit : DetectedOccurrence molecule)
+  (unit : OccurrenceUnit Atom)
 
 local instance retainedObservationNodeFintype : Fintype graph.Node := graph.nodeFintype
 
@@ -275,7 +275,7 @@ def retainedContextRuleValue : ConstitutionalRule → graph.Node → ℕ
   | .rule1bDuplicateNodeProximity, node =>
       match graph.label node, retainedOccurrenceSteps graph node with
       | ⟨some _, .realAtom⟩, some steps =>
-          (rerootWalk unit.1.root unit.1.path steps).length
+          (rerootWalk unit.root unit.path steps).length
       | _, _ =>
           ruleValue molecule .rule1bDuplicateNodeProximity
             (List.replicate (graph.depth node) 0) (some (graph.label node))
@@ -293,7 +293,7 @@ theorem retainedContextRuleValue_rule1b_real {node : graph.Node} {atom : Atom} {
     (label : graph.label node = ⟨some atom, .realAtom⟩)
     (stepsEq : retainedOccurrenceSteps graph node = some steps) :
     retainedContextRuleValue molecule graph unit .rule1bDuplicateNodeProximity node =
-      (rerootWalk unit.1.root unit.1.path steps).length := by
+      (rerootWalk unit.root unit.path steps).length := by
   simp [retainedContextRuleValue, label, stepsEq]
 
 theorem retainedContextRuleValue_rule1b_real_no_steps {node : graph.Node} {atom : Atom}
@@ -344,14 +344,14 @@ theorem retainedContextRuleValue_rule1b_phantom {node : graph.Node} {atom : Atom
 theorem retainedContextRuleValue_rule1b_root {leaf : Atom}
     (rootLabel : graph.label graph.root = ⟨some leaf, .realAtom⟩) :
     retainedContextRuleValue molecule graph unit .rule1bDuplicateNodeProximity graph.root =
-      (rerootStep unit.1.root unit.1.path leaf).length := by
+      (rerootStep unit.root unit.path leaf).length := by
   simp [retainedContextRuleValue, rootLabel, retainedOccurrenceSteps_root rootLabel,
     retainedOccurrenceWalk_singleton]
 
 /-- At an empty-path occurrence the ligand root has retained Rule 1b value `1`: the walk step is
 the ligand atom itself.  This is the sphere of a ligand root, not digraph depth `0`. -/
 theorem retainedContextRuleValue_rule1b_root_top {leaf : Atom}
-    (rootPath : unit.1.path = [])
+    (rootPath : unit.path = [])
     (rootLabel : graph.label graph.root = ⟨some leaf, .realAtom⟩) :
     retainedContextRuleValue molecule graph unit .rule1bDuplicateNodeProximity graph.root = 1 := by
   rw [retainedContextRuleValue_rule1b_root molecule graph unit rootLabel, rootPath, rerootStep_nil]
@@ -363,7 +363,7 @@ theorem retainedContextRuleValue_rule1b_real_child (addressing : graph.Addressin
     (parentStepsEq : retainedOccurrenceSteps graph parent = some parentSteps)
     (childLabel : graph.label node = ⟨some atom, .realAtom⟩) :
     retainedContextRuleValue molecule graph unit .rule1bDuplicateNodeProximity node =
-      (rerootStep unit.1.root (rerootWalk unit.1.root unit.1.path parentSteps) atom).length := by
+      (rerootStep unit.root (rerootWalk unit.root unit.path parentSteps) atom).length := by
   have hchildSteps := retainedOccurrenceSteps_child addressing hchild parentStepsEq
     (by rw [childLabel])
   simp [retainedContextRuleValue, childLabel, hchildSteps, retainedOccurrenceWalk_child]
@@ -374,7 +374,7 @@ readback. -/
 theorem retainedContextRuleValue_rule1b_of_pathIdentity {node : graph.Node} {atom : Atom}
     {steps path : List Atom} (label : graph.label node = ⟨some atom, .realAtom⟩)
     (stepsEq : retainedOccurrenceSteps graph node = some steps)
-    (pathIdentity : path = rerootWalk unit.1.root unit.1.path steps) :
+    (pathIdentity : path = rerootWalk unit.root unit.path steps) :
     retainedContextRuleValue molecule graph unit .rule1bDuplicateNodeProximity node =
       path.length := by
   simp [retainedContextRuleValue, label, stepsEq, pathIdentity]
@@ -391,7 +391,7 @@ theorem retainedContextNodeObservation_rule1b_real {node : graph.Node} {atom : A
     {steps : List Atom} (label : graph.label node = ⟨some atom, .realAtom⟩)
     (stepsEq : retainedOccurrenceSteps graph node = some steps) :
     retainedContextNodeObservation molecule graph unit .rule1bDuplicateNodeProximity node =
-      -((rerootWalk unit.1.root unit.1.path steps).length : ℤ) := by
+      -((rerootWalk unit.root unit.path steps).length : ℤ) := by
   simp [retainedContextNodeObservation, retainedContextRuleValue, priorityValue, label, stepsEq]
 
 theorem retainedContextNodeObservation_rule1b_of_not_realAtom {node : graph.Node}
@@ -404,7 +404,7 @@ theorem retainedContextNodeObservation_rule1b_of_not_realAtom {node : graph.Node
 theorem retainedContextNodeObservation_rule1b_of_pathIdentity {node : graph.Node} {atom : Atom}
     {steps path : List Atom} (label : graph.label node = ⟨some atom, .realAtom⟩)
     (stepsEq : retainedOccurrenceSteps graph node = some steps)
-    (pathIdentity : path = rerootWalk unit.1.root unit.1.path steps) :
+    (pathIdentity : path = rerootWalk unit.root unit.path steps) :
     retainedContextNodeObservation molecule graph unit .rule1bDuplicateNodeProximity node =
       -(path.length : ℤ) := by
   simp [retainedContextNodeObservation, retainedContextRuleValue, priorityValue, label, stepsEq,
@@ -414,7 +414,7 @@ theorem retainedContextNodeObservation_eq_nodeObservation_of_pathLength
     (pathLength : ∀ (node : graph.Node) (atom : Atom) (steps : List Atom),
       graph.label node = ⟨some atom, .realAtom⟩ →
         retainedOccurrenceSteps graph node = some steps →
-          (rerootWalk unit.1.root unit.1.path steps).length = graph.depth node + 1) :
+          (rerootWalk unit.root unit.path steps).length = graph.depth node + 1) :
     ∀ rule node, retainedContextNodeObservation molecule graph unit rule node =
       nodeObservation molecule graph rule node := by
   intro rule node
@@ -463,20 +463,20 @@ theorem retainedContextNodeObservation_eq_nodeObservation_of_pathLength
 agree with the positional canonical observations.  The value is the retained branch length
 `depth + 1`.  It is not identified with physical distance. -/
 theorem retainedContextNodeObservation_eq_nodeObservation_of_top_simple
-    (rootPath : unit.1.path = [])
+    (rootPath : unit.path = [])
     (simple : ∀ (node : graph.Node) (atom : Atom) (steps : List Atom),
       graph.label node = ⟨some atom, .realAtom⟩ →
         retainedOccurrenceSteps graph node = some steps →
-          (unit.1.root :: steps).Nodup) :
+          (unit.root :: steps).Nodup) :
     ∀ rule node, retainedContextNodeObservation molecule graph unit rule node =
       nodeObservation molecule graph rule node :=
   retainedContextNodeObservation_eq_nodeObservation_of_pathLength molecule graph unit
     (fun node atom steps hlabel hsteps => by
       have hnodup := simple node atom steps hlabel hsteps
-      have hwalk := retainedOccurrenceWalk_eq_append_of_nodup unit.1.root steps [] hnodup
+      have hwalk := retainedOccurrenceWalk_eq_append_of_nodup unit.root steps [] hnodup
       calc
-        (rerootWalk unit.1.root unit.1.path steps).length
-            = (rerootWalk unit.1.root [] steps).length := by rw [rootPath]
+        (rerootWalk unit.root unit.path steps).length
+            = (rerootWalk unit.root [] steps).length := by rw [rootPath]
         _ = steps.length := by rw [hwalk]; simp
         _ = graph.depth node + 1 := retainedOccurrenceSteps_length_eq_depth_succ hsteps)
 
@@ -505,7 +505,7 @@ theorem retainedContextRuleKey_eq_ruleKey_of_pathLength (W D : ℕ)
     (pathLength : ∀ (node : graph.Node) (atom : Atom) (steps : List Atom),
       graph.label node = ⟨some atom, .realAtom⟩ →
         retainedOccurrenceSteps graph node = some steps →
-          (rerootWalk unit.1.root unit.1.path steps).length = graph.depth node + 1)
+          (rerootWalk unit.root unit.path steps).length = graph.depth node + 1)
     (node : graph.Node) :
     retainedContextRuleKey molecule graph unit W D node =
       ruleKey molecule graph W D node := by
@@ -518,11 +518,11 @@ theorem retainedContextRuleKey_eq_ruleKey_of_pathLength (W D : ℕ)
       (ruleKeyWithObservations_eq_ruleKey graph molecule W D node)
 
 theorem retainedContextRuleKey_eq_ruleKey_of_top_simple (W D : ℕ)
-    (rootPath : unit.1.path = [])
+    (rootPath : unit.path = [])
     (simple : ∀ (node : graph.Node) (atom : Atom) (steps : List Atom),
       graph.label node = ⟨some atom, .realAtom⟩ →
         retainedOccurrenceSteps graph node = some steps →
-          (unit.1.root :: steps).Nodup)
+          (unit.root :: steps).Nodup)
     (node : graph.Node) :
     retainedContextRuleKey molecule graph unit W D node =
       ruleKey molecule graph W D node := by
@@ -543,7 +543,7 @@ theorem retainedContextNodeObservation_eq_contextualNodeObservation_of_distance
     (aligned : ∀ node atom, graph.label node = ⟨some atom, .realAtom⟩ →
       molecule.underlyingSimpleGraph.dist outerRoot atom =
         match retainedOccurrenceSteps graph node with
-        | some steps => (rerootWalk unit.1.root unit.1.path steps).length
+        | some steps => (rerootWalk unit.root unit.path steps).length
         | none => graph.depth node + 1) :
     ∀ rule node, retainedContextNodeObservation molecule graph unit rule node =
       contextualNodeObservation molecule graph outerRoot rule node := by
@@ -595,7 +595,7 @@ theorem retainedContextRuleKey_eq_contextualRuleKey_of_distance (outerRoot : Ato
     (aligned : ∀ node atom, graph.label node = ⟨some atom, .realAtom⟩ →
       molecule.underlyingSimpleGraph.dist outerRoot atom =
         match retainedOccurrenceSteps graph node with
-        | some steps => (rerootWalk unit.1.root unit.1.path steps).length
+        | some steps => (rerootWalk unit.root unit.path steps).length
         | none => graph.depth node + 1)
     (W D : ℕ) (node : graph.Node) :
     retainedContextRuleKey molecule graph unit W D node =
@@ -612,7 +612,7 @@ end Observation
 section Iso
 
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
-  (molecule : MoleculeGraph Atom) (unit : DetectedOccurrence molecule)
+  (molecule : MoleculeGraph Atom) (unit : OccurrenceUnit Atom)
   {left right : RootedDigraph Atom} (iso : RootedDigraph.Iso left right)
 
 local instance retainedLeftNodeFintype : Fintype left.Node := left.nodeFintype

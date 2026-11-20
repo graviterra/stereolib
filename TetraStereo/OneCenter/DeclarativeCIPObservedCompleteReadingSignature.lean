@@ -25,7 +25,7 @@ section ContextualReading
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom)
   (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 local instance contextualCompleteReadingNodeFintype : Fintype graph.Node := graph.nodeFintype
 
@@ -33,7 +33,7 @@ local instance contextualCompleteReadingNodeFintype : Fintype graph.Node := grap
 root in all constitutional observations. `none` is the genuine no-uppercase-reference case. -/
 def contextualCompleteReadingAt (W D : ℕ) (reference : Option DescriptorSense) :
     CompleteReadingKey :=
-  let observe := contextualNodeObservation molecule graph unit.1.root
+  let observe := contextualNodeObservation molecule graph unit.root
   match reference with
   | none => toLex ([], observedRule4cComponent graph observe
       (noReferenceEvidence4c molecule descriptorMap unit graph) W D graph.root)
@@ -72,7 +72,7 @@ theorem contextualCompletePriorSignatureAt_empty (W D : ℕ)
     (empty : contextualReferenceSelection molecule descriptorMap unit graph = .empty) :
     contextualCompletePriorSignatureAt molecule descriptorMap unit graph W D =
       toLex (0, toLex ([], [observedRule4cComponent graph
-        (contextualNodeObservation molecule graph unit.1.root)
+        (contextualNodeObservation molecule graph unit.root)
         (noReferenceEvidence4c molecule descriptorMap unit graph) W D graph.root])) := by
   simp [contextualCompletePriorSignatureAt, contextualCompleteReadingsAt,
     contextualCompleteReadingAt, empty, ReferenceSelection.countPriority]
@@ -84,7 +84,7 @@ section Reflection
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom)
   (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
   (observe : ConstitutionalRule → graph.Node → ℤ)
 
 local instance contextualReferenceReflectNodeFintype : Fintype graph.Node := graph.nodeFintype
@@ -175,7 +175,7 @@ theorem contextualReferenceSelection_reflect :
       (contextualReferenceSelection molecule descriptorMap unit graph).mirror := by
   unfold contextualReferenceSelection
   exact observedReferenceSelection_reflect molecule descriptorMap unit graph
-    (contextualNodeObservation molecule graph unit.1.root)
+    (contextualNodeObservation molecule graph unit.root)
 
 theorem contextualCompleteReadingAt_reflect (W D : ℕ) (reference : Option DescriptorSense) :
     contextualCompleteReadingAt molecule descriptorMap.reflect unit graph W D reference =
@@ -217,7 +217,7 @@ section Iso
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom)
   (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) {left right : RootedDigraph Atom}
+  (unit : OccurrenceUnit Atom) {left right : RootedDigraph Atom}
   (iso : RootedDigraph.Iso left right)
 
 local instance contextualCompleteIsoLeftNodeFintype : Fintype left.Node := left.nodeFintype
@@ -225,53 +225,53 @@ local instance contextualCompleteIsoRightNodeFintype : Fintype right.Node := rig
 
 private theorem contextualObservedRule4bComponent_iso
     (isomorphism : RootedDigraph.Iso left right) (W D : ℕ) (sense : DescriptorSense) :
-    observedRule4bComponent right (contextualNodeObservation molecule right unit.1.root)
+    observedRule4bComponent right (contextualNodeObservation molecule right unit.root)
         (readingEvidence molecule descriptorMap unit right sense) W D right.root =
-      observedRule4bComponent left (contextualNodeObservation molecule left unit.1.root)
+      observedRule4bComponent left (contextualNodeObservation molecule left unit.root)
         (readingEvidence molecule descriptorMap unit left sense) W D left.root := by
   unfold observedRule4bComponent
   rw [← isomorphism.map_root]
   exact congrArg (fun key =>
       (ofLex key).2.getD (stereoIndex .rule4bLikeUnlikeDescriptorPairs) [])
     (ordinaryKeyWithObservations_iso isomorphism
-      (contextualNodeObservation molecule left unit.1.root)
-      (contextualNodeObservation molecule right unit.1.root)
+      (contextualNodeObservation molecule left unit.root)
+      (contextualNodeObservation molecule right unit.root)
       W D
-      (fun rule node => contextualNodeObservation_iso molecule isomorphism unit.1.root rule node)
+      (fun rule node => contextualNodeObservation_iso molecule isomorphism unit.root rule node)
       (readingEvidence_preserved molecule descriptorMap unit isomorphism sense) left.root)
 
 private theorem contextualObservedRule4cComponent_reading_iso
     (isomorphism : RootedDigraph.Iso left right) (W D : ℕ) (sense : DescriptorSense) :
-    observedRule4cComponent right (contextualNodeObservation molecule right unit.1.root)
+    observedRule4cComponent right (contextualNodeObservation molecule right unit.root)
         (readingEvidence4c molecule descriptorMap unit right sense) W D right.root =
-      observedRule4cComponent left (contextualNodeObservation molecule left unit.1.root)
+      observedRule4cComponent left (contextualNodeObservation molecule left unit.root)
         (readingEvidence4c molecule descriptorMap unit left sense) W D left.root := by
   unfold observedRule4cComponent
   rw [← isomorphism.map_root]
   exact congrArg (fun key =>
       (ofLex key).2.getD (stereoIndex .rule4cPseudoasymmetricDescriptor) [])
     (ordinaryKeyWithObservations_iso isomorphism
-      (contextualNodeObservation molecule left unit.1.root)
-      (contextualNodeObservation molecule right unit.1.root)
+      (contextualNodeObservation molecule left unit.root)
+      (contextualNodeObservation molecule right unit.root)
       W D
-      (fun rule node => contextualNodeObservation_iso molecule isomorphism unit.1.root rule node)
+      (fun rule node => contextualNodeObservation_iso molecule isomorphism unit.root rule node)
       (readingEvidence4c_preserved molecule descriptorMap unit isomorphism sense) left.root)
 
 private theorem contextualObservedRule4cComponent_noReference_iso
     (isomorphism : RootedDigraph.Iso left right) (W D : ℕ) :
-    observedRule4cComponent right (contextualNodeObservation molecule right unit.1.root)
+    observedRule4cComponent right (contextualNodeObservation molecule right unit.root)
         (noReferenceEvidence4c molecule descriptorMap unit right) W D right.root =
-      observedRule4cComponent left (contextualNodeObservation molecule left unit.1.root)
+      observedRule4cComponent left (contextualNodeObservation molecule left unit.root)
         (noReferenceEvidence4c molecule descriptorMap unit left) W D left.root := by
   unfold observedRule4cComponent
   rw [← isomorphism.map_root]
   exact congrArg (fun key =>
       (ofLex key).2.getD (stereoIndex .rule4cPseudoasymmetricDescriptor) [])
     (ordinaryKeyWithObservations_iso isomorphism
-      (contextualNodeObservation molecule left unit.1.root)
-      (contextualNodeObservation molecule right unit.1.root)
+      (contextualNodeObservation molecule left unit.root)
+      (contextualNodeObservation molecule right unit.root)
       W D
-      (fun rule node => contextualNodeObservation_iso molecule isomorphism unit.1.root rule node)
+      (fun rule node => contextualNodeObservation_iso molecule isomorphism unit.root rule node)
       (noReferenceEvidence4c_preserved molecule descriptorMap unit isomorphism) left.root)
 
 theorem contextualCompleteReadingAt_iso
@@ -297,7 +297,7 @@ theorem contextualCompleteReadingsAt_iso (W D : ℕ) :
       contextualCompleteReadingsAt molecule descriptorMap unit left W D := by
   unfold contextualCompleteReadingsAt
   simp only [contextualReferenceSelection]
-  rw [contextualReferenceSelection_iso molecule descriptorMap unit iso unit.1.root]
+  rw [contextualReferenceSelection_iso molecule descriptorMap unit iso unit.root]
   simp only [contextualCompleteReadingAt_iso molecule descriptorMap unit iso W D]
 
 include iso in
@@ -306,7 +306,7 @@ theorem contextualCompletePriorSignatureAt_iso (W D : ℕ) :
       contextualCompletePriorSignatureAt molecule descriptorMap unit left W D := by
   unfold contextualCompletePriorSignatureAt
   simp only [contextualReferenceSelection]
-  simp_rw [contextualReferenceSelection_iso molecule descriptorMap unit iso unit.1.root,
+  simp_rw [contextualReferenceSelection_iso molecule descriptorMap unit iso unit.root,
     contextualCompleteReadingsAt_iso molecule descriptorMap unit iso W D]
 
 end Iso

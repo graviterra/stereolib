@@ -26,7 +26,7 @@ noncomputable section
 
 theorem retainedRule5Reading_iso {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
     (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) {left right : RootedDigraph Atom}
+    (unit : OccurrenceUnit Atom) {left right : RootedDigraph Atom}
     (iso : RootedDigraph.Iso left right) (W D : Nat)
     (reference : Option DescriptorSense) (common : DescriptorSense) :
     retainedCompleteRule5ReadingAt molecule descriptorMap unit right W D reference common =

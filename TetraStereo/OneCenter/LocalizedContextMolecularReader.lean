@@ -44,22 +44,22 @@ address/path length equations; when they hold, both readers consult the same det
 theorem molecularReader_eq_readContext_of_walk
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)) {fuel : Nat}
     (target : input.LocalizedCIPOccurrence fuel) (cursor : input.LocalizedRerootCursor fuel)
-    (unit : DetectedOccurrence input.moleculeGraph) (steps : List input.Atom)
-    (targetUnit : input.molecularFrameUnit target.1 = unit.1)
-    (targetDepth : target.1.address.length = unit.1.path.length)
-    (cursorRoot : cursor.occurrence.1.root = unit.1.root)
+    (unit : OccurrenceUnit input.Atom) (steps : List input.Atom)
+    (targetUnit : input.molecularFrameUnit target.1 = unit)
+    (targetDepth : target.1.address.length = unit.path.length)
+    (cursorRoot : cursor.occurrence.1.root = unit.root)
     (cursorUnit : input.molecularFrameUnit cursor.occurrence.1 =
-      ⟨unit.1.root, rerootWalk unit.1.root unit.1.path steps⟩)
+      ⟨unit.root, rerootWalk unit.root unit.path steps⟩)
     (cursorDepth : cursor.occurrence.1.address.length =
-      (rerootWalk unit.1.root unit.1.path steps).length)
+      (rerootWalk unit.root unit.path steps).length)
     (real : cursor.occurrence.1.node.provenance = .realAtom) :
     input.molecularReader descriptorMap target cursor =
       (readContext input.moleculeGraph descriptorMap unit steps).toLocalizedLabel := by
   let walked : OccurrenceUnit input.Atom :=
-    ⟨unit.1.root, rerootWalk unit.1.root unit.1.path steps⟩
-  have targetRoot : target.1.root = unit.1.root := congrArg OccurrenceUnit.root targetUnit
+    ⟨unit.root, rerootWalk unit.root unit.path steps⟩
+  have targetRoot : target.1.root = unit.root := congrArg OccurrenceUnit.root targetUnit
   have depthEq : input.LocalizedDepthDependency cursor.occurrence target ↔
-      unit.1.path.length < walked.path.length := by
+      unit.path.length < walked.path.length := by
     unfold LocalizedDepthDependency
     constructor
     · rintro ⟨_roots, depth⟩
@@ -80,7 +80,7 @@ theorem molecularReader_eq_readContext_of_walk
         ⟨walked, h⟩ := by
     apply Subtype.ext
     exact cursorUnit
-  by_cases hdepth : unit.1.path.length < walked.path.length
+  by_cases hdepth : unit.path.length < walked.path.length
   · have dependency := depthEq.mpr hdepth
     by_cases hcenter : IsDetectedCenter input.moleculeGraph walked.atom
     · have hcenterCursor := cursorDetected hcenter
@@ -118,21 +118,21 @@ theorem molecularReader_eq_readContext_of_actual_walk
     (singleBonded : input.moleculeGraph.SimpleBonded) (acyclic : input.moleculeGraph.Acyclic)
     {fuel : Nat} (target : input.LocalizedCIPOccurrence fuel)
     (cursor : input.LocalizedRerootCursor fuel)
-    (unit : DetectedOccurrence input.moleculeGraph) (steps : List input.Atom)
-    (targetUnit : input.molecularFrameUnit target.1 = unit.1)
+    (unit : OccurrenceUnit input.Atom) (steps : List input.Atom)
+    (targetUnit : input.molecularFrameUnit target.1 = unit)
     (cursorUnit : input.molecularFrameUnit cursor.occurrence.1 =
-      ⟨unit.1.root, rerootWalk unit.1.root unit.1.path steps⟩) :
+      ⟨unit.root, rerootWalk unit.root unit.path steps⟩) :
     input.molecularReader descriptorMap target cursor =
       (readContext input.moleculeGraph descriptorMap unit steps).toLocalizedLabel := by
   have targetDepth := input.molecularFrameUnit_path_length_eq_address_length target
   have cursorDepth := input.molecularFrameUnit_path_length_eq_address_length cursor.occurrence
-  have targetDepth' : target.1.address.length = unit.1.path.length := by
+  have targetDepth' : target.1.address.length = unit.path.length := by
     calc
       target.1.address.length = (input.molecularFrameUnit target.1).path.length :=
         targetDepth.symm
-      _ = unit.1.path.length := by
+      _ = unit.path.length := by
         simpa using congrArg (fun u : OccurrenceUnit input.Atom => u.path.length) targetUnit
-  have cursorRoot : cursor.occurrence.1.root = unit.1.root := by
+  have cursorRoot : cursor.occurrence.1.root = unit.root := by
     have h := congrArg OccurrenceUnit.root cursorUnit
     simpa using h
   have real := input.carrierOccurrence_provenance_real singleBonded acyclic cursor.occurrence
@@ -141,7 +141,7 @@ theorem molecularReader_eq_readContext_of_actual_walk
       calc
         cursor.occurrence.1.address.length =
             (input.molecularFrameUnit cursor.occurrence.1).path.length := cursorDepth.symm
-        _ = (rerootWalk unit.1.root unit.1.path steps).length := by
+        _ = (rerootWalk unit.root unit.path steps).length := by
           simpa using congrArg (fun u : OccurrenceUnit input.Atom => u.path.length) cursorUnit) real
 
 end CertifiedLocalizedCIPInput

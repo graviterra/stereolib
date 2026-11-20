@@ -24,7 +24,7 @@ abbrev CompletePriorSignature := Lex (ℕ × Lex (List (Key StereoLabel) × List
 section Reading
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 /-- An independent alternative. The absent reference still carries its Rule-4c observation. -/
 def completeReadingAt (W D : ℕ) (reference : Option DescriptorSense) : CompleteReadingKey :=
@@ -125,7 +125,7 @@ end Reading
 section Iso
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) {left right : RootedDigraph Atom}
+  (unit : OccurrenceUnit Atom) {left right : RootedDigraph Atom}
   (iso : RootedDigraph.Iso left right)
 
 theorem readingEvidence4c_preserved (sense : DescriptorSense) :
@@ -194,7 +194,7 @@ end Iso
 section Faithful
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (externalParent ligand : Atom)
+  (unit : OccurrenceUnit Atom) (externalParent ligand : Atom)
   {left right : RootedDigraph Atom}
   (faithfulL : RootedDigraph.FaithfulExactExpansion molecule externalParent ligand left)
   (faithfulR : RootedDigraph.FaithfulExactExpansion molecule externalParent ligand right)

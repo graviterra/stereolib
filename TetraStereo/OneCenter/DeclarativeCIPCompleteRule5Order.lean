@@ -19,7 +19,7 @@ abbrev CompleteLigandRule5Key := Lex (CompleteLigandPriorKey × List (Key Stereo
 
 def completeLigandRule5KeyAt {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
     (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom) (W D : Nat) :
+    (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom) (W D : Nat) :
     CompleteLigandRule5Key :=
   toLex (completeLigandPriorKeyAt molecule descriptorMap unit graph W D,
     completeRule5ReadingsAt molecule descriptorMap unit graph W D .senior)
@@ -28,7 +28,7 @@ def completeLigandRule5KeyAt {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
 in terms of independent molecular observations, not the runtime pseudo flag. -/
 def ReferenceSensitiveRule5PairAt {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
     (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (left right : RootedDigraph Atom) (W D : Nat) : Prop :=
+    (unit : OccurrenceUnit Atom) (left right : RootedDigraph Atom) (W D : Nat) : Prop :=
   completeLigandPriorKeyAt molecule descriptorMap unit left W D =
       completeLigandPriorKeyAt molecule descriptorMap unit right W D ∧
     completeRule5ReadingsAt molecule descriptorMap unit left W D .senior ≠
@@ -41,7 +41,7 @@ def ReferenceSensitiveRule5PairAt {Atom : Type u} [Fintype Atom] [DecidableEq At
 theorem completeLigandRule5KeyAt_eq_of_faithful
     {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
     (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (parent ligand : Atom)
+    (unit : OccurrenceUnit Atom) (parent ligand : Atom)
     {left right : RootedDigraph Atom}
     (faithfulL : left.FaithfulExactExpansion molecule parent ligand)
     (faithfulR : right.FaithfulExactExpansion molecule parent ligand) (W D : Nat) :

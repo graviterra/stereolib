@@ -24,7 +24,7 @@ section ContextualSelection
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom)
   (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
   (observe : ConstitutionalRule → graph.Node → ℤ)
 
 local instance contextualSelectionNodeFintype : Fintype graph.Node := graph.nodeFintype
@@ -151,7 +151,7 @@ theorem observedReferenceSelection_eq_referenceSelection :
 /-- The specified retained-outer-root reference selection for a physical ligand occurrence. -/
 def contextualReferenceSelection : ReferenceSelection :=
   observedReferenceSelection molecule descriptorMap unit graph
-    (contextualNodeObservation molecule graph unit.1.root)
+    (contextualNodeObservation molecule graph unit.root)
 
 end ContextualSelection
 

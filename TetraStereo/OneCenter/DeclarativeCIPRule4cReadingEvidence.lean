@@ -27,7 +27,7 @@ section Projection
 
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
   (evidence : StereochemicalEvidence graph)
 
 local instance rule4cReadingProjectionNodeFintype : Fintype graph.Node := graph.nodeFintype
@@ -111,7 +111,7 @@ section NoReference
 
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 local instance rule4cNoReferenceNodeFintype : Fintype graph.Node := graph.nodeFintype
 

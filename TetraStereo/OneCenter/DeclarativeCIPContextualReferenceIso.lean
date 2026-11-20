@@ -24,7 +24,7 @@ section ContextualSelectionIso
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom)
   (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule)
+  (unit : OccurrenceUnit Atom)
   {left right : RootedDigraph Atom}
   (iso : RootedDigraph.Iso left right)
   (leftObserve : ConstitutionalRule → left.Node → ℤ)

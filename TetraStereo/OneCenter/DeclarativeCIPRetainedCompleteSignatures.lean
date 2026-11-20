@@ -45,7 +45,7 @@ section Selection
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom)
   (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 local instance retainedSelectionNodeFintype : Fintype graph.Node := graph.nodeFintype
 
@@ -117,7 +117,7 @@ section Readings
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom)
   (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 local instance retainedReadingNodeFintype : Fintype graph.Node := graph.nodeFintype
 
@@ -285,7 +285,7 @@ section Algebra
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom)
   (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule)
+  (unit : OccurrenceUnit Atom)
 
 local instance retainedAlgebraNodeFintype (graph : RootedDigraph Atom) : Fintype graph.Node :=
   graph.nodeFintype
@@ -338,7 +338,7 @@ section Reflection
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom)
   (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 local instance retainedReflectNodeFintype : Fintype graph.Node := graph.nodeFintype
 
@@ -565,7 +565,7 @@ section Iso
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom)
   (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) {left right : RootedDigraph Atom}
+  (unit : OccurrenceUnit Atom) {left right : RootedDigraph Atom}
   (iso : RootedDigraph.Iso left right)
 
 local instance retainedIsoLeftNodeFintype : Fintype left.Node := left.nodeFintype
@@ -836,10 +836,10 @@ section Agreement
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom)
   (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
   (noDuplicate : ∀ node distance, (graph.label node).provenance ≠ .ringDuplicate distance)
   (observeEq : ∀ rule node, retainedContextNodeObservation molecule graph unit rule node =
-    contextualNodeObservation molecule graph unit.1.root rule node)
+    contextualNodeObservation molecule graph unit.root rule node)
 
 local instance retainedAgreementNodeFintype : Fintype graph.Node := graph.nodeFintype
 
@@ -879,20 +879,20 @@ include noDuplicate observeEq in
 theorem retainedRankKey_eq_observed_of_noDuplicate (node : graph.Node) :
     retainedRankKey molecule descriptorMap unit graph node =
       observedRankKey molecule descriptorMap unit graph
-        (contextualNodeObservation molecule graph unit.1.root) node := by
+        (contextualNodeObservation molecule graph unit.root) node := by
   unfold retainedRankKey observedRankKey
   rw [retainedRankEvidence_eq_rankEvidence_of_noDuplicate molecule descriptorMap unit graph
     noDuplicate]
   exact ordinaryKeyWithObservations_congr graph
     (retainedContextNodeObservation molecule graph unit)
     (rankEvidence molecule descriptorMap unit graph)
-    (contextualNodeObservation molecule graph unit.1.root) observeEq graph.width graph.height node
+    (contextualNodeObservation molecule graph unit.root) observeEq graph.width graph.height node
 
 include noDuplicate observeEq in
 theorem retainedRankPath_eq_observed_of_noDuplicate (node : graph.Node) :
     retainedRankPath molecule descriptorMap unit graph node =
       observedRankPath molecule descriptorMap unit graph
-        (contextualNodeObservation molecule graph unit.1.root) node := by
+        (contextualNodeObservation molecule graph unit.root) node := by
   unfold retainedRankPath observedRankPath
   apply List.map_congr_left
   intro ancestor _
@@ -903,7 +903,7 @@ include noDuplicate observeEq in
 theorem retainedInReferenceClass_iff_observed_of_noDuplicate (node : graph.Node) :
     RetainedInReferenceClass molecule descriptorMap unit graph node ↔
       ObservedInReferenceClass molecule descriptorMap unit graph
-        (contextualNodeObservation molecule graph unit.1.root) node := by
+        (contextualNodeObservation molecule graph unit.root) node := by
   unfold RetainedInReferenceClass ObservedInReferenceClass
   constructor
   · rintro ⟨nearest, maximal⟩
@@ -929,7 +929,7 @@ theorem retainedReferenceSelection_eq_contextual_of_noDuplicate :
   have classes :
       Finset.univ.filter (RetainedInReferenceClass molecule descriptorMap unit graph) =
         Finset.univ.filter (ObservedInReferenceClass molecule descriptorMap unit graph
-          (contextualNodeObservation molecule graph unit.1.root)) := by
+          (contextualNodeObservation molecule graph unit.root)) := by
     congr 1
     funext node
     apply propext
@@ -941,7 +941,7 @@ include noDuplicate observeEq in
 private theorem retainedRule4bComponent_eq_contextual (W D : ℕ) (sense : DescriptorSense) :
     observedRule4bComponent graph (retainedContextNodeObservation molecule graph unit)
         (retainedReadingEvidence molecule descriptorMap unit graph sense) W D graph.root =
-      observedRule4bComponent graph (contextualNodeObservation molecule graph unit.1.root)
+      observedRule4bComponent graph (contextualNodeObservation molecule graph unit.root)
         (readingEvidence molecule descriptorMap unit graph sense) W D graph.root := by
   unfold observedRule4bComponent
   rw [retainedReadingEvidence_eq_of_noDuplicate molecule descriptorMap unit graph noDuplicate sense]
@@ -950,13 +950,13 @@ private theorem retainedRule4bComponent_eq_contextual (W D : ℕ) (sense : Descr
     (ordinaryKeyWithObservations_congr graph
       (retainedContextNodeObservation molecule graph unit)
       (readingEvidence molecule descriptorMap unit graph sense)
-      (contextualNodeObservation molecule graph unit.1.root) observeEq W D graph.root)
+      (contextualNodeObservation molecule graph unit.root) observeEq W D graph.root)
 
 include noDuplicate observeEq in
 private theorem retainedRule4cComponent_eq_contextual (W D : ℕ) (sense : DescriptorSense) :
     observedRule4cComponent graph (retainedContextNodeObservation molecule graph unit)
         (retainedReadingEvidence4c molecule descriptorMap unit graph sense) W D graph.root =
-      observedRule4cComponent graph (contextualNodeObservation molecule graph unit.1.root)
+      observedRule4cComponent graph (contextualNodeObservation molecule graph unit.root)
         (readingEvidence4c molecule descriptorMap unit graph sense) W D graph.root := by
   unfold observedRule4cComponent
   rw [retainedReadingEvidence4c_eq_of_noDuplicate molecule descriptorMap unit graph noDuplicate
@@ -966,13 +966,13 @@ private theorem retainedRule4cComponent_eq_contextual (W D : ℕ) (sense : Descr
     (ordinaryKeyWithObservations_congr graph
       (retainedContextNodeObservation molecule graph unit)
       (readingEvidence4c molecule descriptorMap unit graph sense)
-      (contextualNodeObservation molecule graph unit.1.root) observeEq W D graph.root)
+      (contextualNodeObservation molecule graph unit.root) observeEq W D graph.root)
 
 include noDuplicate observeEq in
 private theorem retainedNoReferenceComponent_eq_contextual (W D : ℕ) :
     observedRule4cComponent graph (retainedContextNodeObservation molecule graph unit)
         (retainedNoReferenceEvidence4c molecule descriptorMap unit graph) W D graph.root =
-      observedRule4cComponent graph (contextualNodeObservation molecule graph unit.1.root)
+      observedRule4cComponent graph (contextualNodeObservation molecule graph unit.root)
         (noReferenceEvidence4c molecule descriptorMap unit graph) W D graph.root := by
   unfold observedRule4cComponent
   rw [retainedNoReferenceEvidence4c_eq_of_noDuplicate molecule descriptorMap unit graph noDuplicate]
@@ -981,7 +981,7 @@ private theorem retainedNoReferenceComponent_eq_contextual (W D : ℕ) :
     (ordinaryKeyWithObservations_congr graph
       (retainedContextNodeObservation molecule graph unit)
       (noReferenceEvidence4c molecule descriptorMap unit graph)
-      (contextualNodeObservation molecule graph unit.1.root) observeEq W D graph.root)
+      (contextualNodeObservation molecule graph unit.root) observeEq W D graph.root)
 
 include noDuplicate observeEq in
 theorem retainedCompleteReadingAt_eq_contextual_of_noDuplicate (W D : ℕ)
@@ -1058,12 +1058,12 @@ theorem retainedMolecularRankPairAt_eq_contextual_of_noDuplicate (W D : ℕ) :
   refine congrArg (fun pair : List (Key ℤ) × Key StereoLabel => toLex pair) (Prod.ext ?_ ?_)
   · exact ruleKeyWithObservations_congr graph W D
       (retainedContextNodeObservation molecule graph unit)
-      (contextualNodeObservation molecule graph unit.1.root) observeEq graph.root
+      (contextualNodeObservation molecule graph unit.root) observeEq graph.root
   · exact congrArg (fun key => (ofLex key).2.getD (stereoIndex .rule4aStereogenicUnitKind) [])
       (ordinaryKeyWithObservations_congr graph
         (retainedContextNodeObservation molecule graph unit)
         (rankEvidence molecule descriptorMap unit graph)
-        (contextualNodeObservation molecule graph unit.1.root) observeEq W D graph.root)
+        (contextualNodeObservation molecule graph unit.root) observeEq W D graph.root)
 
 include noDuplicate observeEq in
 theorem retainedCompleteLigandPriorKeyAt_eq_contextual_of_noDuplicate (W D : ℕ) :
@@ -1123,9 +1123,9 @@ include noDuplicate in
 Rule-5 keys to agree. The alignment itself is not established for a cyclic carrier. -/
 theorem retainedCompleteLigandRule5KeyAt_eq_contextual_of_noDuplicate_of_distance
     (aligned : ∀ node atom, graph.label node = ⟨some atom, .realAtom⟩ →
-      molecule.underlyingSimpleGraph.dist unit.1.root atom =
+      molecule.underlyingSimpleGraph.dist unit.root atom =
         match retainedOccurrenceSteps graph node with
-        | some steps => (rerootWalk unit.1.root unit.1.path steps).length
+        | some steps => (rerootWalk unit.root unit.path steps).length
         | none => graph.depth node + 1)
     (W D : ℕ) :
     retainedCompleteLigandRule5KeyAt molecule descriptorMap unit graph W D =
@@ -1133,7 +1133,7 @@ theorem retainedCompleteLigandRule5KeyAt_eq_contextual_of_noDuplicate_of_distanc
   exact retainedCompleteLigandRule5KeyAt_eq_contextual_of_noDuplicate molecule descriptorMap unit
     graph noDuplicate
     (retainedContextNodeObservation_eq_contextualNodeObservation_of_distance molecule graph unit
-      unit.1.root aligned) W D
+      unit.root aligned) W D
 
 end Agreement
 

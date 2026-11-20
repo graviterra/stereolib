@@ -729,10 +729,10 @@ not used. The only alignment premise is the cursor's own molecular unit. -/
 theorem molecularReader_eq_contextLabel_of_actual_walk
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)) {fuel : Nat}
     (target : input.LocalizedCIPOccurrence fuel) (cursor : input.LocalizedRerootCursor fuel)
-    (unit : DetectedOccurrence input.moleculeGraph) (steps : List input.Atom)
-    (targetUnit : input.molecularFrameUnit target.1 = unit.1)
+    (unit : OccurrenceUnit input.Atom) (steps : List input.Atom)
+    (targetUnit : input.molecularFrameUnit target.1 = unit)
     (cursorUnit : input.molecularFrameUnit cursor.occurrence.1 =
-      ⟨unit.1.root, rerootWalk unit.1.root unit.1.path steps⟩) :
+      ⟨unit.root, rerootWalk unit.root unit.path steps⟩) :
     input.molecularReader descriptorMap target cursor =
       if cursor.occurrence.1.node.provenance = OfficialCIPNodeProvenance.realAtom then
         (readContext input.moleculeGraph descriptorMap unit steps).toLocalizedLabel
@@ -742,13 +742,13 @@ theorem molecularReader_eq_contextLabel_of_actual_walk
   · rw [if_pos real]
     have targetDepth := input.molecularFrameUnit_path_length_eq_address_length target
     have cursorDepth := input.molecularFrameUnit_path_length_eq_address_length cursor.occurrence
-    have targetDepth' : target.1.address.length = unit.1.path.length := by
+    have targetDepth' : target.1.address.length = unit.path.length := by
       calc
         target.1.address.length = (input.molecularFrameUnit target.1).path.length :=
           targetDepth.symm
-        _ = unit.1.path.length := by
+        _ = unit.path.length := by
           simpa using congrArg (fun u : OccurrenceUnit input.Atom => u.path.length) targetUnit
-    have cursorRoot : cursor.occurrence.1.root = unit.1.root := by
+    have cursorRoot : cursor.occurrence.1.root = unit.root := by
       have rootProjection := congrArg OccurrenceUnit.root cursorUnit
       simpa using rootProjection
     exact input.molecularReader_eq_readContext_of_walk descriptorMap target cursor unit steps
@@ -756,7 +756,7 @@ theorem molecularReader_eq_contextLabel_of_actual_walk
         calc
           cursor.occurrence.1.address.length =
               (input.molecularFrameUnit cursor.occurrence.1).path.length := cursorDepth.symm
-          _ = (rerootWalk unit.1.root unit.1.path steps).length := by
+          _ = (rerootWalk unit.root unit.path steps).length := by
             simpa using congrArg (fun u : OccurrenceUnit input.Atom => u.path.length) cursorUnit)
       real
   · rw [if_neg real, input.molecularReader_eq_none_of_not_real descriptorMap target cursor real]
@@ -771,10 +771,10 @@ theorem molecularReader_eq_contextLabel_of_executableChild
     (source child : input.LocalizedRerootCursor fuel) {next : input.Atom}
     (nextObserved : child.occurrence.1.node.current? = some next)
     (present : child ∈ input.executableLocalizedRerootChildren source)
-    (unit : DetectedOccurrence input.moleculeGraph) (steps : List input.Atom)
-    (targetUnit : input.molecularFrameUnit target.1 = unit.1)
+    (unit : OccurrenceUnit input.Atom) (steps : List input.Atom)
+    (targetUnit : input.molecularFrameUnit target.1 = unit)
     (sourceUnit : input.molecularFrameUnit source.occurrence.1 =
-      ⟨unit.1.root, rerootWalk unit.1.root unit.1.path steps⟩) :
+      ⟨unit.root, rerootWalk unit.root unit.path steps⟩) :
     input.molecularReader descriptorMap target child =
       if child.occurrence.1.node.provenance = OfficialCIPNodeProvenance.realAtom then
         (readContext input.moleculeGraph descriptorMap unit (steps ++ [next])).toLocalizedLabel
@@ -782,26 +782,26 @@ theorem molecularReader_eq_contextLabel_of_executableChild
         OccurrenceReading.unavailable.toLocalizedLabel := by
   have step := input.molecularFrameUnit_executableChild_rerootStep_of_simpleBonded singleBonded
     source child nextObserved present
-  have sourceRoot : (input.molecularFrameUnit source.occurrence.1).root = unit.1.root := by
+  have sourceRoot : (input.molecularFrameUnit source.occurrence.1).root = unit.root := by
     rw [sourceUnit]
   have sourcePath : (input.molecularFrameUnit source.occurrence.1).path =
-      rerootWalk unit.1.root unit.1.path steps := by
+      rerootWalk unit.root unit.path steps := by
     rw [sourceUnit]
-  have childRoot : (input.molecularFrameUnit child.occurrence.1).root = unit.1.root :=
+  have childRoot : (input.molecularFrameUnit child.occurrence.1).root = unit.root :=
     step.1.trans sourceRoot
   have childPath : (input.molecularFrameUnit child.occurrence.1).path =
-      rerootWalk unit.1.root unit.1.path (steps ++ [next]) := by
+      rerootWalk unit.root unit.path (steps ++ [next]) := by
     calc
       (input.molecularFrameUnit child.occurrence.1).path =
           rerootStep (input.molecularFrameUnit source.occurrence.1).root
             (input.molecularFrameUnit source.occurrence.1).path next := step.2
-      _ = rerootStep unit.1.root (rerootWalk unit.1.root unit.1.path steps) next := by
+      _ = rerootStep unit.root (rerootWalk unit.root unit.path steps) next := by
           rw [sourceRoot, sourcePath]
-      _ = rerootWalk unit.1.root unit.1.path (steps ++ [next]) := by
-          rw [rerootWalk_append unit.1.root unit.1.path steps [next]]
+      _ = rerootWalk unit.root unit.path (steps ++ [next]) := by
+          rw [rerootWalk_append unit.root unit.path steps [next]]
           simp [rerootWalk]
   have childUnit : input.molecularFrameUnit child.occurrence.1 =
-      ⟨unit.1.root, rerootWalk unit.1.root unit.1.path (steps ++ [next])⟩ := by
+      ⟨unit.root, rerootWalk unit.root unit.path (steps ++ [next])⟩ := by
     have eta : input.molecularFrameUnit child.occurrence.1 =
         ⟨(input.molecularFrameUnit child.occurrence.1).root,
           (input.molecularFrameUnit child.occurrence.1).path⟩ := rfl

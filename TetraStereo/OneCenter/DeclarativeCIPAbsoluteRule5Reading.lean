@@ -70,7 +70,7 @@ Noneligible nodes have bit zero, independently of any pseudoasymmetric observati
 theorem absoluteRule5Bit_molecular
     {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
     (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+    (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
     (own common : DescriptorSense) (node : graph.Node) :
     absoluteRule5Bit own common
       ((stereoLabel graph (readingEvidence molecule descriptorMap unit graph own)
@@ -90,7 +90,7 @@ theorem absoluteRule5Bit_molecular
 No-reference branches retain their support and carry zero Rule-5 bits. -/
 def absoluteRule5ReadingAt {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
     (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom) (W D : Nat)
+    (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom) (W D : Nat)
     (reference : Option DescriptorSense) (common : DescriptorSense) : Key StereoLabel :=
   match reference with
   | some own => mapObservationKey (absoluteRule5Label own common)
@@ -101,7 +101,7 @@ def absoluteRule5ReadingAt {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
 theorem absoluteRule5ReadingAt_iso
     {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
     (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) {left right : RootedDigraph Atom}
+    (unit : OccurrenceUnit Atom) {left right : RootedDigraph Atom}
     (iso : RootedDigraph.Iso left right) (W D : Nat)
     (reference : Option DescriptorSense) (common : DescriptorSense) :
     absoluteRule5ReadingAt molecule descriptorMap unit right W D reference common =
@@ -114,7 +114,7 @@ theorem absoluteRule5ReadingAt_iso
 theorem absoluteRule5ReadingAt_eq_of_faithful
     {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
     (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (parent ligand : Atom)
+    (unit : OccurrenceUnit Atom) (parent ligand : Atom)
     {left right : RootedDigraph Atom}
     (faithfulL : left.FaithfulExactExpansion molecule parent ligand)
     (faithfulR : right.FaithfulExactExpansion molecule parent ligand)

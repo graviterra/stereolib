@@ -60,7 +60,7 @@ section Observations
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom)
   (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 /-- Rule 4a at a retained address. Ring duplicates are present nonstereogenic units.
 Real and other provenances keep `rule4aObservation`, so a real `.unavailable` reading stays
@@ -183,7 +183,7 @@ section Evidence
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom)
   (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 /-- Pre-Rule-4b retained evidence. Rule 4c and Rule 5 stay masked, as in `rankEvidence`. -/
 def retainedRankEvidence : StereochemicalEvidence graph := fun node =>
@@ -445,7 +445,7 @@ section Transport
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom)
   (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule)
+  (unit : OccurrenceUnit Atom)
   {left right : RootedDigraph Atom} (iso : RootedDigraph.Iso left right)
 
 omit [Fintype Atom] [DecidableEq Atom] in

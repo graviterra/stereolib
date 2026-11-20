@@ -46,7 +46,7 @@ inductive RetainedRankNodeStatus
     {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
     (molecule : MoleculeGraph Atom)
     (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule)
+    (unit : OccurrenceUnit Atom)
     (graph : RootedDigraph Atom) (node : graph.Node) : Prop where
   | realAvailable
       (real : (graph.label node).provenance = .realAtom)
@@ -64,7 +64,7 @@ theorem RetainedRankNodeStatus.of_split
     {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
     (molecule : MoleculeGraph Atom)
     (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule)
+    (unit : OccurrenceUnit Atom)
     (graph : RootedDigraph Atom) (node : graph.Node)
     (split :
       ((graph.label node).provenance = .realAtom ∧
@@ -86,7 +86,7 @@ identifies that label with the present priority code, does not hold. -/
 theorem stereoLabel_rankEvidence_rule4a_ringDuplicate_eq_bot
     {input : CertifiedLocalizedCIPInput}
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     (graph : RootedDigraph input.Atom) (node : graph.Node) (distance : ℕ)
     (duplicate : (graph.label node).provenance = .ringDuplicate distance) :
     stereoLabel graph (rankEvidence input.moleculeGraph descriptorMap unit graph)
@@ -101,7 +101,7 @@ theorem stereoLabel_rankEvidence_rule4a_ringDuplicate_eq_bot
 theorem stereoLabel_retainedRankEvidence_rule4a_ringDuplicate_eq_code
     {input : CertifiedLocalizedCIPInput}
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     (graph : RootedDigraph input.Atom) (node : graph.Node) (distance : ℕ)
     (duplicate : (graph.label node).provenance = .ringDuplicate distance) :
     stereoLabel graph (retainedRankEvidence input.moleculeGraph descriptorMap unit graph)
@@ -114,7 +114,7 @@ theorem stereoLabel_retainedRankEvidence_rule4a_ringDuplicate_eq_code
 theorem stereoLabel_retainedRankEvidence_rule4a_ringDuplicate_eq_kindPriority
     {input : CertifiedLocalizedCIPInput}
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     (graph : RootedDigraph input.Atom) (node : graph.Node) (distance : ℕ)
     (duplicate : (graph.label node).provenance = .ringDuplicate distance) :
     stereoLabel graph (retainedRankEvidence input.moleculeGraph descriptorMap unit graph)
@@ -131,7 +131,7 @@ theorem stereoLabel_retainedRankEvidence_rule4a_ringDuplicate_eq_kindPriority
 theorem stereoLabel_rankEvidence_ne_retainedRankEvidence_rule4a_ringDuplicate
     {input : CertifiedLocalizedCIPInput}
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     (graph : RootedDigraph input.Atom) (node : graph.Node) (distance : ℕ)
     (duplicate : (graph.label node).provenance = .ringDuplicate distance) :
     stereoLabel graph (rankEvidence input.moleculeGraph descriptorMap unit graph)
@@ -149,7 +149,7 @@ theorem stereoLabel_rankEvidence_ne_retainedRankEvidence_rule4a_ringDuplicate
 theorem stereoLabel_retainedRankEvidence_rule4a_real_available
     {input : CertifiedLocalizedCIPInput}
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     (graph : RootedDigraph input.Atom) (node : graph.Node)
     (real : (graph.label node).provenance = .realAtom)
     (available : occurrenceReading input.moleculeGraph descriptorMap unit graph node ≠
@@ -170,7 +170,7 @@ structure RetainedContextTreeRankReadback
     {input : CertifiedLocalizedCIPInput} {carrierFuel : Nat}
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) : Prop where
+    (unit : OccurrenceUnit input.Atom) : Prop where
   label : ∀ (node : (ruleMajorTreeGraph tree).Node)
       (actual : LocalizedCumulativeDecoratedTree input carrierFuel),
       subtreeAt? tree node.1 = some actual →
@@ -190,7 +190,7 @@ theorem RetainedContextTreeRankReadback.rule3_eq_bot
     {input : CertifiedLocalizedCIPInput} {carrierFuel : Nat}
     {tree : LocalizedCumulativeDecoratedTree input carrierFuel}
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (hyp : RetainedContextTreeRankReadback tree descriptorMap unit)
     (node : (ruleMajorTreeGraph tree).Node) :
     stereoLabel (ruleMajorTreeGraph tree)
@@ -228,8 +228,8 @@ theorem retainedContextTreeRankReadback_of_molecularReader
     (tetrahedralMap : ∀ unit value, descriptorMap unit = some value → value.IsTetrahedral)
     (singleBonded : input.moleculeGraph.SimpleBonded)
     (target : input.LocalizedRerootCursor carrierFuel)
-    (unit : DetectedOccurrence input.moleculeGraph)
-    (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit.1)
+    (unit : OccurrenceUnit input.Atom)
+    (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit)
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (realizes : LocalizedCumulativeTreeRealizes input
       (input.molecularReader descriptorMap target.occurrence) tree)

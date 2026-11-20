@@ -45,7 +45,7 @@ variable {input : CertifiedLocalizedCIPInput} {center : input.TetrahedralCenter}
 /-- The readback hypotheses of the stage-`.rule4b ρ` bridge. -/
 structure ArmReadback4b (arm : input.OriginalRootArm center index (.rule4b ρ) read)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) : Prop where
+    (unit : OccurrenceUnit input.Atom) : Prop where
   label : ∀ (node : (armGraph arm).Node)
     (actual : LocalizedCumulativeDecoratedTree input (input.certified.input.molecule.atomCount + 1)),
     arm.tree.decoratedSubtreeAt? node.1 = some actual →
@@ -103,7 +103,7 @@ section Bridge
 
 variable (arm : input.OriginalRootArm center index (.rule4b ρ) read)
   {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-  {unit : DetectedOccurrence input.moleculeGraph}
+  {unit : OccurrenceUnit input.Atom}
 
 /-- Terminal case. -/
 theorem arm_terminal_bridge4b (hyp : ArmReadback4b arm descriptorMap unit)
@@ -487,7 +487,7 @@ theorem compareReadingsByRule4b_eq_compare_rule4bComponent
     (arm₁ : input.OriginalRootArm center₁ index₁ (.rule4b ρ₁) read₁)
     (arm₂ : input.OriginalRootArm center₂ index₂ (.rule4b ρ₂) read₂)
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit₁ unit₂ : DetectedOccurrence input.moleculeGraph}
+    {unit₁ unit₂ : OccurrenceUnit input.Atom}
     (hyp₁ : ArmReadback4b arm₁ descriptorMap unit₁) (hyp₂ : ArmReadback4b arm₂ descriptorMap unit₂)
     (reading₁ reading₂ : input.LocalizedRerootRule4bcReading)
     (hkey₁ : reading₁.rule4bKey = arm₁.key) (hkey₂ : reading₂.rule4bKey = arm₂.key)
@@ -535,7 +535,7 @@ theorem compareReadingsByRule4b_eq_compare_reading
     (arm₁ : input.OriginalRootArm center₁ index₁ (.rule4b ρ₁) read₁)
     (arm₂ : input.OriginalRootArm center₂ index₂ (.rule4b ρ₂) read₂)
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit₁ unit₂ : DetectedOccurrence input.moleculeGraph}
+    {unit₁ unit₂ : OccurrenceUnit input.Atom}
     (hyp₁ : ArmReadback4b arm₁ descriptorMap unit₁) (hyp₂ : ArmReadback4b arm₂ descriptorMap unit₂)
     (reading₁ reading₂ : input.LocalizedRerootRule4bcReading)
     (hkey₁ : reading₁.rule4bKey = arm₁.key) (hkey₂ : reading₂.rule4bKey = arm₂.key)

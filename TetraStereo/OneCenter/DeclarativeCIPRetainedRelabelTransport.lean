@@ -610,33 +610,33 @@ theorem rerootWalk_map (perm : Equiv.Perm Atom) (root : Atom) (start steps : Lis
       rw [rerootStep_map]
       exact ih (rerootStep root start step)
 
-theorem contextOccurrence_map (e : molecule.Aut) (unit : DetectedOccurrence molecule)
+theorem contextOccurrence_map (e : molecule.Aut) (unit : OccurrenceUnit Atom)
     (steps : List Atom) :
-    contextOccurrence molecule (mapDetected molecule e unit) (steps.map (e : Equiv.Perm Atom)) =
+    contextOccurrence molecule (mapOccurrence (e : Equiv.Perm Atom) unit) (steps.map (e : Equiv.Perm Atom)) =
       (contextOccurrence molecule unit steps).map (mapDetected molecule e) := by
   let perm := (e : Equiv.Perm Atom)
-  have hwalk := rerootWalk_map perm unit.1.root unit.1.path steps
+  have hwalk := rerootWalk_map perm unit.root unit.path steps
   unfold contextOccurrence
-  dsimp only [mapDetected_root, mapDetected_path]
-  by_cases hcond : unit.1.path.length < (rerootWalk unit.1.root unit.1.path steps).length ∧
+  dsimp only [mapOccurrence]
+  by_cases hcond : unit.path.length < (rerootWalk unit.root unit.path steps).length ∧
       IsDetectedCenter molecule
-        (⟨unit.1.root, rerootWalk unit.1.root unit.1.path steps⟩ : OccurrenceUnit Atom).atom
-  · have hcond' : (unit.1.path.map perm).length <
-        (rerootWalk (perm unit.1.root) (unit.1.path.map perm) (steps.map perm)).length ∧
+        (⟨unit.root, rerootWalk unit.root unit.path steps⟩ : OccurrenceUnit Atom).atom
+  · have hcond' : (unit.path.map perm).length <
+        (rerootWalk (perm unit.root) (unit.path.map perm) (steps.map perm)).length ∧
         IsDetectedCenter molecule
-          (⟨perm unit.1.root,
-            rerootWalk (perm unit.1.root) (unit.1.path.map perm) (steps.map perm)⟩ :
+          (⟨perm unit.root,
+            rerootWalk (perm unit.root) (unit.path.map perm) (steps.map perm)⟩ :
             OccurrenceUnit Atom).atom := by
       refine ⟨by rw [List.length_map, hwalk, List.length_map]; exact hcond.1, ?_⟩
       have hatom :
-          (⟨perm unit.1.root,
-            rerootWalk (perm unit.1.root) (unit.1.path.map perm) (steps.map perm)⟩ :
+          (⟨perm unit.root,
+            rerootWalk (perm unit.root) (unit.path.map perm) (steps.map perm)⟩ :
             OccurrenceUnit Atom).atom =
-            perm (⟨unit.1.root, rerootWalk unit.1.root unit.1.path steps⟩ :
+            perm (⟨unit.root, rerootWalk unit.root unit.path steps⟩ :
               OccurrenceUnit Atom).atom := by
         rw [hwalk]
         simpa [mapOccurrence] using mapOccurrence_atom perm
-          ⟨unit.1.root, rerootWalk unit.1.root unit.1.path steps⟩
+          ⟨unit.root, rerootWalk unit.root unit.path steps⟩
       rw [IsDetectedCenter, hatom, neighbor_card_aut molecule e]
       exact hcond.2
     rw [dif_pos hcond, dif_pos hcond']
@@ -644,31 +644,31 @@ theorem contextOccurrence_map (e : molecule.Aut) (unit : DetectedOccurrence mole
     apply Subtype.ext
     simp only [mapDetected, mapOccurrence, OccurrenceUnit.mk.injEq]
     exact ⟨trivial, hwalk⟩
-  · have hcond' : ¬ ((unit.1.path.map perm).length <
-        (rerootWalk (perm unit.1.root) (unit.1.path.map perm) (steps.map perm)).length ∧
+  · have hcond' : ¬ ((unit.path.map perm).length <
+        (rerootWalk (perm unit.root) (unit.path.map perm) (steps.map perm)).length ∧
         IsDetectedCenter molecule
-          (⟨perm unit.1.root,
-            rerootWalk (perm unit.1.root) (unit.1.path.map perm) (steps.map perm)⟩ :
+          (⟨perm unit.root,
+            rerootWalk (perm unit.root) (unit.path.map perm) (steps.map perm)⟩ :
             OccurrenceUnit Atom).atom) := by
       intro hp
       apply hcond
       refine ⟨?_, ?_⟩
       · calc
-          unit.1.path.length = (unit.1.path.map perm).length := by simp [List.length_map]
-          _ < (rerootWalk (perm unit.1.root) (unit.1.path.map perm) (steps.map perm)).length :=
+          unit.path.length = (unit.path.map perm).length := by simp [List.length_map]
+          _ < (rerootWalk (perm unit.root) (unit.path.map perm) (steps.map perm)).length :=
             hp.1
-          _ = (rerootWalk unit.1.root unit.1.path steps).length := by
+          _ = (rerootWalk unit.root unit.path steps).length := by
             rw [hwalk]
             simp [List.length_map]
       have hatom :
-          (⟨perm unit.1.root,
-            rerootWalk (perm unit.1.root) (unit.1.path.map perm) (steps.map perm)⟩ :
+          (⟨perm unit.root,
+            rerootWalk (perm unit.root) (unit.path.map perm) (steps.map perm)⟩ :
             OccurrenceUnit Atom).atom =
-            perm (⟨unit.1.root, rerootWalk unit.1.root unit.1.path steps⟩ :
+            perm (⟨unit.root, rerootWalk unit.root unit.path steps⟩ :
               OccurrenceUnit Atom).atom := by
         rw [hwalk]
         simpa [mapOccurrence] using mapOccurrence_atom perm
-          ⟨unit.1.root, rerootWalk unit.1.root unit.1.path steps⟩
+          ⟨unit.root, rerootWalk unit.root unit.path steps⟩
       rw [IsDetectedCenter] at hp ⊢
       rw [← neighbor_card_aut molecule e, ← hatom]
       exact hp.2
@@ -680,7 +680,7 @@ end OccurrenceMap
 section RetainedContext
 
 variable (molecule : MoleculeGraph Atom) {left right : RootedDigraph Atom}
-  (unit : DetectedOccurrence molecule)
+  (unit : OccurrenceUnit Atom)
 
 local instance relabelRetainedNode (graph : RootedDigraph Atom) : Fintype graph.Node :=
   graph.nodeFintype
@@ -689,7 +689,7 @@ theorem retainedContextRuleValue_relabel (e : molecule.Aut)
     (parentUnique : ∀ a b n, left.child a n → left.child b n → a = b)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right)
     (rule : ConstitutionalRule) (node : left.Node) :
-    retainedContextRuleValue molecule right (mapDetected molecule e unit) rule
+    retainedContextRuleValue molecule right (mapOccurrence (e : Equiv.Perm Atom) unit) rule
         (relabel.toEquiv node) =
       retainedContextRuleValue molecule left unit rule node := by
   let perm := (e : Equiv.Perm Atom)
@@ -724,12 +724,12 @@ theorem retainedContextRuleValue_relabel (e : molecule.Aut)
                         ⟨some atom, .realAtom⟩
                   | some steps =>
                       have hlen :
-                          (rerootWalk ((e : Equiv.Perm Atom) unit.1.root)
-                            (unit.1.path.map (e : Equiv.Perm Atom))
+                          (rerootWalk ((e : Equiv.Perm Atom) unit.root)
+                            (unit.path.map (e : Equiv.Perm Atom))
                             (steps.map (e : Equiv.Perm Atom))).length =
-                            (rerootWalk unit.1.root unit.1.path steps).length := by
+                            (rerootWalk unit.root unit.path steps).length := by
                         rw [rerootWalk_map, List.length_map]
-                      simp [mapDetected_root, mapDetected_path, mapNodeLabel, hlen]
+                      simp [mapOccurrence, mapNodeLabel, hlen]
               | multipleBondDuplicate distance =>
                   simpa [mapNodeLabel] using ruleValue_mapLabel molecule e
                     .rule1bDuplicateNodeProximity (List.replicate (left.depth node) 0)
@@ -757,7 +757,7 @@ theorem retainedContextNodeObservation_relabel (e : molecule.Aut)
     (parentUnique : ∀ a b n, left.child a n → left.child b n → a = b)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right)
     (rule : ConstitutionalRule) (node : left.Node) :
-    retainedContextNodeObservation molecule right (mapDetected molecule e unit) rule
+    retainedContextNodeObservation molecule right (mapOccurrence (e : Equiv.Perm Atom) unit) rule
         (relabel.toEquiv node) =
       retainedContextNodeObservation molecule left unit rule node := by
   simp [retainedContextNodeObservation,
@@ -767,14 +767,14 @@ theorem retainedContextRuleKey_relabel (e : molecule.Aut)
     (parentUnique : ∀ a b n, left.child a n → left.child b n → a = b)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (W D : ℕ) :
     ∀ node : left.Node,
-      retainedContextRuleKey molecule right (mapDetected molecule e unit) W D
+      retainedContextRuleKey molecule right (mapOccurrence (e : Equiv.Perm Atom) unit) W D
           (relabel.toEquiv node) =
         retainedContextRuleKey molecule left unit W D node := by
   intro node
   unfold retainedContextRuleKey
   exact ruleKeyWithObservations_relabel relabel
     (retainedContextNodeObservation molecule left unit)
-    (retainedContextNodeObservation molecule right (mapDetected molecule e unit)) W D
+    (retainedContextNodeObservation molecule right (mapOccurrence (e : Equiv.Perm Atom) unit)) W D
     (fun rule current => retainedContextNodeObservation_relabel molecule unit e parentUnique
       relabel rule current) node
 
@@ -788,14 +788,14 @@ variable (molecule : MoleculeGraph Atom) {left right : RootedDigraph Atom}
 map at that occurrence. Not a global map identity, a selected reference, or a key comparison. -/
 def ReadsAgree (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom) : Prop :=
+    (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom) : Prop :=
   ∀ node steps occ,
     (graph.label node).provenance = NodeProvenance.realAtom →
     ancestorAtoms graph node = some steps →
     contextOccurrence molecule unit steps = some occ →
     imageMap (mapDetected molecule e occ) = sourceMap occ
 
-variable (unit : DetectedOccurrence molecule)
+variable (unit : OccurrenceUnit Atom)
 
 local instance relabelReadingNode (graph : RootedDigraph Atom) : Fintype graph.Node :=
   graph.nodeFintype
@@ -806,7 +806,7 @@ theorem readContext_relabel (e : molecule.Aut)
     {node : left.Node} {steps : List Atom}
     (hreal : (left.label node).provenance = .realAtom)
     (hsteps : ancestorAtoms left node = some steps) :
-    readContext molecule imageMap (mapDetected molecule e unit)
+    readContext molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit)
         (steps.map (e : Equiv.Perm Atom)) =
       readContext molecule sourceMap unit steps := by
   have hocc := contextOccurrence_map molecule e unit steps
@@ -823,7 +823,7 @@ theorem occurrenceReading_relabel (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (node : left.Node) :
-    occurrenceReading molecule imageMap (mapDetected molecule e unit) right
+    occurrenceReading molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right
         (relabel.toEquiv node) =
       occurrenceReading molecule sourceMap unit left node := by
   have hprov : (right.label (relabel.toEquiv node)).provenance =
@@ -883,7 +883,7 @@ theorem rule3Observation_relabel (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (node : left.Node) :
-    rule3Observation molecule imageMap (mapDetected molecule e unit) right
+    rule3Observation molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right
         (relabel.toEquiv node) =
       rule3Observation molecule sourceMap unit left node := by
   rw [rule3Observation, rule3Observation]
@@ -901,7 +901,7 @@ theorem rule4aObservation_relabel (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (node : left.Node) :
-    rule4aObservation molecule imageMap (mapDetected molecule e unit) right
+    rule4aObservation molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right
         (relabel.toEquiv node) =
       rule4aObservation molecule sourceMap unit left node := by
   simp only [rule4aObservation,
@@ -912,7 +912,7 @@ theorem rule4cObservation_relabel (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (node : left.Node) :
-    rule4cObservation molecule imageMap (mapDetected molecule e unit) right
+    rule4cObservation molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right
         (relabel.toEquiv node) =
       rule4cObservation molecule sourceMap unit left node := by
   simp only [rule4cObservation,
@@ -923,7 +923,7 @@ theorem rule5Observation_relabel (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (node : left.Node) :
-    rule5Observation molecule imageMap (mapDetected molecule e unit) right
+    rule5Observation molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right
         (relabel.toEquiv node) =
       rule5Observation molecule sourceMap unit left node := by
   simp only [rule5Observation,
@@ -934,7 +934,7 @@ theorem eligibleSense_relabel (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (node : left.Node) :
-    eligibleSense molecule imageMap (mapDetected molecule e unit) right (relabel.toEquiv node) =
+    eligibleSense molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right (relabel.toEquiv node) =
       eligibleSense molecule sourceMap unit left node := by
   simp only [eligibleSense,
     occurrenceReading_relabel molecule unit e parentUnique imageMap sourceMap reads relabel node]
@@ -951,7 +951,7 @@ theorem retainedRule4aObservation_relabel (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (node : left.Node) :
-    retainedRule4aObservation molecule imageMap (mapDetected molecule e unit) right
+    retainedRule4aObservation molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right
         (relabel.toEquiv node) =
       retainedRule4aObservation molecule sourceMap unit left node := by
   simp only [retainedRule4aObservation, neutralizeRingDuplicate, label_provenance_relabel relabel]
@@ -978,7 +978,7 @@ theorem retainedRule4cObservation_relabel (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (node : left.Node) :
-    retainedRule4cObservation molecule imageMap (mapDetected molecule e unit) right
+    retainedRule4cObservation molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right
         (relabel.toEquiv node) =
       retainedRule4cObservation molecule sourceMap unit left node := by
   simp only [retainedRule4cObservation, neutralizeRingDuplicate, label_provenance_relabel relabel]
@@ -1013,7 +1013,7 @@ theorem retainedRankEvidence_relabel (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (node : left.Node) :
-    retainedRankEvidence molecule imageMap (mapDetected molecule e unit) right
+    retainedRankEvidence molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right
         (relabel.toEquiv node) =
       retainedRankEvidence molecule sourceMap unit left node := by
   apply stereoObservation_eq_of_fields
@@ -1031,7 +1031,7 @@ theorem retainedReadingEvidence_relabel (e : molecule.Aut)
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right)
     (reference : DescriptorSense) (node : left.Node) :
-    retainedReadingEvidence molecule imageMap (mapDetected molecule e unit) right reference
+    retainedReadingEvidence molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right reference
         (relabel.toEquiv node) =
       retainedReadingEvidence molecule sourceMap unit left reference node := by
   apply stereoObservation_eq_of_fields
@@ -1050,7 +1050,7 @@ theorem retainedReadingEvidence4c_relabel (e : molecule.Aut)
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right)
     (reference : DescriptorSense) (node : left.Node) :
-    retainedReadingEvidence4c molecule imageMap (mapDetected molecule e unit) right reference
+    retainedReadingEvidence4c molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right reference
         (relabel.toEquiv node) =
       retainedReadingEvidence4c molecule sourceMap unit left reference node := by
   apply stereoObservation_eq_of_fields
@@ -1070,7 +1070,7 @@ theorem retainedNoReferenceEvidence4c_relabel (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (node : left.Node) :
-    retainedNoReferenceEvidence4c molecule imageMap (mapDetected molecule e unit) right
+    retainedNoReferenceEvidence4c molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right
         (relabel.toEquiv node) =
       retainedNoReferenceEvidence4c molecule sourceMap unit left node := by
   apply stereoObservation_eq_of_fields
@@ -1124,7 +1124,7 @@ end Ordinary
 section Complete
 
 variable (molecule : MoleculeGraph Atom) {left right : RootedDigraph Atom}
-  (unit : DetectedOccurrence molecule)
+  (unit : OccurrenceUnit Atom)
 
 local instance relabelCompleteNode (graph : RootedDigraph Atom) : Fintype graph.Node :=
   graph.nodeFintype
@@ -1134,7 +1134,7 @@ theorem retainedRankKey_relabel (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (node : left.Node) :
-    retainedRankKey molecule imageMap (mapDetected molecule e unit) right
+    retainedRankKey molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right
         (relabel.toEquiv node) =
       retainedRankKey molecule sourceMap unit left node := by
   have hw := width_eq_of_relabel relabel
@@ -1142,9 +1142,9 @@ theorem retainedRankKey_relabel (e : molecule.Aut)
   simp only [retainedRankKey, hw, hh]
   exact ordinaryKeyWithObservations_relabel relabel
     (retainedContextNodeObservation molecule left unit)
-    (retainedContextNodeObservation molecule right (mapDetected molecule e unit))
+    (retainedContextNodeObservation molecule right (mapOccurrence (e : Equiv.Perm Atom) unit))
     (retainedRankEvidence molecule sourceMap unit left)
-    (retainedRankEvidence molecule imageMap (mapDetected molecule e unit) right)
+    (retainedRankEvidence molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right)
     (fun rule current => retainedContextNodeObservation_relabel molecule unit e parentUnique
       relabel rule current)
     (fun current => retainedRankEvidence_relabel molecule unit e parentUnique imageMap sourceMap
@@ -1155,7 +1155,7 @@ theorem retainedRankPath_relabel (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (node : left.Node) :
-    retainedRankPath molecule imageMap (mapDetected molecule e unit) right
+    retainedRankPath molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right
         (relabel.toEquiv node) =
       retainedRankPath molecule sourceMap unit left node := by
   unfold retainedRankPath
@@ -1170,7 +1170,7 @@ theorem eligible_relabel_iff (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (node : left.Node) :
-    Eligible molecule imageMap (mapDetected molecule e unit) right (relabel.toEquiv node) ↔
+    Eligible molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right (relabel.toEquiv node) ↔
       Eligible molecule sourceMap unit left node := by
   simp [Eligible, eligibleSense_relabel molecule unit e parentUnique imageMap sourceMap reads
     relabel node]
@@ -1180,7 +1180,7 @@ theorem nearestEligible_relabel_iff (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (node : left.Node) :
-    NearestEligible molecule imageMap (mapDetected molecule e unit) right
+    NearestEligible molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right
         (relabel.toEquiv node) ↔
       NearestEligible molecule sourceMap unit left node := by
   constructor
@@ -1208,7 +1208,7 @@ theorem retainedInReferenceClass_relabel_iff (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (node : left.Node) :
-    RetainedInReferenceClass molecule imageMap (mapDetected molecule e unit) right
+    RetainedInReferenceClass molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right
         (relabel.toEquiv node) ↔
       RetainedInReferenceClass molecule sourceMap unit left node := by
   constructor
@@ -1266,7 +1266,7 @@ theorem retainedSeniorCount_relabel (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) :
-    retainedSeniorCount molecule imageMap (mapDetected molecule e unit) right =
+    retainedSeniorCount molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right =
       retainedSeniorCount molecule sourceMap unit left := by
   rw [seniorCount_eq_card, seniorCount_eq_card]
   symm
@@ -1299,7 +1299,7 @@ theorem retainedJuniorCount_relabel (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) :
-    retainedJuniorCount molecule imageMap (mapDetected molecule e unit) right =
+    retainedJuniorCount molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right =
       retainedJuniorCount molecule sourceMap unit left := by
   rw [juniorCount_eq_card, juniorCount_eq_card]
   symm
@@ -1332,7 +1332,7 @@ theorem exists_eligible_relabel_iff (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) :
-    (∃ node : right.Node, Eligible molecule imageMap (mapDetected molecule e unit) right node) ↔
+    (∃ node : right.Node, Eligible molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right node) ↔
       (∃ node : left.Node, Eligible molecule sourceMap unit left node) := by
   constructor
   · rintro ⟨node, hnode⟩
@@ -1348,17 +1348,17 @@ theorem retainedReferenceSelection_relabel (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) :
-    retainedReferenceSelection molecule imageMap (mapDetected molecule e unit) right =
+    retainedReferenceSelection molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right =
       retainedReferenceSelection molecule sourceMap unit left := by
   unfold retainedReferenceSelection
   rw [retainedJuniorCount_relabel molecule unit e parentUnique imageMap sourceMap reads relabel,
     retainedSeniorCount_relabel molecule unit e parentUnique imageMap sourceMap reads relabel]
   by_cases h : ∃ node, Eligible molecule sourceMap unit left node
-  · have h' : ∃ node, Eligible molecule imageMap (mapDetected molecule e unit) right node :=
+  · have h' : ∃ node, Eligible molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right node :=
       (exists_eligible_relabel_iff molecule unit e parentUnique imageMap sourceMap reads
         relabel).2 h
     rw [if_neg (not_not_intro h'), if_neg (not_not_intro h)]
-  · have h' : ¬ ∃ node, Eligible molecule imageMap (mapDetected molecule e unit) right node := by
+  · have h' : ¬ ∃ node, Eligible molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right node := by
       intro hex
       exact h ((exists_eligible_relabel_iff molecule unit e parentUnique imageMap sourceMap
         reads relabel).1 hex)
@@ -1371,17 +1371,17 @@ private theorem ordinary_reading_relabel (e : molecule.Aut)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right)
     (reference : DescriptorSense) (W D : ℕ) (node : left.Node) :
     ordinaryKeyWithObservations right
-        (retainedContextNodeObservation molecule right (mapDetected molecule e unit))
-        (retainedReadingEvidence molecule imageMap (mapDetected molecule e unit) right reference)
+        (retainedContextNodeObservation molecule right (mapOccurrence (e : Equiv.Perm Atom) unit))
+        (retainedReadingEvidence molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right reference)
         W D (relabel.toEquiv node) =
       ordinaryKeyWithObservations left
         (retainedContextNodeObservation molecule left unit)
         (retainedReadingEvidence molecule sourceMap unit left reference) W D node :=
   ordinaryKeyWithObservations_relabel relabel
     (retainedContextNodeObservation molecule left unit)
-    (retainedContextNodeObservation molecule right (mapDetected molecule e unit))
+    (retainedContextNodeObservation molecule right (mapOccurrence (e : Equiv.Perm Atom) unit))
     (retainedReadingEvidence molecule sourceMap unit left reference)
-    (retainedReadingEvidence molecule imageMap (mapDetected molecule e unit) right reference)
+    (retainedReadingEvidence molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right reference)
     (fun rule current => retainedContextNodeObservation_relabel molecule unit e parentUnique
       relabel rule current)
     (fun current => retainedReadingEvidence_relabel molecule unit e parentUnique imageMap
@@ -1394,17 +1394,17 @@ private theorem ordinary_reading4c_relabel (e : molecule.Aut)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right)
     (reference : DescriptorSense) (W D : ℕ) (node : left.Node) :
     ordinaryKeyWithObservations right
-        (retainedContextNodeObservation molecule right (mapDetected molecule e unit))
-        (retainedReadingEvidence4c molecule imageMap (mapDetected molecule e unit) right
+        (retainedContextNodeObservation molecule right (mapOccurrence (e : Equiv.Perm Atom) unit))
+        (retainedReadingEvidence4c molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right
           reference) W D (relabel.toEquiv node) =
       ordinaryKeyWithObservations left
         (retainedContextNodeObservation molecule left unit)
         (retainedReadingEvidence4c molecule sourceMap unit left reference) W D node :=
   ordinaryKeyWithObservations_relabel relabel
     (retainedContextNodeObservation molecule left unit)
-    (retainedContextNodeObservation molecule right (mapDetected molecule e unit))
+    (retainedContextNodeObservation molecule right (mapOccurrence (e : Equiv.Perm Atom) unit))
     (retainedReadingEvidence4c molecule sourceMap unit left reference)
-    (retainedReadingEvidence4c molecule imageMap (mapDetected molecule e unit) right reference)
+    (retainedReadingEvidence4c molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right reference)
     (fun rule current => retainedContextNodeObservation_relabel molecule unit e parentUnique
       relabel rule current)
     (fun current => retainedReadingEvidence4c_relabel molecule unit e parentUnique imageMap
@@ -1417,17 +1417,17 @@ private theorem ordinary_noReference_relabel (e : molecule.Aut)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (W D : ℕ)
     (node : left.Node) :
     ordinaryKeyWithObservations right
-        (retainedContextNodeObservation molecule right (mapDetected molecule e unit))
-        (retainedNoReferenceEvidence4c molecule imageMap (mapDetected molecule e unit) right)
+        (retainedContextNodeObservation molecule right (mapOccurrence (e : Equiv.Perm Atom) unit))
+        (retainedNoReferenceEvidence4c molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right)
         W D (relabel.toEquiv node) =
       ordinaryKeyWithObservations left
         (retainedContextNodeObservation molecule left unit)
         (retainedNoReferenceEvidence4c molecule sourceMap unit left) W D node :=
   ordinaryKeyWithObservations_relabel relabel
     (retainedContextNodeObservation molecule left unit)
-    (retainedContextNodeObservation molecule right (mapDetected molecule e unit))
+    (retainedContextNodeObservation molecule right (mapOccurrence (e : Equiv.Perm Atom) unit))
     (retainedNoReferenceEvidence4c molecule sourceMap unit left)
-    (retainedNoReferenceEvidence4c molecule imageMap (mapDetected molecule e unit) right)
+    (retainedNoReferenceEvidence4c molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right)
     (fun rule current => retainedContextNodeObservation_relabel molecule unit e parentUnique
       relabel rule current)
     (fun current => retainedNoReferenceEvidence4c_relabel molecule unit e parentUnique imageMap
@@ -1439,7 +1439,7 @@ theorem retainedCompleteReadingAt_relabel (e : molecule.Aut)
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (W D : ℕ)
     (reference : Option DescriptorSense) :
-    retainedCompleteReadingAt molecule imageMap (mapDetected molecule e unit) right W D
+    retainedCompleteReadingAt molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right W D
         reference =
       retainedCompleteReadingAt molecule sourceMap unit left W D reference := by
   cases reference with
@@ -1460,7 +1460,7 @@ theorem retainedCompleteReadingsAt_relabel (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (W D : ℕ) :
-    retainedCompleteReadingsAt molecule imageMap (mapDetected molecule e unit) right W D =
+    retainedCompleteReadingsAt molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right W D =
       retainedCompleteReadingsAt molecule sourceMap unit left W D := by
   unfold retainedCompleteReadingsAt
   rw [retainedReferenceSelection_relabel molecule unit e parentUnique imageMap sourceMap reads
@@ -1481,7 +1481,7 @@ theorem retainedCompletePriorSignatureAt_relabel (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (W D : ℕ) :
-    retainedCompletePriorSignatureAt molecule imageMap (mapDetected molecule e unit) right W D =
+    retainedCompletePriorSignatureAt molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right W D =
       retainedCompletePriorSignatureAt molecule sourceMap unit left W D := by
   simp [retainedCompletePriorSignatureAt,
     retainedReferenceSelection_relabel molecule unit e parentUnique imageMap sourceMap reads
@@ -1494,21 +1494,21 @@ theorem retainedMolecularRankPairAt_relabel (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (W D : ℕ) :
-    retainedMolecularRankPairAt molecule imageMap (mapDetected molecule e unit) right W D =
+    retainedMolecularRankPairAt molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right W D =
       retainedMolecularRankPairAt molecule sourceMap unit left W D := by
   unfold retainedMolecularRankPairAt observedPairKey observedRule4aComponent
   have hkey := ordinaryKeyWithObservations_relabel relabel
     (retainedContextNodeObservation molecule left unit)
-    (retainedContextNodeObservation molecule right (mapDetected molecule e unit))
+    (retainedContextNodeObservation molecule right (mapOccurrence (e : Equiv.Perm Atom) unit))
     (retainedRankEvidence molecule sourceMap unit left)
-    (retainedRankEvidence molecule imageMap (mapDetected molecule e unit) right)
+    (retainedRankEvidence molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right)
     (fun rule current => retainedContextNodeObservation_relabel molecule unit e parentUnique
       relabel rule current)
     (fun current => retainedRankEvidence_relabel molecule unit e parentUnique imageMap sourceMap
       reads relabel current) W D left.root
   have hrule := ruleKeyWithObservations_relabel relabel
     (retainedContextNodeObservation molecule left unit)
-    (retainedContextNodeObservation molecule right (mapDetected molecule e unit)) W D
+    (retainedContextNodeObservation molecule right (mapOccurrence (e : Equiv.Perm Atom) unit)) W D
     (fun rule current => retainedContextNodeObservation_relabel molecule unit e parentUnique
       relabel rule current) left.root
   simp [← relabel.map_root, hkey, hrule]
@@ -1518,7 +1518,7 @@ theorem retainedCompleteLigandPriorKeyAt_relabel (e : molecule.Aut)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (W D : ℕ) :
-    retainedCompleteLigandPriorKeyAt molecule imageMap (mapDetected molecule e unit) right W D =
+    retainedCompleteLigandPriorKeyAt molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right W D =
       retainedCompleteLigandPriorKeyAt molecule sourceMap unit left W D := by
   simp [retainedCompleteLigandPriorKeyAt,
     retainedMolecularRankPairAt_relabel molecule unit e parentUnique imageMap sourceMap reads
@@ -1532,7 +1532,7 @@ theorem retainedCompleteRule5ReadingsAt_relabel (e : molecule.Aut)
     (reads : ReadsAgree molecule e imageMap sourceMap unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (W D : ℕ)
     (common : DescriptorSense) :
-    retainedCompleteRule5ReadingsAt molecule imageMap (mapDetected molecule e unit) right W D
+    retainedCompleteRule5ReadingsAt molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right W D
         common =
       retainedCompleteRule5ReadingsAt molecule sourceMap unit left W D common := by
   unfold retainedCompleteRule5ReadingsAt retainedTaggedAlternativeReferencesAt
@@ -1550,12 +1550,12 @@ theorem retainedCompleteRule5ReadingsAt_relabel (e : molecule.Aut)
       simp [retainedCompleteReadingAt_relabel molecule unit e parentUnique imageMap sourceMap
         reads relabel]
 
-theorem retainedMolecularRankPairAt_mirror (e : molecule.Aut)
+theorem retainedMolecularRankPairAt_mirror (unit : DetectedOccurrence molecule) (e : molecule.Aut)
     (parentUnique : ∀ a b n, left.child a n → left.child b n → a = b)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap.reflect unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (W D : ℕ) :
-    retainedMolecularRankPairAt molecule imageMap (mapDetected molecule e unit) right W D =
+    retainedMolecularRankPairAt molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right W D =
       retainedMolecularRankPairAt molecule sourceMap unit left W D := by
   calc
     _ = retainedMolecularRankPairAt molecule sourceMap.reflect unit left W D :=
@@ -1564,12 +1564,12 @@ theorem retainedMolecularRankPairAt_mirror (e : molecule.Aut)
     _ = retainedMolecularRankPairAt molecule sourceMap unit left W D :=
       retainedMolecularRankPairAt_reflect molecule sourceMap unit left W D
 
-theorem retainedCompleteLigandPriorKeyAt_mirror (e : molecule.Aut)
+theorem retainedCompleteLigandPriorKeyAt_mirror (unit : DetectedOccurrence molecule) (e : molecule.Aut)
     (parentUnique : ∀ a b n, left.child a n → left.child b n → a = b)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap.reflect unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (W D : ℕ) :
-    retainedCompleteLigandPriorKeyAt molecule imageMap (mapDetected molecule e unit) right W D =
+    retainedCompleteLigandPriorKeyAt molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right W D =
       retainedCompleteLigandPriorKeyAt molecule sourceMap unit left W D := by
   calc
     _ = retainedCompleteLigandPriorKeyAt molecule sourceMap.reflect unit left W D :=
@@ -1578,13 +1578,13 @@ theorem retainedCompleteLigandPriorKeyAt_mirror (e : molecule.Aut)
     _ = retainedCompleteLigandPriorKeyAt molecule sourceMap unit left W D :=
       retainedCompleteLigandPriorKeyAt_reflect molecule sourceMap unit left W D
 
-theorem retainedCompleteRule5ReadingsAt_mirror (e : molecule.Aut)
+theorem retainedCompleteRule5ReadingsAt_mirror (unit : DetectedOccurrence molecule) (e : molecule.Aut)
     (parentUnique : ∀ a b n, left.child a n → left.child b n → a = b)
     (imageMap sourceMap : DescriptorMap (DetectedOccurrence molecule))
     (reads : ReadsAgree molecule e imageMap sourceMap.reflect unit left)
     (relabel : RootedDigraph.Relabel (e : Equiv.Perm Atom) left right) (W D : ℕ)
     (common : DescriptorSense) :
-    retainedCompleteRule5ReadingsAt molecule imageMap (mapDetected molecule e unit) right W D
+    retainedCompleteRule5ReadingsAt molecule imageMap (mapOccurrence (e : Equiv.Perm Atom) unit) right W D
         common =
       retainedCompleteRule5ReadingsAt molecule sourceMap.reflect unit left W D common :=
   retainedCompleteRule5ReadingsAt_relabel molecule unit e parentUnique imageMap sourceMap.reflect

@@ -16,7 +16,7 @@ universe u
 section Reading
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 /-- Every Rule-5 observation, in the independent complete Rule-4b/4c alternative order. -/
 def completeRule5ReadingsAt (W D : Nat) (common : DescriptorSense) : List (Key StereoLabel) :=
@@ -44,7 +44,7 @@ end Reading
 section Faithful
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (externalParent ligand : Atom)
+  (unit : OccurrenceUnit Atom) (externalParent ligand : Atom)
   {left right : RootedDigraph Atom}
   (faithfulL : RootedDigraph.FaithfulExactExpansion molecule externalParent ligand left)
   (faithfulR : RootedDigraph.FaithfulExactExpansion molecule externalParent ligand right)

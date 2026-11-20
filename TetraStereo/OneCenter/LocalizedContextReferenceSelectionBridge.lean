@@ -19,7 +19,7 @@ section Tree
 variable (tree : LocalizedCumulativeDecoratedTree input (input.certified.input.molecule.atomCount + 1))
   (observe : ConstitutionalRule → (ruleMajorTreeGraph tree).Node → ℤ)
   (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-  (unit : DetectedOccurrence input.moleculeGraph)
+  (unit : OccurrenceUnit input.Atom)
 /-- The reading-based label of a node. -/
 abbrev nodeLabel (node : (ruleMajorTreeGraph tree).Node) : Option LocalizedAuxiliaryLabel :=
   (occurrenceReading input.moleculeGraph descriptorMap unit (ruleMajorTreeGraph tree) node).toLocalizedLabel
@@ -125,7 +125,7 @@ variable (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)
   {fuel : Nat} {key : input.LocalizedRerootCumulativeRule45Key}
   (trace : LocalizedRuleMajorSortTrace input .rule4a
     (input.molecularReader descriptorMap target) fuel tree key)
-  (unit : DetectedOccurrence input.moleculeGraph)
+  (unit : OccurrenceUnit input.Atom)
   (hyp : ContextTreeRankReadback tree descriptorMap unit)
 include hyp
 

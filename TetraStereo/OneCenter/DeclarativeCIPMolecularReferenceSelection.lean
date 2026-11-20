@@ -164,7 +164,7 @@ section Selection
 
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 /-- Evidence of the rules applied before Rule 4b: Rules 3 and 4a only. -/
 def rankEvidence : StereochemicalEvidence graph := fun node =>
@@ -282,7 +282,7 @@ section Reflection
 
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 theorem readContext_reflect (steps : List Atom) :
     readContext molecule descriptorMap.reflect unit steps =
@@ -457,7 +457,7 @@ section Compatibility
 
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 theorem referenceSelection_eq_empty_iff :
     referenceSelection molecule descriptorMap unit graph = .empty ↔

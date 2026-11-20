@@ -72,7 +72,7 @@ section SelectionIso
 
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) {left right : RootedDigraph Atom}
+  (unit : OccurrenceUnit Atom) {left right : RootedDigraph Atom}
   (iso : RootedDigraph.Iso left right)
 
 local instance multiRefNodeFintype (graph : RootedDigraph Atom) : Fintype graph.Node :=
@@ -212,7 +212,7 @@ section Observables
 
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 /-- Rule 3: the Rule-3 component of the ligand root's ordinary key over the evidence of the
 rules applied before Rule 4b. -/
@@ -279,7 +279,7 @@ section ObservableIso
 
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) {left right : RootedDigraph Atom}
+  (unit : OccurrenceUnit Atom) {left right : RootedDigraph Atom}
   (iso : RootedDigraph.Iso left right)
 
 include iso in

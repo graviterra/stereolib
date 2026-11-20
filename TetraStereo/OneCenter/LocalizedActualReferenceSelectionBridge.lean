@@ -138,7 +138,7 @@ variable {read : input.LocalizedRerootCursor (input.certified.input.molecule.ato
     Option LocalizedAuxiliaryLabel}
   (arm : input.OriginalRootArm center index .rule4a read)
   (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-  (unit : DetectedOccurrence input.moleculeGraph)
+  (unit : OccurrenceUnit input.Atom)
 
 /-- The reading-based label of a node. -/
 abbrev nodeLabel (node : (armGraph arm).Node) : Option LocalizedAuxiliaryLabel :=
@@ -249,7 +249,7 @@ section Assembly
 variable (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
   (target : input.LocalizedCIPOccurrence (input.certified.input.molecule.atomCount + 1))
   (arm : input.OriginalRootArm center index .rule4a (input.molecularReader descriptorMap target))
-  (unit : DetectedOccurrence input.moleculeGraph) (hyp : ArmReadback arm descriptorMap unit)
+  (unit : OccurrenceUnit input.Atom) (hyp : ArmReadback arm descriptorMap unit)
 
 include hyp
 

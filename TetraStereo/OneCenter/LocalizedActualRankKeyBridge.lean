@@ -44,7 +44,7 @@ variable {input : CertifiedLocalizedCIPInput} {center : input.TetrahedralCenter}
 /-- The readback hypotheses of the bridge, relative to a descriptor map and ranked unit. -/
 structure ArmReadback (arm : input.OriginalRootArm center index .rule4a read)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) : Prop where
+    (unit : OccurrenceUnit input.Atom) : Prop where
   label : ∀ (node : (armGraph arm).Node)
     (actual : LocalizedCumulativeDecoratedTree input (input.certified.input.molecule.atomCount + 1)),
     arm.tree.decoratedSubtreeAt? node.1 = some actual →
@@ -60,7 +60,7 @@ structure ArmReadback (arm : input.OriginalRootArm center index .rule4a read)
 /-- Terminal case: a root-only decorated tree matched by the terminal key. -/
 theorem arm_terminal_bridge4a (arm : input.OriginalRootArm center index .rule4a read)
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (hyp : ArmReadback arm descriptorMap unit)
     (cursor : input.LocalizedRerootCursor (input.certified.input.molecule.atomCount + 1))
     (fullMatch : LocalizedCumulativeTreeFullMatch .rule4a
@@ -114,7 +114,7 @@ theorem arm_terminal_bridge4a (arm : input.OriginalRootArm center index .rule4a 
 /-- **Recursive Rule-4a bridge.** -/
 theorem arm_node_bridge4a (arm : input.OriginalRootArm center index .rule4a read)
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (hyp : ArmReadback arm descriptorMap unit)
     {W D : ℕ} (hW : (armGraph arm).width ≤ W) (hD : (armGraph arm).height ≤ D)
     {fuel : Nat} (node : (armGraph arm).Node)
@@ -289,7 +289,7 @@ theorem arm_node_bridge4a (arm : input.OriginalRootArm center index .rule4a read
 /-- **Prefix-2 canonical membership of the actual Rule-4a stage addressing.** -/
 theorem arm_keySorted_rankEvidence (arm : input.OriginalRootArm center index .rule4a read)
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (hyp : ArmReadback arm descriptorMap unit) :
     KeySorted (ordinaryKey input.moleculeGraph (armGraph arm)
         (rankEvidence input.moleculeGraph descriptorMap unit (armGraph arm))
@@ -339,7 +339,7 @@ theorem arm_keySorted_rankEvidence (arm : input.OriginalRootArm center index .ru
 theorem arm_ordinaryCanonicalAddressing_rankEvidence
     (arm : input.OriginalRootArm center index .rule4a read)
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (hyp : ArmReadback arm descriptorMap unit) :
     OrdinaryCanonicalAddressing input.moleculeGraph
       (rankEvidence input.moleculeGraph descriptorMap unit (armGraph arm))

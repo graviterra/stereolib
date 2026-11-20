@@ -503,7 +503,7 @@ section Molecular
 
 variable {Atom : Type} [Fintype Atom] [DecidableEq Atom] (molecule : MoleculeGraph Atom)
   (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 local instance rankAddressNodeFintype3 : Fintype graph.Node := graph.nodeFintype
 

@@ -23,7 +23,7 @@ section ContextualRule5
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom)
   (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 local instance contextualRule5NodeFintype : Fintype graph.Node := graph.nodeFintype
 
@@ -110,7 +110,7 @@ theorem contextualCompleteRule5ReadingsAt_length (W D : ℕ) (common : Descripto
 
 /-- The Rule-1/2/3/4a pair key under the retained physical outer-root observer. -/
 def contextualMolecularRankPairAt (W D : ℕ) : MolecularRankPair :=
-  observedPairKey graph (contextualNodeObservation molecule graph unit.1.root)
+  observedPairKey graph (contextualNodeObservation molecule graph unit.root)
     (rankEvidence molecule descriptorMap unit graph) W D graph.root
 
 /-- The Rule-1/2/3/4a prefix followed by the retained-observer complete Rule-4b/4c signature. -/
@@ -138,7 +138,7 @@ section Iso
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom)
   (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) {left right : RootedDigraph Atom}
+  (unit : OccurrenceUnit Atom) {left right : RootedDigraph Atom}
   (iso : RootedDigraph.Iso left right)
 
 local instance contextualRule5IsoLeftNodeFintype : Fintype left.Node := left.nodeFintype
@@ -166,9 +166,9 @@ theorem contextualTaggedAlternativeReferencesAt_iso (W D : ℕ) :
       contextualTaggedAlternativeReferencesAt molecule descriptorMap unit left W D := by
   unfold contextualTaggedAlternativeReferencesAt
   unfold contextualReferenceSelection
-  rw [contextualReferenceSelection_iso molecule descriptorMap unit iso unit.1.root]
+  rw [contextualReferenceSelection_iso molecule descriptorMap unit iso unit.root]
   cases h : observedReferenceSelection molecule descriptorMap unit left
-      (contextualNodeObservation molecule left unit.1.root) with
+      (contextualNodeObservation molecule left unit.root) with
   | empty => rfl
   | one sense => rfl
   | both =>
@@ -192,17 +192,17 @@ theorem contextualMolecularRankPairAt_iso (W D : ℕ) :
   unfold contextualMolecularRankPairAt observedPairKey observedRule4aComponent
   rw [← iso.map_root]
   have observerEq := fun rule node =>
-    contextualNodeObservation_iso molecule iso unit.1.root rule node
+    contextualNodeObservation_iso molecule iso unit.root rule node
   have keyEq := ordinaryKeyWithObservations_iso iso
-    (contextualNodeObservation molecule left unit.1.root)
-    (contextualNodeObservation molecule right unit.1.root)
+    (contextualNodeObservation molecule left unit.root)
+    (contextualNodeObservation molecule right unit.root)
     W D observerEq
     (rankEvidence_preserved molecule descriptorMap unit iso) left.root
   exact congrArg (fun pair : List (Key ℤ) × Key StereoLabel => toLex pair)
     (Prod.ext
       (ruleKeyWithObservations_iso iso
-        (contextualNodeObservation molecule left unit.1.root)
-        (contextualNodeObservation molecule right unit.1.root)
+        (contextualNodeObservation molecule left unit.root)
+        (contextualNodeObservation molecule right unit.root)
         W D observerEq left.root)
       (congrArg (fun key =>
         (ofLex key).2.getD (stereoIndex .rule4aStereogenicUnitKind) []) keyEq))
@@ -232,7 +232,7 @@ section Reflection
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom)
   (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 local instance contextualRule5ReflectNodeFintype : Fintype graph.Node := graph.nodeFintype
 

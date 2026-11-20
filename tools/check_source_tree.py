@@ -13,7 +13,7 @@ from lean_source import imports
 
 ROOT_FILES = {
     '.gitignore', 'README.md', 'BUILDING.md', 'CONTRIBUTING.md', 'CODE_OF_CONDUCT.md',
-    'SECURITY.md', 'LICENSE', 'CITATION.cff', 'TetraStereo.lean',
+    'SECURITY.md', 'RING_STATUS.md', 'LICENSE', 'CITATION.cff', 'TetraStereo.lean',
     'lakefile.lean', 'lake-manifest.json', 'lean-toolchain', 'source-modules.json',
 }
 TOOLS = {'build_lean_project_bounded.py', 'lean_source.py', 'check_source_tree.py'}

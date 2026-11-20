@@ -21,6 +21,7 @@ class SourceDistributionTests(unittest.TestCase):
                 self.assertFalse(allowed(name))
         self.assertTrue(allowed('TetraStereo/OneCenter/Geometry.lean'))
         self.assertTrue(allowed('BUILDING.md'))
+        self.assertTrue(allowed('RING_STATUS.md'))
         self.assertTrue(allowed('source-modules.json'))
 
     def test_distribution_rejects_website_sources(self):

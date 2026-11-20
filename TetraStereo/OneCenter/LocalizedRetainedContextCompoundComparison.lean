@@ -37,7 +37,7 @@ private theorem rootLookup (tree : LocalizedCumulativeDecoratedTree input carrie
 
 private def facts4b {tree : LocalizedCumulativeDecoratedTree input carrierFuel}
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (hyp : RetainedContextTreeRankReadback tree descriptorMap unit) :
     RetainedRule4bFieldFacts tree descriptorMap unit where
   label := hyp.label
@@ -46,7 +46,7 @@ private def facts4b {tree : LocalizedCumulativeDecoratedTree input carrierFuel}
 
 private def facts4c {tree : LocalizedCumulativeDecoratedTree input carrierFuel}
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (hyp : RetainedContextTreeRankReadback tree descriptorMap unit) :
     RetainedRule4cFieldFacts tree descriptorMap unit where
   label := hyp.label
@@ -55,7 +55,7 @@ private def facts4c {tree : LocalizedCumulativeDecoratedTree input carrierFuel}
 
 private def factsNoReference {tree : LocalizedCumulativeDecoratedTree input carrierFuel}
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (hyp : RetainedContextTreeRankReadback tree descriptorMap unit) :
     RetainedNoReferenceRule4cFieldFacts tree descriptorMap unit where
   label := hyp.label
@@ -64,7 +64,7 @@ private def factsNoReference {tree : LocalizedCumulativeDecoratedTree input carr
 
 /-- Decorated observation law for one retained arm. The reader is whatever the tree realizes. -/
 abbrev RetainedArmObservation (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
-    (unit : DetectedOccurrence input.moleculeGraph) : Prop :=
+    (unit : OccurrenceUnit input.Atom) : Prop :=
   ∀ rule node actual, tree.decoratedSubtreeAt? node.1 = some actual →
     retainedContextNodeObservation input.moleculeGraph (ruleMajorTreeGraph tree) unit rule node =
       priorityValue rule (armObservation rule actual)
@@ -72,7 +72,7 @@ abbrev RetainedArmObservation (tree : LocalizedCumulativeDecoratedTree input car
 theorem retainedContextTrees_scalar4b_compare
     {read : input.LocalizedRerootCursor carrierFuel → Option LocalizedAuxiliaryLabel}
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (singleBonded : input.moleculeGraph.SimpleBonded)
     (left right : LocalizedCumulativeDecoratedTree input carrierFuel)
     {leftReference rightReference : RS}
@@ -141,7 +141,7 @@ theorem retainedContextTrees_scalar4b_compare
 theorem retainedContextTrees_scalar4c_compare
     {read : input.LocalizedRerootCursor carrierFuel → Option LocalizedAuxiliaryLabel}
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (singleBonded : input.moleculeGraph.SimpleBonded)
     (left right : LocalizedCumulativeDecoratedTree input carrierFuel)
     {leftReference rightReference : RS}
@@ -211,7 +211,7 @@ theorem retainedContextTrees_scalar4c_compare
 theorem retainedContextTrees_noReference4c_compare
     {read : input.LocalizedRerootCursor carrierFuel → Option LocalizedAuxiliaryLabel}
     {descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph)}
-    {unit : DetectedOccurrence input.moleculeGraph}
+    {unit : OccurrenceUnit input.Atom}
     (singleBonded : input.moleculeGraph.SimpleBonded)
     (left right : LocalizedCumulativeDecoratedTree input carrierFuel)
     {fuelLeft fuelRight : Nat}
@@ -280,7 +280,7 @@ structure RetainedStageReadingFacts
     {cursor : input.LocalizedRerootCursor carrierFuel}
     (stages : input.RuleMajorContextStages carrierFuel read cursor)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) : Prop where
+    (unit : OccurrenceUnit input.Atom) : Prop where
   aReadback : RetainedContextTreeRankReadback stages.a.tree descriptorMap unit
   aObservation : RetainedArmObservation stages.a.tree unit
   bReadback : ∀ reference, RetainedContextTreeRankReadback (stages.b reference).tree
@@ -297,7 +297,7 @@ def retainedContextBranchReadings
     {cursor : input.LocalizedRerootCursor carrierFuel}
     (stages : input.RuleMajorContextStages carrierFuel read cursor)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) :
+    (unit : OccurrenceUnit input.Atom) :
     List input.LocalizedRerootRule4bcReading :=
   (localizedRule4bcReferenceAlternatives
     (toReferenceList (retainedReferenceSelection input.moleculeGraph descriptorMap unit
@@ -311,7 +311,7 @@ variable {read : input.LocalizedRerootCursor carrierFuel → Option LocalizedAux
   (leftStages : input.RuleMajorContextStages carrierFuel read cursorL)
   (rightStages : input.RuleMajorContextStages carrierFuel read cursorR)
   (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-  (unit : DetectedOccurrence input.moleculeGraph)
+  (unit : OccurrenceUnit input.Atom)
   (readL : RetainedStageReadingFacts leftStages descriptorMap unit)
   (readR : RetainedStageReadingFacts rightStages descriptorMap unit)
   (isoL : RuleMajorContextStageGraphIsoBundle leftStages)
@@ -461,7 +461,7 @@ theorem retainedStages_RS_completeReading_compare
     (singleBonded : input.moleculeGraph.SimpleBonded)
     (stages : input.RuleMajorContextStages carrierFuel read cursor)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     {W D : Nat} (width : stages.widthBound ≤ W) (depth : stages.depthBound ≤ D)
     (readbacks : RetainedStageReadingFacts stages descriptorMap unit)
     (isomorphisms : RuleMajorContextStageGraphIsoBundle stages) :
@@ -621,7 +621,7 @@ theorem retainedStages_rankReadings_observations
     (singleBonded : input.moleculeGraph.SimpleBonded)
     (stages : input.RuleMajorContextStages carrierFuel read cursor)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) {W D : Nat}
+    (unit : OccurrenceUnit input.Atom) {W D : Nat}
     (width : stages.widthBound ≤ W) (depth : stages.depthBound ≤ D)
     (readbacks : RetainedStageReadingFacts stages descriptorMap unit)
     (isomorphisms : RuleMajorContextStageGraphIsoBundle stages) :
@@ -677,7 +677,7 @@ theorem retainedStages_rankedReferenceTags
     (singleBonded : input.moleculeGraph.SimpleBonded)
     (stages : input.RuleMajorContextStages carrierFuel read cursor)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     (readbacks : RetainedStageReadingFacts stages descriptorMap unit)
     (isomorphisms : RuleMajorContextStageGraphIsoBundle stages) {W D : Nat}
     (width : stages.widthBound ≤ W) (depth : stages.depthBound ≤ D) :
@@ -723,7 +723,7 @@ structure RetainedCompoundReadbackData
     {cursor : input.LocalizedRerootCursor carrierFuel}
     (stages : input.RuleMajorContextStages carrierFuel read cursor)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph)
+    (unit : OccurrenceUnit input.Atom)
     (compound : input.LocalizedRerootCompoundRule45Key) (W D : Nat) : Prop where
   aKey : compound.prior.rule4aKey = stages.a.key
   references : compound.prior.references = toReferenceList
@@ -757,7 +757,7 @@ theorem retainedStages_compound_independentReadback
     (singleBonded : input.moleculeGraph.SimpleBonded)
     (stages : input.RuleMajorContextStages carrierFuel read cursor)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) {W D : Nat}
+    (unit : OccurrenceUnit input.Atom) {W D : Nat}
     (width : stages.widthBound ≤ W) (depth : stages.depthBound ≤ D)
     (readbacks : RetainedStageReadingFacts stages descriptorMap unit)
     (isomorphisms : RuleMajorContextStageGraphIsoBundle stages)
@@ -1020,7 +1020,7 @@ theorem retainedGeneratedCompound_independentReadback
 
 private def unmaskedRetainedPriorAt
     (molecule : MoleculeGraph input.Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (graph : RootedDigraph input.Atom) (W D : Nat) :
+    (unit : OccurrenceUnit input.Atom) (graph : RootedDigraph input.Atom) (W D : Nat) :
     CompletePriorSignature :=
   let selection := retainedReferenceSelection molecule descriptorMap unit graph
   let readings := retainedCompleteReadingsAt molecule descriptorMap unit graph W D
@@ -1029,7 +1029,7 @@ private def unmaskedRetainedPriorAt
 
 private theorem compare_localUnmaskedRetainedPrior_eq
     (molecule : MoleculeGraph input.Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (left right : RootedDigraph input.Atom) (W D : Nat) :
+    (unit : OccurrenceUnit input.Atom) (left right : RootedDigraph input.Atom) (W D : Nat) :
     compare (unmaskedRetainedPriorAt molecule descriptorMap unit left W D)
         (unmaskedRetainedPriorAt molecule descriptorMap unit right W D) =
       compare (retainedCompletePriorSignatureAt molecule descriptorMap unit left W D)
@@ -1051,7 +1051,7 @@ variable {read : input.LocalizedRerootCursor carrierFuel → Option LocalizedAux
   (leftStages : input.RuleMajorContextStages carrierFuel read cursorL)
   (rightStages : input.RuleMajorContextStages carrierFuel read cursorR)
   (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-  (unit : DetectedOccurrence input.moleculeGraph)
+  (unit : OccurrenceUnit input.Atom)
   (readL : RetainedStageReadingFacts leftStages descriptorMap unit)
   (readR : RetainedStageReadingFacts rightStages descriptorMap unit)
   (isoL : RuleMajorContextStageGraphIsoBundle leftStages)

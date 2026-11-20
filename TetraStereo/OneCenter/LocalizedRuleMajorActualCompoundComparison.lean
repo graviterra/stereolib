@@ -19,7 +19,7 @@ abbrev CompleteLigandPriorKey := Lex (MolecularRankPair × CompletePriorSignatur
 
 def completeLigandPriorKeyAt {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
     (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom) (W D : Nat) :
+    (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom) (W D : Nat) :
     CompleteLigandPriorKey :=
   toLex (molecularRankPairAt molecule descriptorMap unit graph W D,
     completePriorSignatureAt molecule descriptorMap unit graph W D)
@@ -27,7 +27,7 @@ def completeLigandPriorKeyAt {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
 theorem completeLigandPriorKeyAt_eq_of_faithful
     {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
     (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-    (unit : DetectedOccurrence molecule) (externalParent ligand : Atom)
+    (unit : OccurrenceUnit Atom) (externalParent ligand : Atom)
     {left right : RootedDigraph Atom}
     (faithfulL : left.FaithfulExactExpansion molecule externalParent ligand)
     (faithfulR : right.FaithfulExactExpansion molecule externalParent ligand) (W D : Nat) :

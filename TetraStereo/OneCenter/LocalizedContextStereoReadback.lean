@@ -20,7 +20,7 @@ all recorded against the independent occurrence-reading semantics at `unit`. -/
 structure ContextTreeRankReadback {input : CertifiedLocalizedCIPInput} {carrierFuel : Nat}
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (descriptorMap : DescriptorMap (DetectedOccurrence input.moleculeGraph))
-    (unit : DetectedOccurrence input.moleculeGraph) : Prop where
+    (unit : OccurrenceUnit input.Atom) : Prop where
   label : ∀ (node : (toOfficialSourceTree tree).toDeclarativeDigraph.Node)
       (actual : LocalizedCumulativeDecoratedTree input carrierFuel),
       subtreeAt? tree node.1 = some actual →
@@ -46,8 +46,8 @@ theorem contextTreeRankReadback_of_realizedTree
     (singleBonded : input.moleculeGraph.SimpleBonded)
     (acyclic : input.moleculeGraph.Acyclic)
     (target : input.LocalizedRerootCursor carrierFuel)
-    (unit : DetectedOccurrence input.moleculeGraph)
-    (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit.1)
+    (unit : OccurrenceUnit input.Atom)
+    (targetUnit : input.molecularFrameUnit target.occurrence.1 = unit)
     (tree : LocalizedCumulativeDecoratedTree input carrierFuel)
     (realizes : LocalizedCumulativeTreeRealizes input
       (input.molecularReader descriptorMap target.occurrence) tree)

@@ -36,7 +36,7 @@ private theorem completeReading_fst_min (left right : CompleteReadingKey) :
 
 variable {Atom : Type u} [Fintype Atom] [DecidableEq Atom]
   (molecule : MoleculeGraph Atom) (descriptorMap : DescriptorMap (DetectedOccurrence molecule))
-  (unit : DetectedOccurrence molecule) (graph : RootedDigraph Atom)
+  (unit : OccurrenceUnit Atom) (graph : RootedDigraph Atom)
 
 theorem completeReading_compare_eq_then (left right : CompleteReadingKey) :
     compare left right =
