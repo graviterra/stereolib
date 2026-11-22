@@ -1,39 +1,29 @@
 ![Stereolib — machine-checked stereochemistry in Lean 4 and Mathlib. A universal theorem in progress.](assets/stereolib-banner.svg)
 
-# Proving stereochemical assignments correct
+# Stereolib
 
-Stereodescriptors such as **R** and **S** describe the three-dimensional configuration at a
-molecular centre. The **Cahn–Ingold–Prelog (CIP)** sequence rules rank the groups attached to it.
-Stereolib aims to prove that a program assigns these labels correctly throughout an explicitly
-defined molecular domain. That universal theorem is **not yet proved**.
+Stereolib uses Lean 4 to check how the Cahn–Ingold–Prelog (CIP) sequence rules and a molecule’s
+three-dimensional geometry determine a tetrahedral descriptor. For a restricted class of
+acyclic molecules, the evaluator has a proof for its entire report, including justified
+refusals. For rings, the library can now derive the deciding rule for individual ligand
+comparisons. A chemical correctness proof for every admitted ring remains open.
 
-The contribution is a formal connection between executable comparisons, separately stated
-priority rules, and physical geometry. For a restricted class of molecules without rings, it
-proves the whole detected-centre report, including both assigned descriptors and justified
-refusals. A 33-atom example derives the lowercase **r** of a pseudoasymmetric centre by comparing
-mirror-related branches. We are looking for collaborators to extend this connection to the full
-intended domain.
+[Ring proof status](RING_STATUS.md) · [Run or replay the ring evaluator](docs/ring-evaluator.md) ·
+[Proved acyclic results](#what-is-proved) · [Collaborate](#collaborate)
 
-[Current ring status](RING_STATUS.md) · [What is proved](#what-is-proved) · [The proof frontier](#the-proof-frontier) ·
-[Collaborate](#collaborate) · [Concept map](#concept-map) · [Working with the source](#working-with-the-source)
+## Ring results as of 22 November 2026
 
-## Current source status — 22 November 2026
+| Result | What the evidence establishes |
+| --- | --- |
+| A scheduled ligand comparison | When constitutional rules tie for a pair at an eligible occurrence, the grouped evaluator derives the first deciding stereochemical rule, or a tie, and its signed score on the original and reflected geometries. [Lean theorem](TetraStereo/Engine/RingGroupedStereo.lean#L323) |
+| A change of deciding rule | On a 17-atom ring fixture, Rule 5 gives +2 on the original geometry and −2 on its reflection. Exchanging two coordinates makes Rule 4b decide with −1 on both. [Executable control](validation/ring-chronology/GroupedStereo.lean) |
+| Exact reports for the regenerated profile | Under the stated admission and calibration hypotheses, independently specified priorities determine the letter, casing or refusal at every detected centre for this reference policy. [Exact report certificate](TetraStereo/Engine/LocalizedChemicalRingExactCertificate.lean) |
+| A limit of the pinned Centres 1.0 procedure | Renumbering two carbons changes its fluorospiro descriptor from `S` to `s`. The independent ring-pair calculation gives `S` under both numberings and `R` on reflection. [Renumbering witness](TetraStereo/Examples/CentresRingSpiroCasing.lean) · [Molecular calculation](TetraStereo/Examples/RingTwoPairFluorospiro.lean) |
 
-The ring API now offers the explicit `accumulatedReferencesRegenerated` profile, exact
-source-priority letters, casing and refusal theorems at every detected root, and matched
-frozen-auxiliary and coordinate controls. The named profile has a unique independent source
-model agreeing with its actual report; all-root cancellation equality is closed.
-
-A separate pinned Centres 1.0 adapter runs and replays the 2018 procedure. Molecular checking
-can derive recursive comparison and publication evidence; two-geometry checking derives casing
-from original and reflected priority readings. A concrete fluorospiro example shows why release
-agreement and chemical correctness need separate statements: atom renumbering changes the
-release's uppercase `S` to lowercase `s`.
-
-These are finite single-bond, constant-charge results with explicit admission and physical
-calibration hypotheses. Universal chemical fidelity, including nested-reference policy and
-complete comparison coverage, remains open. See [ring API and setup](docs/ring-evaluator.md)
-and [ring status](RING_STATUS.md) for entry points, controls and proof limits.
+**The next proof** must combine the twelve directed comparisons among a centre’s four ligands
+into a consistent ranking on each geometry, or justify promotion or refusal when ties persist.
+It must then connect that decision to the auxiliary descriptors used by other centres and to
+the final molecular report. [Proof status and domain](RING_STATUS.md#domain-and-remaining-work)
 
 ## The proved connection
 
