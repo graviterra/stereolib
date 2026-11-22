@@ -1,4 +1,4 @@
-# Ring source status — 20 November 2026
+# Ring source status — 22 November 2026
 
 The ring programme now has an explicit executable development profile and an independent
 source-model connection to its detected-centre report. This is a scoped source update, not a
@@ -58,31 +58,51 @@ require calibrated coordinates/configuration at every detected centre. Structura
 alone does not establish this calibration. Auxiliary cancellation statements retain their stated
 tied-branch scope; each linked declaration gives its exact hypotheses.
 
-The two-pair outcome and casing obligation is closed for the named procedure under these
-hypotheses. The remaining scientific obligations are:
+The [exact public certificate](TetraStereo/Engine/LocalizedChemicalRingExactCertificate.lean)
+now supplies source-priority letters, casing and refusal criteria at every detected root under
+the stated domain hypotheses. This closes the earlier public-interface integration gap. The
+[chronology certificate](TetraStereo/Engine/LocalizedChemicalRingChronologyCertificate.lean)
+connects frozen disagreements to changed downstream auxiliary readings.
 
-1. **Exact chemical letters and casing across the other physical classes:** the all-root
-   result classifies success/refusal. Complete independent absolute-priority and mirror-response
-   meanings for successful descriptors still need to be joined across the remaining classes.
-2. **Normative nested-reference fidelity:** existence and uniqueness for accumulated references
-   and regenerated contexts do not establish that this policy is prescribed by IUPAC. A fidelity
-   argument must cover nested reference lifetime, regeneration, scheduling and final applicability,
-   as well as letters, casing and refusals. Policy-sensitive examples establish that policy choice
-   matters; they do not select the chemically correct policy.
+Independent chemical fidelity remains open: contextual reference lifetime, regeneration,
+publication schedules and recursive priority meanings must be justified against the intended
+chemical procedure. Exactness for the named source model does not establish normative adoption.
 
-The public engine already equals the prepared report. Its
-[`SourceMeaning`](TetraStereo/Engine/LocalizedChemicalRingPublic.lean#L211) interface still
-exposes the earlier physical casing clause under pairwise proper distinguishability; packaging
-the new two-pair and all-root outcome theorems in that interface remains integration work.
-Standalone certificate export for this ring profile also remains open.
+The [grouped comparison machinery](TetraStereo/Engine/RingGroupedStereo.lean) builds stage-specific
+molecular profiles. The [comparison agreement interface](TetraStereo/Engine/RingComparisonAgreement.lean)
+relates independently derived two-geometry comparisons and auxiliary values to source observations.
+Its coverage and agreement hypotheses remain explicit; universal comparison coverage is not claimed.
 
-A separate 21-atom spiro candidate remains unverified: a run lasting about fifteen minutes did
-not yield an accepted completed result. It supplies no additional correctness claim.
+For a pair of ligands tied on constitutional rules at a reachable scheduled occurrence,
+`scheduled_frontier` now proves that the grouped evaluator returns a molecularly determined
+rule and signed score on each geometry. The [17-atom control](validation/ring-chronology/GroupedStereo.lean)
+gives Rule 5 scores of +2 and −2. Exchanging two coordinates moves the decision to Rule 4b,
+with −1 on both geometries. A whole-centre proof must combine the twelve directed comparisons
+into a consistent ranking or justify promotion or refusal, then show how that decision enters
+the molecular report. [Scheduled pair theorem](TetraStereo/Engine/RingGroupedStereo.lean)
+
+## Runtime and coordinate controls
+
+The separate [Centres API](TetraStereo/Engine/CentresRing.lean) runs the pinned 2018 release and
+checks its chronological report. Molecular and mirror APIs strengthen this with independent
+comparison/publication derivations and spatial casing. The
+[fluorospiro counterexample](TetraStereo/Examples/CentresRingSpiroCasing.lean) demonstrates `S`/`s`
+under atom renumbering and a lowercase reflection conflict. The
+[comparison witness](TetraStereo/Examples/RingSourceComparisonAgreement.lean) independently
+checks the affected molecular comparisons and publications. The published dioxaspiro input is a
+separate annotated coordinate control, supported by the
+[source checker](TetraStereo/Engine/CentresSpiroSource.lean). Configured-centre inventories are part
+of the input: changing them can change auxiliary availability.
+
+The [frozen evaluator](TetraStereo/Engine/LocalizedChemicalRingFrozenExecution.lean) is a matched
+control for auxiliary regeneration, not a claim of equivalence with the pinned release.
+See [setup and entry points](docs/ring-evaluator.md) for executable and offline routes, receipt
+limitations and the distinction between structural and coordinate admission.
 
 ## Verification boundary
 
 The earlier preserved original-source checkpoints cover **74 distinct source files and 422
-kernel guards**. The new two-module checkpoint adds **eight kernel-only guards** for pairing
+kernel guards**. The subsequent two-module checkpoint adds **eight kernel-only guards** for pairing
 parity, exact two-pair entries and exhaustive root outcomes. The two public source files are
 byte-identical to those accepted source snapshots; review verified the current and frozen source
 and compiled-artifact hashes and the saved successful bounded-build receipts.
@@ -92,8 +112,9 @@ the public distribution's dependencies. Earlier small public-route smoke checks 
 fresh Lean compilation or full-library build was run for this publication. Publication checks
 are static only.
 
-The inventory now contains **4,131 maintained Lean modules**, up from 3,714; including the
-umbrella, there are **4,132 Lean source files** in total. Module counts,
+The inventory contains **4,364 maintained Lean modules**, up from 4,131 in the preceding
+public revision. The package contains **4,365 Lean source files** including the umbrella.
+Runtime and validation drivers are listed separately from the package inventory. Module counts,
 source-model proofs, runtime examples and chemical source approval are different kinds of evidence.
 The universal theorem and full chemical approval remain open. See the [README](README.md) for
 existing acyclic results, collaboration guidance and safe source checks.

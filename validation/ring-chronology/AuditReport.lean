@@ -1,0 +1,5 @@
+import TetraStereo.Engine.LocalizedChemicalRingExport
+import LocalizedChemicalRingReport
+assert_kernel_only TetraStereo.Generated.localizedChemicalRingReport
+example : TetraStereo.Engine.LocalizedChemicalRing.ReportCertificateClaim :=
+  TetraStereo.Generated.localizedChemicalRingReport

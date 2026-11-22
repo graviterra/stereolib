@@ -1,0 +1,8 @@
+spiro original [R, unassigned, unassigned, unassigned, unassigned, unassigned, unassigned]
+spiro mirror [S, unassigned, unassigned, unassigned, unassigned, unassigned, unassigned]
+spiro annotated center only [R, unassigned, unassigned, unassigned, unassigned, unassigned, unassigned]
+spiro annotated center only, mirror [S, unassigned, unassigned, unassigned, unassigned, unassigned, unassigned]
+propellane original [unassigned, unassigned, unassigned, unassigned, unassigned]
+propellane mirror [unassigned, unassigned, unassigned, unassigned, unassigned]
+propellane all handed-frame combinations {[unassigned, unassigned, unassigned, unassigned, unassigned]=32}
+propellane all nonempty inventories and handed frames {[unassigned, unassigned, unassigned, unassigned, unassigned]=242}

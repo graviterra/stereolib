@@ -5,6 +5,7 @@ from __future__ import annotations
 import ast
 from collections import Counter
 import json
+import hashlib
 from pathlib import Path, PurePosixPath
 import re
 import subprocess
@@ -18,6 +19,39 @@ ROOT_FILES = {
 }
 TOOLS = {'build_lean_project_bounded.py', 'lean_source.py', 'check_source_tree.py'}
 ASSET_FILES = {'assets/stereolib-banner.svg', 'assets/two-reference-fixture.svg'}
+AUXILIARY_FILES = {
+    'docs/ring-evaluator.md',
+    'tools/centres10/Centres10.java',
+    'tools/centres10/analyze.lean',
+    'tools/centres10/release-1.0.json',
+    'tools/centres10/run_pinned.py',
+    'tools/centres10/setup.sh',
+    'validation/ring-chronology/AuditReport.lean',
+    'validation/ring-chronology/CentresEvaluation.lean',
+    'validation/ring-chronology/CentresProbe.java',
+    'validation/ring-chronology/CentresSpiroCasing.lean',
+    'validation/ring-chronology/CentresSpiroSource.lean',
+    'validation/ring-chronology/ChemicalRules.lean',
+    'validation/ring-chronology/ConstitutionalSpheres.lean',
+    'validation/ring-chronology/DiscoveredReports.lean',
+    'validation/ring-chronology/EmitReport.lean',
+    'validation/ring-chronology/ExportInputs.lean',
+    'validation/ring-chronology/GroupedStereo.lean',
+    'validation/ring-chronology/IsotopeAssignment.lean',
+    'validation/ring-chronology/RankedReferences.lean',
+    'validation/ring-chronology/RecursivePromotions.lean',
+    'validation/ring-chronology/ReferenceDerivations.lean',
+    'validation/ring-chronology/SourceComparisonAgreement.lean',
+    'validation/ring-chronology/UnitClasses.lean',
+    'validation/ring-chronology/expected.txt',
+    'validation/ring-chronology/replay-centres.sh',
+    'validation/ring-chronology/test_pinned_runner.py',
+}
+EMBEDDED_INPUTS = {
+    'TetraStereo/Engine/CentresRing.lean': (
+        'tools/centres10/run_pinned.py', 'tools/centres10/release-1.0.json',
+    ),
+}
 MODULE_NAME = re.compile(r"TetraStereo(?:\.[A-Za-z_][A-Za-z0-9_']*)+")
 
 
@@ -27,6 +61,7 @@ def allowed(path: str) -> bool:
         return False
     return (
         path in ROOT_FILES
+        or path in AUXILIARY_FILES
         or path in ASSET_FILES
         or (parts[0] == 'TetraStereo' and path.endswith('.lean'))
         or (len(parts) == 2 and parts[0] == 'tools' and parts[1] in TOOLS)
@@ -75,11 +110,33 @@ def inventory_errors(text: str, source_modules: set[str]) -> list[str]:
     )
 
 
+def embedded_input_errors(root: Path, tracked: set[str]) -> list[str]:
+    """Verify the reviewed embedded runtime assets and their build-key fingerprints."""
+    errors = []
+    for source, assets in EMBEDDED_INPUTS.items():
+        if source not in tracked:
+            continue
+        text = (root / source).read_text(encoding='utf-8')
+        for asset in assets:
+            target = root / asset
+            if asset not in tracked or target.is_symlink() or not target.is_file():
+                errors.append(f'Missing tracked embedded input: {source} -> {asset}')
+                continue
+            relative = '../../' + asset
+            if f'include_str "{relative}"' not in text:
+                errors.append(f'Missing reviewed include_str binding: {source} -> {asset}')
+            digest = hashlib.sha256(target.read_bytes()).hexdigest()
+            if f'-- {target.name} SHA-256 {digest}\n' not in text:
+                errors.append(f'Stale embedded input fingerprint: {source} -> {asset}')
+    return errors
+
+
 def main() -> int:
     root = Path(__file__).resolve().parent.parent
     entries = subprocess.check_output(['git', '-C', str(root), 'ls-files', '-s', '-z'])
     errors = []
     sources = {}
+    auxiliary_sources = {}
     paths = []
     inventory_text = None
     for entry in entries.split(b'\0'):
@@ -104,7 +161,10 @@ def main() -> int:
         if path == 'source-modules.json':
             inventory_text = text
         elif path.endswith('.lean') and path != 'lakefile.lean':
-            sources[path[:-5].replace('/', '.')] = text
+            if path == 'TetraStereo.lean' or path.startswith('TetraStereo/'):
+                sources[path[:-5].replace('/', '.')] = text
+            else:
+                auxiliary_sources[path] = text
         elif path.endswith('.py'):
             ast.parse(text, filename=path)
         elif path.endswith('.md'):
@@ -122,6 +182,11 @@ def main() -> int:
         errors.extend(inventory_errors(inventory_text, set(sources)))
     errors.extend(f'Missing import: {module} -> {dependency}'
                   for module, dependency in missing_imports(sources))
+    for path, text in auxiliary_sources.items():
+        for dependency in imports(text):
+            if (dependency == 'TetraStereo' or dependency.startswith('TetraStereo.')) and dependency not in sources:
+                errors.append(f'Missing auxiliary import: {path} -> {dependency}')
+    errors.extend(embedded_input_errors(root, set(paths)))
     if errors:
         print('\n'.join(errors))
         return 1

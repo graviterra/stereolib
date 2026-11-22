@@ -1,4 +1,5 @@
 import io
+import hashlib
 import json
 from pathlib import Path
 import sys
@@ -37,6 +38,36 @@ class SourceDistributionTests(unittest.TestCase):
                      'assets/extra/stereolib-banner.svg']:
             with self.subTest(name=name):
                 self.assertFalse(allowed(name))
+
+    def test_auxiliary_allowlist_is_exact(self):
+        for path in checker.AUXILIARY_FILES:
+            self.assertTrue(allowed(path), path)
+        for path in ['tools/centres10/extra.py', 'validation/ring-chronology/private.json',
+                     'validation/other.lean', 'docs/PLAN.md', 'docs/ring-evaluator-private.md']:
+            self.assertFalse(allowed(path), path)
+
+    def test_embedded_assets_require_tracking_and_current_fingerprints(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = 'TetraStereo/Engine/CentresRing.lean'
+            assets = checker.EMBEDDED_INPUTS[source]
+            (root / source).parent.mkdir(parents=True)
+            lines = []
+            for asset in assets:
+                target = root / asset
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(b'reviewed bytes')
+                digest = hashlib.sha256(target.read_bytes()).hexdigest()
+                lines.extend([f'-- {target.name} SHA-256 {digest}\n',
+                              f'private def asset := include_str "../../{asset}"\n'])
+            (root / source).write_text(''.join(lines))
+            tracked = {source, *assets}
+            self.assertEqual(checker.embedded_input_errors(root, tracked), [])
+            self.assertIn('Missing tracked embedded input',
+                          checker.embedded_input_errors(root, {source})[0])
+            (root / assets[0]).write_bytes(b'changed bytes')
+            self.assertIn('Stale embedded input fingerprint',
+                          checker.embedded_input_errors(root, tracked)[0])
 
     def test_inventory_matches_modules_without_including_umbrella(self):
         manifest = json.dumps({'version': 1, 'modules': ['TetraStereo.A']})
@@ -81,6 +112,31 @@ class SourceDistributionTests(unittest.TestCase):
                 errors = inventory_errors(text, {'TetraStereo.A'})
                 self.assertTrue(errors)
                 self.assertTrue(errors[0].startswith('Invalid source-modules.json:'))
+
+    def test_auxiliary_lean_imports_do_not_enter_package_inventory(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            files = {
+                'TetraStereo.lean': 'import TetraStereo.A\n',
+                'TetraStereo/A.lean': '',
+                'tools/centres10/analyze.lean': 'import TetraStereo.A\n',
+                'source-modules.json': json.dumps({'version': 1, 'modules': ['TetraStereo.A']}),
+            }
+            for path, text in files.items():
+                target = root / path
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text(text)
+            entries = b''.join(f'100644 blob 0\t{path}\0'.encode() for path in files)
+            with (
+                patch.object(checker, '__file__', str(root / 'tools/check_source_tree.py')),
+                patch.object(checker.subprocess, 'check_output', return_value=entries),
+                patch('sys.stdout', new_callable=io.StringIO) as output,
+            ):
+                self.assertEqual(checker.main(), 0)
+                self.assertIn('2 Lean modules', output.getvalue())
+                (root / 'tools/centres10/analyze.lean').write_text('import TetraStereo.Absent\n')
+                self.assertEqual(checker.main(), 1)
+                self.assertIn('Missing auxiliary import', output.getvalue())
 
     def test_checker_requires_tracked_inventory(self):
         with tempfile.TemporaryDirectory() as directory:

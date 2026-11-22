@@ -17,24 +17,23 @@ intended domain.
 [Current ring status](RING_STATUS.md) · [What is proved](#what-is-proved) · [The proof frontier](#the-proof-frontier) ·
 [Collaborate](#collaborate) · [Concept map](#concept-map) · [Working with the source](#working-with-the-source)
 
-## Current source status — 20 November 2026
+## Current source status — 22 November 2026
 
-This update expands the source inventory from 3,714 to **4,131 maintained Lean modules**;
-with the umbrella, the distribution contains **4,132 Lean source files**.
-The explicit `accumulatedReferencesRegenerated` ring engine now connects its cached execution
-to the prepared detected-centre report, including refusals. Independent source-profile
-existence and uniqueness, all-root report agreement, and all-root cancellation equality are
-established under their stated hypotheses. The concrete DoubleC3 fixture has exact lowercase
-`s`, derived auxiliary descriptors and report membership.
+The ring API now offers the explicit `accumulatedReferencesRegenerated` profile, exact
+source-priority letters, casing and refusal theorems at every detected root, and matched
+frozen-auxiliary and coordinate controls. The named profile has a unique independent source
+model agreeing with its actual report; all-root cancellation equality is closed.
 
-The [two-pair report theorem](TetraStereo/OneCenter/LocalizedChemicalRingTwoPairReport.lean)
-now derives the exact entry, including refusal, absolute letter and casing, from the parity of
-source priority orders on the three tetrahedral pairings. The same module combines the physical
-cases into success/refusal criteria at every detected root, using one unique source profile.
-Exact chemical letter/casing interpretation across the other classes and normative fidelity of
-nested reference handling remain open. These are finite single-bond, constant-charge results with explicit structural admission
-and physical calibration hypotheses, not full chemical completion or a release claim.
-See [RING_STATUS.md](RING_STATUS.md) for scope, source links and validation limits.
+A separate pinned Centres 1.0 adapter runs and replays the 2018 procedure. Molecular checking
+can derive recursive comparison and publication evidence; two-geometry checking derives casing
+from original and reflected priority readings. A concrete fluorospiro example shows why release
+agreement and chemical correctness need separate statements: atom renumbering changes the
+release's uppercase `S` to lowercase `s`.
+
+These are finite single-bond, constant-charge results with explicit admission and physical
+calibration hypotheses. Universal chemical fidelity, including nested-reference policy and
+complete comparison coverage, remains open. See [ring API and setup](docs/ring-evaluator.md)
+and [ring status](RING_STATUS.md) for entry points, controls and proof limits.
 
 ## The proved connection
 
@@ -130,12 +129,12 @@ to chemistry is a separate scientific question, and we want experts to press on 
 
 ## The proof frontier
 
-The ring programme now includes exact two-pair entries and exhaustive detected-root
-success/refusal criteria for the named accumulated-reference procedure. Its remaining scientific
-frontier is exact chemical letter/casing interpretation across the other physical classes and
-chemical fidelity of the accumulated-reference/regeneration policy at nested occurrences.
-The new outcome theorems also need packaging in the public API's physical theorem interface.
-The detailed boundary and current endpoints are in [RING_STATUS.md](RING_STATUS.md).
+The public exact-source interface now joins successful letters, casing and refusals across
+all detected roots of the named procedure. The frontier is independent chemical fidelity of
+recursive priorities, auxiliary publication and nested reference handling. Grouped molecular
+comparisons and checked examples extend that connection under explicit coverage and agreement
+hypotheses. They do not establish a universal correspondence to IUPAC or to the pinned release.
+See [RING_STATUS.md](RING_STATUS.md) and the [API guide](docs/ring-evaluator.md).
 
 The domain hypotheses, including single bonds and constant formal charge, also need separate
 extensions toward the intended molecular domain. The earlier acyclic results and fixture above
@@ -146,8 +145,8 @@ remain useful scoped results; they do not by themselves establish the full indep
 Start with one claim, one hypothesis or one molecule. Contributions can review a rule
 interpretation, simplify a proof, supply a counterexample, or take ownership of a larger argument.
 
-- **Lean and formal-methods researchers:** remaining exact non-PPD descriptor meanings,
-  public theorem integration, the full specification join, and simplifying existing proofs.
+- **Lean and formal-methods researchers:** independent recursive comparison coverage,
+  nested-reference fidelity, the full specification join, and simplifying existing proofs.
 - **Stereochemists:** whether the concrete rule judgments capture the sequence rules, counterexamples
   (rings, pseudoasymmetry, multiple references), and the intended molecular domain.
 
@@ -181,8 +180,8 @@ in the result field. Counterexamples are useful without a repair. See
 Sources live in [OneCenter](TetraStereo/OneCenter) (models, algorithms, proofs),
 [Engine](TetraStereo/Engine), [Certificate](TetraStereo/Certificate),
 [Examples](TetraStereo/Examples) and [UniversalProof](TetraStereo/UniversalProof). The
-[module inventory](source-modules.json) lists all 4,131 maintained Lean modules. Together with
-the original `TetraStereo.lean` umbrella, there are 4,132 Lean source files. A module count is
+[module inventory](source-modules.json) lists all 4,364 maintained Lean modules. Together with
+the original `TetraStereo.lean` umbrella, there are 4,365 package source files. A module count is
 not a theorem count, and the words "complete" or
 "universal" in a name do not override the hypotheses of its declarations.
 
