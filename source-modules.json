@@ -190,6 +190,8 @@
     "TetraStereo.Engine.RingRetainedStereoRefinement",
     "TetraStereo.Engine.RingRetainedTerminalClass",
     "TetraStereo.Engine.RingRetainedUnitPass",
+    "TetraStereo.Engine.RingRootReturn",
+    "TetraStereo.Engine.RingRootReturnPath",
     "TetraStereo.Engine.RingRule4bEquivalence",
     "TetraStereo.Engine.RingScheduledCarbonReport",
     "TetraStereo.Engine.RingSeedEqualityTransport",

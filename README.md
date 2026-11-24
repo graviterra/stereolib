@@ -35,8 +35,9 @@ running marked trials when its return-arm and locality conditions hold.
 [Refusal certificate](TetraStereo/Engine/RingPromotionCut.lean)
 
 **The remaining chemical proof** must independently justify the molecular comparisons, reference selection and
-promotion decisions on the frozen stores they actually read. A universal Rule 6 skip from fewer
-than three root closures also needs the graph-path and marked-atom locality bridge.
+promotion decisions on the frozen stores they actually read. At the original root, Lean now proves that fewer than three
+duplicate occurrences of that root allow the evaluator to skip Rule 6. The ordinary ranking
+still determines an assignment or a refusal. [Count-based evaluator and proof](TetraStereo/Engine/RingRootReturn.lean)
 [Proof status and domain](RING_STATUS.md#domain-and-remaining-work)
 
 ## The proved connection

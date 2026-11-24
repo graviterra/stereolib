@@ -103,10 +103,14 @@ Rule 4c row boundaries when all Rule 6 bits are zero. The
 [cut certificate](TetraStereo/Engine/RingPromotionCut.lean) derives refusal on both geometries
 from ordinary ties, at least three eligible marks, at most two returning arms and marked-atom
 locality. Its checker reads molecular identifiers and returning-arm flags; it need not run
-marked trials. A universal skip from fewer than three original-root closures still needs a
-proof connecting graph paths to the return-arm bound and locality. The
-[small-graph enumeration](validation/ring-chronology/check_promotion_topology.py) is a finite
-control, not that universal theorem.
+marked trials. At an original root, Lean now derives the return-arm bound and locality from the molecular graph.
+A path between two neighbors that avoids the root yields a closure down each arm. With fewer
+than three origin-zero duplicate occurrences, the evaluator can use ordinary orientation and casing
+and skip promotion. A remaining tie gives a completed refusal. At three or more duplicates the
+evaluator uses the grouped procedure. The theorem covers each requested atom on admitted coordinates.
+Auxiliary occurrences keep their frozen evaluation. [Path proof](TetraStereo/Engine/RingRootReturnPath.lean) ·
+[Count-based publication theorem](TetraStereo/Engine/RingRootReturn.lean) ·
+[Molecular controls](validation/ring-chronology/RootReturns.lean)
 
 These results close the earlier whole-centre/report integration obligation for the named
 frozen-auxiliary procedure. Independent chemical justification remains open for the shared
@@ -145,8 +149,8 @@ the kernel-only assertions for the rebuilt signature, the full report, the molec
 selector and the conditional Rule 6 refusal. The public export was checked for module coverage
 and reproducibility. A clean-checkout compilation of the public package remains unverified.
 
-The [module inventory](source-modules.json) contains all 4,392 maintained Lean modules.
-The original umbrella brings the package total to 4,393 Lean files. The validation drivers
+The [module inventory](source-modules.json) contains all 4,394 maintained Lean modules.
+The original umbrella brings the package total to 4,395 Lean files. The validation drivers
 are counted separately.
 The universal theorem and full chemical approval remain open. See the [README](README.md) for
 existing acyclic results, collaboration guidance and safe source checks.

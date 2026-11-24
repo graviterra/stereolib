@@ -51,6 +51,7 @@ AUXILIARY_FILES = {
     'validation/ring-chronology/ReferenceSelectionCut.lean',
     'validation/ring-chronology/ReferenceVoteRing.lean',
     'validation/ring-chronology/RingGeometryForcing.lean',
+    'validation/ring-chronology/RootReturns.lean',
     'validation/ring-chronology/Rule2RealMass.lean',
     'validation/ring-chronology/SourceComparisonAgreement.lean',
     'validation/ring-chronology/SphereQueue.lean',
