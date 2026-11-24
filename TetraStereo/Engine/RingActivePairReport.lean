@@ -13,14 +13,14 @@ abbrev Slot := Fin 4
 abbrev Score := Int × Int
 abbrev Reader := Slot → Slot → Option Score
 
-private def four? {α : Type} (f : Slot → Option α) : Option (Slot → α) := do
+def four? {α : Type} (f : Slot → Option α) : Option (Slot → α) := do
   let a ← f 0
   let b ← f 1
   let c ← f 2
   let d ← f 3
   return ![a,b,c,d]
 
-private theorem four_at {α : Type} {f : Slot → Option α} {g : Slot → α} (h : four? f = some g) (k : Slot) :
+theorem four_at {α : Type} {f : Slot → Option α} {g : Slot → α} (h : four? f = some g) (k : Slot) :
     f k = some (g k) := by
   cases a : f 0 <;> cases b : f 1 <;> cases c : f 2 <;> cases d : f 3 <;> simp [four?,a,b,c,d] at h
   subst g
@@ -194,7 +194,7 @@ theorem Assignment.casing_by_magnitude {i c} (o : Assignment i c) (admit : Local
   rw [← equal]
   exact o.casing admit
 
-private theorem four_full {α : Type} (f : Slot → Option α) (full : ∀ k, (f k).isSome = true) :
+theorem four_full {α : Type} (f : Slot → Option α) (full : ∀ k, (f k).isSome = true) :
     (four? f).isSome = true := by
   obtain ⟨a,ha⟩ := Option.isSome_iff_exists.mp (full 0)
   obtain ⟨b,hb⟩ := Option.isSome_iff_exists.mp (full 1)
@@ -216,7 +216,7 @@ theorem matrix?_complete (read : Reader) :
     change ((four? fun a => four? (edge a)).attach.bind _).isSome = true
     rw [seen]; rfl
 
-private theorem rank_of {r m rev} (w : @Ranking r m rev) : rank? m rev = some w := by
+theorem rank_of {r m rev} (w : @Ranking r m rev) : rank? m rev = some w := by
   let valid (ss : List Slot) := decide (ss.Pairwise (Wins m rev))
   have existsOrder : ((List.finRange 4).permutations'.find? valid).isSome :=
     List.find?_isSome.mpr ⟨w.slots,List.mem_permutations'.mpr w.perm,decide_eq_true w.higher⟩

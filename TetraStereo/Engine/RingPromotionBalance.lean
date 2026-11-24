@@ -46,14 +46,14 @@ theorem Population.mirror_balance {m g p} (s : Population m g p) :
 def survivingHand (z : Int) : Option RS :=
   if 0 < z then some .R else if z < 0 then some .S else none
 
-private theorem aggregate_of_balance (xs : List (Option RS)) :
+theorem aggregate_of_balance (xs : List (Option RS)) :
     completedAggregate xs = some (survivingHand (readingBalance xs)) := by
   unfold completedAggregate DeclarativeCIP.ProductionOccurrenceRules456.promotionAggregate
   rw [completed_balance]
   simp only [survivingHand]
   split <;> first | rfl | (split <;> rfl)
 
-private theorem survivingHand_neg (z : Int) :
+theorem survivingHand_neg (z : Int) :
     survivingHand (-z) = (survivingHand z).map RS.swap := by
   rcases lt_trichotomy z 0 with h | rfl | h
   · simp [survivingHand,h,not_lt.mpr h.le,RS.swap]

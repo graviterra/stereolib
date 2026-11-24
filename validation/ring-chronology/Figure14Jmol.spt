@@ -1,0 +1,23 @@
+# Run from the TetraStereo repository root with Jmol 14.29.17.
+# The sole coordinate change moves hydrogen 9 inside bridgehead 1.
+function bridgeheads(inward, full, expected) {
+  load "validation/ring-chronology/Figure14AllOut.mol"
+  if ({*}.count != 22 || {*}.bonds.count != 23) { throw "unexpected cage inventory" }
+  if (inward) { {atomno=9}.z = 0.27 }
+  set cipRule6Full @full
+  calculate chirality
+  var first = {atomno=1}.chirality
+  var second = {atomno=2}.chirality
+  print "Figure 14 inward=" + inward + " full=" + full + " [" + first + "," + second + "]"
+  if (first != expected || second != expected) { throw "bridgehead assignment mismatch" }
+  # Jmol string equality ignores case. find() distinguishes r/s from R/S.
+  if (expected != "" && (first.find(expected) != 1 || second.find(expected) != 1)) {
+    throw "bridgehead descriptor case mismatch"
+  }
+}
+if (cipRule6Full) { throw "expected clean Jmol default" }
+bridgeheads(false, false, "")
+bridgeheads(true, false, "")
+bridgeheads(false, true, "r")
+bridgeheads(true, true, "s")
+print "FIGURE14_PASS"

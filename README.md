@@ -5,13 +5,13 @@
 Stereolib uses Lean 4 to check how the Cahn–Ingold–Prelog (CIP) sequence rules and a molecule’s
 three-dimensional geometry determine a tetrahedral descriptor. For a restricted class of
 acyclic molecules, the evaluator has a proof for its entire report, including justified
-refusals. For rings, the library can now derive the deciding rule for individual ligand
-comparisons. A chemical correctness proof for every admitted ring remains open.
+refusals. For rings, a rebuilt occurrence-based evaluator now has a whole-report equality theorem
+with the grouped frozen-auxiliary procedure on admitted coordinates. A chemical correctness proof for every admitted ring remains open.
 
 [Ring proof status](RING_STATUS.md) · [Run or replay the ring evaluator](docs/ring-evaluator.md) ·
 [Proved acyclic results](#what-is-proved) · [Collaborate](#collaborate)
 
-## Ring results as of 22 November 2026
+## Ring results as of 23 November 2026
 
 | Result | What the evidence establishes |
 | --- | --- |
@@ -21,10 +21,23 @@ comparisons. A chemical correctness proof for every admitted ring remains open.
 | Exact reports for the regenerated profile | Under the stated admission and calibration hypotheses, independently specified priorities determine the letter, casing or refusal at every detected centre for this reference policy. [Exact report certificate](TetraStereo/Engine/LocalizedChemicalRingExactCertificate.lean) |
 | A limit of the pinned Centres 1.0 procedure | Renumbering two carbons changes its fluorospiro descriptor from `S` to `s`. The independent ring-pair calculation gives `S` under both numberings and `R` on reflection. [Renumbering witness](TetraStereo/Examples/CentresRingSpiroCasing.lean) · [Molecular calculation](TetraStereo/Examples/RingTwoPairFluorospiro.lean) |
 
-**The next proof** must combine the twelve directed comparisons among a centre’s four ligands
-into a consistent ranking on each geometry, or justify promotion or refusal when ties persist.
-It must then connect that decision to the auxiliary descriptors used by other centres and to
-the final molecular report. [Proof status and domain](RING_STATUS.md#domain-and-remaining-work)
+The ring baseline keeps previously assigned auxiliary descriptors fixed during each Rule 6
+trial. The rebuilt evaluator uses zero mass for ring duplicates throughout constitutional and
+stereochemical sibling sorting. Its complete recursive state and requested report agree with
+the grouped evaluator, including lowercase results and completed refusals.
+[Whole-report theorem](TetraStereo/Engine/RingRebuiltStereo.lean)
+
+Rule 4b reference selection now counts occurrences at the highest eligible rank, preserving
+child and inherited parent priorities. A 48-atom control distinguishes counting nine hands
+from counting three parent majorities. A separate checked Rule 6 cut certifies refusal without
+running marked trials when its return-arm and locality conditions hold.
+[Reference selection](TetraStereo/Engine/RingReferenceVotes.lean) ·
+[Refusal certificate](TetraStereo/Engine/RingPromotionCut.lean)
+
+**The remaining chemical proof** must independently justify the molecular comparisons, reference selection and
+promotion decisions on the frozen stores they actually read. A universal Rule 6 skip from fewer
+than three root closures also needs the graph-path and marked-atom locality bridge.
+[Proof status and domain](RING_STATUS.md#domain-and-remaining-work)
 
 ## The proved connection
 
@@ -171,8 +184,7 @@ in the result field. Counterexamples are useful without a repair. See
 Sources live in [OneCenter](TetraStereo/OneCenter) (models, algorithms, proofs),
 [Engine](TetraStereo/Engine), [Certificate](TetraStereo/Certificate),
 [Examples](TetraStereo/Examples) and [UniversalProof](TetraStereo/UniversalProof). The
-[module inventory](source-modules.json) lists all 4,364 maintained Lean modules. Together with
-the original `TetraStereo.lean` umbrella, there are 4,365 package source files. A module count is
+[module inventory](source-modules.json) records the maintained Lean modules. A module count is
 not a theorem count, and the words "complete" or
 "universal" in a name do not override the hypotheses of its declarations.
 

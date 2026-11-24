@@ -57,7 +57,7 @@ private def cachedArm (i : Input) (read : Reader i) (q : Arm i) :=
   simp only [arm?,cachedArm,RingRetainedChemicalTrace.keyWith_eq]
   rw [same]
 
-private theorem projected {α β γ : Type} {xs : List α} {ys : List β} {get : α → Option β}
+theorem projected {α β γ : Type} {xs : List α} {ys : List β} {get : α → Option β}
     (found : xs.mapM get = some ys) (f : β → γ) : xs.mapM (fun t => (get t).map f) = some (ys.map f) := by
   induction xs generalizing ys with
   | nil => obtain rfl := Option.some.inj found; rfl
@@ -68,7 +68,7 @@ private theorem projected {α β γ : Type} {xs : List α} {ys : List β} {get :
     obtain rfl := Option.some.inj out
     simp [List.mapM_cons,hv,ih hs]
 
-private theorem assembled {i read q v k cs} {get : Arm i → Option ArmProfile}
+theorem assembled {i read q v k cs} {get : Arm i → Option ArmProfile}
     (seen : read q.occurrence = some v) (ok : v.all consistent = true ∧ (children i q = [] → v = none))
     (key : key? i q = some k) (kids : (children i q).mapM get = some cs)
     (source : ∀ c ∈ children i q, ∀ {p}, get c = some p → Reads i read false c p) :
@@ -116,12 +116,60 @@ private theorem build_source {i read} : ∀ n q {p}, build i read (key? i) (chil
 theorem arm_source {i read q p} (h : arm? i read q = some p) : Reads i read false q p :=
   build_source _ q h
 
-theorem arm_frontier {i : Input} {root : i.certified.Atom} {f : Site i}
-    (listed : f ∈ RingMolecularSchedule.frontier i root) (q : Arm i) (valid : i.certified.LocalizedRerootCursorValid q)
-    (on : q.occurrence.val.root = f.val.root) :
-    let read := RingNestedActivePair.masked f (RingMolecularSchedule.atRoot i root)
+private theorem child_read_of_mapM {α β : Type} {xs : List α} {ys : List β} {f : α → Option β}
+    (h : xs.mapM f = some ys) (x : α) (hx : x ∈ xs) : ∃ b, f x = some b := by
+  induction xs generalizing ys with
+  | nil => simp at hx
+  | cons a xs ih =>
+    rw [List.mapM_cons] at h
+    obtain ⟨u,hu,more⟩ := Option.bind_eq_some_iff.mp h
+    obtain ⟨us,hus,_⟩ := Option.bind_eq_some_iff.mp more
+    rcases List.mem_cons.mp hx with rfl | hx
+    · exact ⟨u,hu⟩
+    · exact ih hus hx
+
+private theorem build_of_unit_reading {i : Input} {read : Reader i} : ∀ n (q : Arm i),
+    i.certified.LocalizedRerootCursorValid q → i.certified.localizedRerootCursorBudget q < n →
+    (∃ b, RingRetainedUnitPass.Reading i read false q b) →
+    ∃ p, build i read (key? i) (children i) n q = some p := by
+  intro n
+  induction n with
+  | zero => intro q _ h _; omega
+  | succ n ih =>
+    intro q valid budget ⟨b, source⟩
+    cases source with
+    | @node q k labs oldcs sh de key seen physical lookup complete below shallow deep =>
+      have frame := i.certified.executableLocalizedRerootChildren_declarative q
+      obtain ⟨cs,hcs⟩ := RingRetainedUnitPass.collect _ (children i q) (fun c hc => by
+        obtain ⟨u,hu⟩ := child_read_of_mapM complete c hc
+        exact ih c (i.certified.localizedRerootChild_valid q c _ frame hc)
+          (by have := i.certified.localizedRerootChild_budget_lt q c _ valid frame hc; omega)
+          ⟨u,below c hc hu⟩)
+      refine ⟨RingGroupedStereo.assemble k labs cs,?_⟩
+      have gate : (guard (_ ∧ _) : Option Unit) = some () := if_pos physical
+      simp only [build,seen,gate,key,hcs,Option.bind_eq_bind,Option.bind_some,Option.pure_def]
+
+/-- On a valid directed ligand, a molecular reading witnesses precisely the profile that the
+executable returns. Its unit derivation covers every child visited from this cursor. -/
+theorem arm_iff_reads {i : Input} {read : Reader i} (q : Arm i)
+    (valid : i.certified.LocalizedRerootCursorValid q) (p : ArmProfile) :
+    RingGroupedStereo.arm? i read q = some p ↔ Reads i read false q p := by
+  constructor
+  · exact RingGroupedStereo.arm_source
+  · intro source
+    obtain ⟨actual, computed⟩ := build_of_unit_reading _ q valid (Nat.lt_succ_self _) ⟨p.unit,source.unit⟩
+    change arm? i read q = some actual at computed
+    exact (RingGroupedStereo.arm_source computed).unique source ▸ computed
+
+/-- Every cell needed by the frozen reader exists and is physically
+consistent. Terminal cursors carry no auxiliary descriptor. -/
+def Ready {i : Input} (f : Site i) (read : Reader i) : Prop :=
+  ∀ q : Arm i, q.occurrence.val.root = f.val.root →
+    ∃ v, read q.occurrence = some v ∧ v.all consistent = true ∧ (children i q = [] → v = none)
+
+theorem arm_ready {i : Input} {f : Site i} {read : Reader i} (ready : Ready f read)
+    (q : Arm i) (valid : i.certified.LocalizedRerootCursorValid q) (on : q.occurrence.val.root = f.val.root) :
     ∃ p, arm? i read q = some p := by
-  intro read
   suffices ∀ n (q : Arm i), i.certified.LocalizedRerootCursorValid q → q.occurrence.val.root = f.val.root →
     i.certified.localizedRerootCursorBudget q < n → ∃ p, build i read (key? i) (children i) n q = some p from
     this _ q valid on (Nat.lt_succ_self _)
@@ -130,7 +178,7 @@ theorem arm_frontier {i : Input} {root : i.certified.Atom} {f : Site i}
   | zero => intro t _ _ h; omega
   | succ n ih =>
     intro t vt rt budget
-    obtain ⟨v,hv,ok,absent⟩ := RingFrontierProfileShape.frontier_observation listed t rt
+    obtain ⟨v,hv,ok,absent⟩ := ready t rt
     change read t.occurrence = some v at hv
     have gate : (guard (v.all consistent = true ∧ (children i t = [] → v = none)) : Option Unit) = some () :=
       if_pos ⟨ok,absent⟩
@@ -141,6 +189,12 @@ theorem arm_frontier {i : Input} {root : i.certified.Atom} {f : Site i}
         ((i.certified.localizedRerootChildren_root_eq t c _ frame hc).trans rt)
         (by have := i.certified.localizedRerootChild_budget_lt t c _ vt frame hc; omega))
     exact ⟨assemble k v cs,by simp only [build,hv,gate,hk,hcs,Option.bind_eq_bind,Option.bind_some,Option.pure_def]⟩
+
+theorem arm_frontier {i : Input} {root : i.certified.Atom} {f : Site i}
+    (listed : f ∈ RingMolecularSchedule.frontier i root) (q : Arm i) (valid : i.certified.LocalizedRerootCursorValid q)
+    (on : q.occurrence.val.root = f.val.root) :
+    let read := RingNestedActivePair.masked f (RingMolecularSchedule.atRoot i root)
+    ∃ p, arm? i read q = some p := arm_ready (RingFrontierProfileShape.frontier_observation listed) q valid on
 
 /-- A signed, rule-tagged result for both geometries of this constitutional
 tie. The reflected profile exchanges the two fixed and the two local hands. -/
@@ -189,10 +243,10 @@ private theorem strict_pair {k : Int} (vals : k ∈ ([-1,0,1] : List Int)) (nz :
   simp [molecularValues] at *
   grind
 
-private theorem both_values {i : Input} {root : i.certified.Atom} {f a b : Site i} {p x y v w}
-    (listed : f ∈ RingMolecularSchedule.frontier i root) (prior : compareAt? i f a b = some p) (tie : cipTraceOutcome p = .eq)
-    (left : Reads i (RingNestedActivePair.masked f (RingMolecularSchedule.atRoot i root)) false ⟨a,some f⟩ x)
-    (right : Reads i (RingNestedActivePair.masked f (RingMolecularSchedule.atRoot i root)) false ⟨b,some f⟩ y)
+theorem reading_values {i read x y v w} (a b : Arm i)
+    (left : Reads i read false a x) (right : Reads i read false b y)
+    (eqv : x.unit.word = y.unit.word → x.lower.word = y.lower.word → (RingRetainedStereoDecision.seedSign x y .R = 0 ↔
+      RingRetainedStereoDecision.seedSign x y .S = 0))
     (actual : RingRetainedStereoDecision.decide? x y false = some v)
     (reflected : RingRetainedStereoDecision.decide? x.reflect y.reflect true = some w) : scores (v,w) ∈ molecularValues := by
   have rule {p q rev k} (src : First p q rev k) := RingRetainedStereoDecision.first_iff.mp src
@@ -207,7 +261,7 @@ private theorem both_values {i : Input} {root : i.certified.Atom} {f a b : Site 
         have pair := RingRetainedStereoDecision.fixed_both unit hk low
         obtain rfl := Option.some.inj (actual.symm.trans pair.1)
         obtain rfl := Option.some.inj (reflected.symm.trans pair.2)
-        exact (RingProximalPair.mirror_values_iff ..).mpr (RingRetainedSeedFrames.fixed_equality listed false prior tie left right unit low)
+        exact (RingProximalPair.mirror_values_iff ..).mpr (eqv unit low)
       · obtain rfl := Option.some.inj (actual.symm.trans (rule (.lower unit hk l)))
         obtain rfl := Option.some.inj (reflected.symm.trans (rule (.lower unit mirror l)))
         exact strict_pair (unit_signs ..) l
@@ -217,6 +271,14 @@ private theorem both_values {i : Input} {root : i.certified.Atom} {f a b : Site 
   · obtain rfl := Option.some.inj (actual.symm.trans (rule (.unit u)))
     obtain rfl := Option.some.inj (reflected.symm.trans (rule (.unit u)))
     exact strict_pair (unit_signs ..) u
+
+private theorem both_values {i : Input} {root : i.certified.Atom} {f a b : Site i} {p x y v w}
+    (listed : f ∈ RingMolecularSchedule.frontier i root) (prior : compareAt? i f a b = some p) (tie : cipTraceOutcome p = .eq)
+    (left : Reads i (RingNestedActivePair.masked f (RingMolecularSchedule.atRoot i root)) false ⟨a,some f⟩ x)
+    (right : Reads i (RingNestedActivePair.masked f (RingMolecularSchedule.atRoot i root)) false ⟨b,some f⟩ y)
+    (actual : RingRetainedStereoDecision.decide? x y false = some v)
+    (reflected : RingRetainedStereoDecision.decide? x.reflect y.reflect true = some w) : scores (v,w) ∈ molecularValues :=
+  reading_values _ _ left right (RingRetainedSeedFrames.fixed_equality listed false prior tie left right) actual reflected
 
 /-- A zero on both geometries is exactly a tie through all rules, including
 both fixed reference comparisons. The local Rule 4b result is calculated
@@ -346,3 +408,5 @@ assert_kernel_only TetraStereo.Engine.RingGroupedStereo.comparison_source
 assert_kernel_only TetraStereo.Engine.RingGroupedStereo.scheduled_frontier
 
 assert_kernel_only TetraStereo.Engine.RingGroupedStereo.single_before_dual
+
+assert_kernel_only TetraStereo.Engine.RingGroupedStereo.arm_iff_reads

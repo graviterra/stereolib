@@ -128,7 +128,7 @@ private theorem branch_eq {x y : Branch} (deep : x.deep = y.deep) (head : x.prio
   obtain ⟨h,t⟩ := List.cons.inj parts.1
   cases x; cases y; simp_all
 
-private theorem constitution {i read rev} (a : State i read rev) :
+theorem constitution {i read rev} (a : State i read rev) :
     ∃ k, RingRetainedChemicalTrace.key? i a.q = some k ∧
       (unit a).priorDeep = RingRetainedChemicalPreorder.orderWord k ∧
       (unit a).priorHead = [k.root.atomic,k.root.duplicate,k.root.mass] := by
@@ -137,7 +137,7 @@ private theorem constitution {i read rev} (a : State i read rev) :
   cases r with
   | node h _ _ _ _ _ _ _ => exact ⟨_,h,rfl,rfl⟩
 
-private theorem unit_eq {i read rev} {a b : State i read rev} (eqn : Deep unit a = Deep unit b) :
+theorem unit_eq {i read rev} {a b : State i read rev} (eqn : Deep unit a = Deep unit b) :
     unit a = unit b := by
   obtain ⟨k,ka,pa,ha⟩ := constitution a
   obtain ⟨j,kb,pb,hb⟩ := constitution b
@@ -340,23 +340,44 @@ private theorem recover_node {i read rev} (s : RS) {a b : State i read rev} {sa 
         (v : x.value = y.value) (z : x.levels = y.levels) : x = y := by cases x; cases y; simp_all
     exact ext _ _ prevHead prevDeep value lv
 
-private theorem frontier_walk {i : Input} {root : i.certified.Atom} {f : Site i}
-    (listed : f ∈ RingMolecularSchedule.frontier i root) (rev : Bool)
-    (key : State i (RingNestedActivePair.masked f (RingMolecularSchedule.atRoot i root)) rev → Branch)
-    (a : State i _ rev) (on : a.q.occurrence.val.root = f.val.root) :
+private theorem child_profile {i read rev q p} (h : Reads i read rev q p) {c}
+    (hc : c ∈ children i q) : ∃ t, Reads i read rev c t := by
+  have step {os b} (d : Derives i read rev os q b) : ∃ t, Derives i read rev os c t := by
+    obtain ⟨_,_,⟨row⟩⟩ := RingRetainedStereoRefinement.decomposition d
+    obtain ⟨v,_,get⟩ := RingRetainedReferenceGroup.forInput row.complete hc
+    exact ⟨v,row.derived c hc get⟩
+  have hits : ∃ hs, RingRetainedReferenceGroup.Listing i read c hs := by
+    have descend {ys} (ls : RingRetainedReferenceGroup.Listing i read q ys) : ∃ hs, RingRetainedReferenceGroup.Listing i read c hs := by
+      cases ls with
+      | node _ _ _ all _ below =>
+        obtain ⟨⟨_,hs⟩,_,get⟩ := RingRetainedReferenceGroup.forInput all hc
+        exact ⟨hs,below c hc get⟩
+    exact descend h.hits
+  obtain ⟨u,hu⟩ := step h.unit
+  obtain ⟨hs,hh⟩ := hits
+  obtain ⟨r,hr⟩ := step (h.paired .R)
+  obtain ⟨s,hs'⟩ := step (h.paired .S)
+  obtain ⟨l,hl⟩ := step h.lower
+  obtain ⟨a,ha⟩ := step (h.fixed .R)
+  obtain ⟨b,hb⟩ := step (h.fixed .S)
+  refine ⟨⟨u,hs,r,s,l,a,b⟩,hu,hh,?_,hl,?_⟩
+  · rintro (_|_) <;> assumption
+  · rintro (_|_) <;> assumption
+
+/-- A complete molecular reading supplies complete readings for its actual
+children, so every admissible directed sort admits a finite traversal. -/
+private theorem state_walk {i read rev} (key : State i read rev → Branch) (a : State i read rev) :
     ∃ walk, Visits (Directed key) [a] [] walk := by
   classical
-  let read := RingNestedActivePair.masked f (RingMolecularSchedule.atRoot i root)
-  let good (n : Nat) (t : S read rev) := t.q.occurrence.val.root = f.val.root ∧ i.certified.localizedRerootCursorBudget t.q < n
-  refine visits_exist good (fun _ h => Nat.not_lt_zero _ h.2) ?_ (i.certified.localizedRerootCursorBudget a.q+1) [a]
-    (fun b hb => by obtain rfl := List.mem_singleton.mp hb; exact ⟨on,Nat.lt_succ_self _⟩)
+  let good (n : Nat) (t : S read rev) := i.certified.localizedRerootCursorBudget t.q < n
+  refine visits_exist good (fun _ h => Nat.not_lt_zero _ h) ?_ (i.certified.localizedRerootCursorBudget a.q+1) [a]
+    (fun b hb => by obtain rfl := List.mem_singleton.mp hb; exact Nat.lt_succ_self _)
   intro n t ht
   let raw := children i t.q
   have frame := i.certified.executableLocalizedRerootChildren_declarative t.q
   have valid (c : {c // c ∈ raw}) := i.certified.localizedRerootChild_valid t.q c.val _ frame c.property
-  have same (c : {c // c ∈ raw}) := (i.certified.localizedRerootChildren_root_eq t.q c.val _ frame c.property).trans ht.1
-  have ready (c : {c // c ∈ raw}) := RingRetainedStereoDecision.frontier_profile listed rev c.val (valid c) (same c)
-  let lift (c : {c // c ∈ raw}) : S read rev := ⟨c.val,valid c,(ready c).choose,(ready c).choose_spec.2⟩
+  have ready (c : {c // c ∈ raw}) := child_profile t.source c.property
+  let lift (c : {c // c ∈ raw}) : S read rev := ⟨c.val,valid c,(ready c).choose,(ready c).choose_spec⟩
   let xs := raw.attach.map lift
   have nat : Native t xs := by simp [Native,xs,lift,List.map_map,Function.comp_def,raw]
   have sd := legal_order (Deep key) xs
@@ -364,7 +385,9 @@ private theorem frontier_walk {i : Input} {root : i.certified.Atom} {f : Site i}
   intro x hx
   obtain ⟨c,_,rfl⟩ := List.mem_map.mp (sd.perm.mem_iff.mp hx)
   have smaller := i.certified.localizedRerootChild_budget_lt t.q c.val _ t.valid frame c.property
-  exact ⟨same c,by change i.certified.localizedRerootCursorBudget c.val < n; have := ht.2; omega⟩
+  change i.certified.localizedRerootCursorBudget c.val < n
+  change i.certified.localizedRerootCursorBudget t.q < n+1 at ht
+  omega
 
 private theorem count_marks {i read rev} (key : S (i := i) read rev → Branch) (out : List (S read rev)) :
     (out.filterMap (mark key)).length = (out.map (fun t => (unit t).value)).count 2 := by
@@ -383,17 +406,64 @@ private theorem accepted_count {i read rev os} (key : S (i := i) read rev → Br
 /-- All complete local and fixed PairLists contain exactly one entry per
 uppercase occurrence. This supplies the equal-length condition for comparing
 the two local references, and for comparing either fixed seed between arms. -/
+theorem widths {i read rev} (s : RS) (a : State i read rev) :
+    (RingRetainedStereoDecision.accepted (unit a) (fixed s a)).length = (unit a).stream.count 2 ∧
+    (RingRetainedStereoDecision.accepted (unit a) (localP s a)).length = (unit a).stream.count 2 := by
+  obtain ⟨_,w⟩ := state_walk (fixed s) a
+  obtain ⟨_,v⟩ := state_walk (localP s) a
+  exact ⟨accepted_count _ (fun t => t.source.fixed s) (fun _ _ _ h => lower_unit (fixed_lower s h)) w,
+    accepted_count _ (fun t => t.source.paired s) (fun _ _ _ h =>
+      earlier unit (localP s) (fun t => t.source.unit) (fun t => t.source.paired s) h) v⟩
+
 theorem frontier_widths {i : Input} {root : i.certified.Atom} {f : Site i}
     (listed : f ∈ RingMolecularSchedule.frontier i root) (rev : Bool) (s : RS)
     (a : State i (RingNestedActivePair.masked f (RingMolecularSchedule.atRoot i root)) rev)
     (on : a.q.occurrence.val.root = f.val.root) :
     (RingRetainedStereoDecision.accepted (unit a) (fixed s a)).length = (unit a).stream.count 2 ∧
     (RingRetainedStereoDecision.accepted (unit a) (localP s a)).length = (unit a).stream.count 2 := by
-  obtain ⟨_,w⟩ := frontier_walk listed rev (fixed s) a on
-  obtain ⟨_,v⟩ := frontier_walk listed rev (localP s) a on
-  exact ⟨accepted_count _ (fun t => t.source.fixed s) (fun _ _ _ h => lower_unit (fixed_lower s h)) w,
-    accepted_count _ (fun t => t.source.paired s) (fun _ _ _ h =>
-      earlier unit (localP s) (fun t => t.source.unit) (fun t => t.source.paired s) h) v⟩
+  have _ := listed
+  have _ := on
+  exact widths s a
+
+private theorem source_degree {i read rev os} (key : S (i := i) read rev → Branch)
+    (src : ∀ t, Derives i read rev os t.q (key t)) (t : S read rev) :
+    (key t).degree = (children i t.q).length := by
+  obtain ⟨sh,de,⟨row⟩⟩ := RingRetainedStereoRefinement.decomposition (src t)
+  have size := (TerminalTie.mapM_forall₂ _ _ _ row.complete).length_eq
+  simpa [Branch.degree,Branch.word,row.layout,rows] using row.shallow.perm.length_eq.trans size.symm
+
+private theorem same_projection_length {α : Type} (a b d : α → Nat) (xs : List α) :
+    (projected (xs.map a) (xs.map d)).length = (projected (xs.map b) (xs.map d)).length := by
+  have tail (ys : List α) :
+      (((ys.map a).zip (ys.map d)).filterMap (fun (v,k) => if k = 0 then none else some v)).length =
+      (((ys.map b).zip (ys.map d)).filterMap (fun (v,k) => if k = 0 then none else some v)).length := by
+    induction ys with
+    | nil => rfl
+    | cons y ys ih => by_cases h : d y = 0 <;> simp [h,ih]
+  cases xs with
+  | nil => rfl
+  | cons x xs => simpa [projected] using tail xs
+
+/-- The single-reference FIFO list retains the root and every nonterminal
+visit. Its length is fixed by the through-4a branch on this same arm. -/
+theorem nonterminal_width {i read rev} (s : RS) (a : State i read rev) :
+    (localP s a).nonterminalStream.length = (unit a).nonterminalStream.length := by
+  obtain ⟨out,w⟩ := state_walk (localP s) a
+  have ordered (t : S read rev) (sh de) (h : Directed (localP s) t sh de) : Directed unit t sh de :=
+    earlier unit (localP s) (fun v => v.source.unit) (fun v => v.source.paired s) h
+  have projection {os} (key : S read rev → Branch) (src : ∀ t, Derives i read rev os t.q (key t))
+      (ok : ∀ t sh de, Directed (localP s) t sh de → Directed key t sh de) :
+      projected (out.map fun t => (key t).value) (out.map fun t => (children i t.q).length) =
+        (key a).nonterminalStream := by
+    let issued (b : Branch) (sh de : List Branch) := b.levels = rows sh de
+    have m := w.map (after := issued) key (fun t sh de h => by
+      obtain ⟨xs,nat,first,second⟩ := ok t sh de h
+      exact layout nat key src first second)
+    simpa only [List.map_map,Function.comp_def,source_degree key src] using
+      fifo_nonterminal (allowed := issued) (fun _ _ _ h => h) m
+  rw [← projection (localP s) (fun t => t.source.paired s) (fun _ _ _ h => h),
+      ← projection unit (fun t => t.source.unit) ordered]
+  exact same_projection_length ..
 
 /-- The accepted bit refers to the actual frozen hand at this cursor on this
 geometry, for either the local Rule 4b seed or the fixed Rule 5 seed. -/
@@ -421,15 +491,12 @@ private theorem bits_zero {a b : List Bool} (size : a.length = b.length) :
 /-- Equality of the accepted fixed-reference words recovers equality of the
 complete opposite-reference keys. The two passes may visit an earlier tie
 block in different orders. -/
-theorem transfer {i : Input} {root : i.certified.Atom} {f : Site i}
-    (listed : f ∈ RingMolecularSchedule.frontier i root) (rev : Bool) (s : RS)
-    (a b : State i (RingNestedActivePair.masked f (RingMolecularSchedule.atRoot i root)) rev)
-    (ra : a.q.occurrence.val.root = f.val.root) (rb : b.q.occurrence.val.root = f.val.root)
+theorem transfer_readings {i read rev} (s : RS) (a b : State i read rev)
     (prior : Deep lower a = Deep lower b) :
     RingRetainedStereoDecision.seedSign a.profile b.profile s = 0 →
       RingRetainedStereoDecision.seedSign a.profile b.profile s.swap = 0 := by
-  obtain ⟨wa,ha⟩ := frontier_walk listed rev (fixed s) a ra
-  obtain ⟨wb,hb⟩ := frontier_walk listed rev (fixed s) b rb
+  obtain ⟨wa,ha⟩ := state_walk (fixed s) a
+  obtain ⟨wb,hb⟩ := state_walk (fixed s) b
   have both := RingSeedEqualityTransport.transport (Deep lower) (mark (fixed s)) (fixed s.swap)
     (fun _ _ _ _ _ _ x y eqn => recover_node s x y eqn) ha hb (by simp [prior]) rfl
   have ak := accepted_fixed s ha
@@ -445,6 +512,31 @@ theorem transfer {i : Input} {root : i.certified.Atom} {f : Site i}
     (RingRetainedStereoDecision.accepted (unit b) (fixed s.swap b)) = 0
   rw [opp,(lower_earlier prior).1]
   exact (bits_zero rfl).mpr rfl
+
+theorem transfer {i : Input} {root : i.certified.Atom} {f : Site i}
+    (listed : f ∈ RingMolecularSchedule.frontier i root) (rev : Bool) (s : RS)
+    (a b : State i (RingNestedActivePair.masked f (RingMolecularSchedule.atRoot i root)) rev)
+    (ra : a.q.occurrence.val.root = f.val.root) (rb : b.q.occurrence.val.root = f.val.root)
+    (prior : Deep lower a = Deep lower b) :
+    RingRetainedStereoDecision.seedSign a.profile b.profile s = 0 →
+      RingRetainedStereoDecision.seedSign a.profile b.profile s.swap = 0 := by
+  have _ := listed
+  have _ := ra
+  have _ := rb
+  exact transfer_readings s a b prior
+
+/-- Shared constitutional, unit and lowercase words suffice for fixed-seed
+equality on any two complete molecular readings. -/
+theorem state_fixed_equality {i read rev} (a b : State i read rev)
+    (prior : (unit a).priorDeep = (unit b).priorDeep)
+    (u : (unit a).word = (unit b).word) (lo : (lower a).word = (lower b).word) :
+    RingRetainedStereoDecision.seedSign a.profile b.profile .R = 0 ↔
+    RingRetainedStereoDecision.seedSign a.profile b.profile .S = 0 := by
+  have full : Deep unit a = Deep unit b := congrArg₂ List.append prior (congrArg List.singleton u)
+  have eqn : Deep lower a = Deep lower b :=
+    congrArg₂ List.append ((previous_keys a.source.unit a.source.lower).2.trans
+      (full.trans (previous_keys b.source.unit b.source.lower).2.symm)) (congrArg List.singleton lo)
+  exact ⟨transfer_readings .R a b eqn,transfer_readings .S a b eqn⟩
 
 private theorem constitutional_words {i : Input} {f a b : Site i} {t k j}
     (prior : RingRetainedChemicalTrace.compareAt? i f a b = some t)
@@ -470,6 +562,7 @@ theorem fixed_equality {i : Input} {root : i.certified.Atom} {f a b : Site i} {t
     (ly : Reads i (RingNestedActivePair.masked f (RingMolecularSchedule.atRoot i root)) rev ⟨b,some f⟩ y)
     (u : x.unit.word = y.unit.word) (lo : x.lower.word = y.lower.word) :
     RingRetainedStereoDecision.seedSign x y .R = 0 ↔ RingRetainedStereoDecision.seedSign x y .S = 0 := by
+  have _ := listed
   have inc := (RingRetainedChemicalTrace.compareAt?_source prior).1
   have valid (v : Site i) (adj : i.certified.LocalizedCarrierTreeAdjacent v.val f.val) :
       i.certified.LocalizedRerootCursorValid (⟨v,some f⟩ : Arm i) :=
@@ -479,11 +572,7 @@ theorem fixed_equality {i : Input} {root : i.certified.Atom} {f a b : Site i} {t
   obtain ⟨k,ka,pa,_⟩ := constitution m
   obtain ⟨j,kb,pb,_⟩ := constitution n
   have earlier := pa.trans ((constitutional_words prior tie ka kb).trans pb.symm)
-  have full : Deep unit m = Deep unit n := congrArg₂ List.append earlier (congrArg List.singleton u)
-  have eqn : Deep lower m = Deep lower n :=
-    congrArg₂ List.append ((previous_keys lx.unit lx.lower).2.trans (full.trans (previous_keys ly.unit ly.lower).2.symm))
-      (congrArg List.singleton lo)
-  exact ⟨transfer listed rev .R m n inc.2.2.1.1 inc.2.2.2.1 eqn,transfer listed rev .S m n inc.2.2.1.1 inc.2.2.2.1 eqn⟩
+  exact state_fixed_equality m n earlier u lo
 
 end TetraStereo.Engine.RingRetainedSeedFrames
 

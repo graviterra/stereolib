@@ -79,7 +79,7 @@ private theorem mirrorHand (v : Option Labels) (ok : v.all consistent = true) (r
       (upper (v.map Prod.fst)).map (fun h => if rev then h.swap else h) := by
   cases rev <;> rcases v with _ | ⟨(_|_),(_|_)⟩ <;> simp_all [consistent,upper]
 
-private theorem forInput {α β : Type} {f : α → Option β} {xs : List α} {ys : List β} {c : α}
+theorem forInput {α β : Type} {f : α → Option β} {xs : List α} {ys : List β} {c : α}
     (found : xs.mapM f = some ys) (mem : c ∈ xs) : ∃ b ∈ ys, f c = some b := by
   have pairs := TerminalTie.mapM_forall₂ _ _ _ found
   clear found

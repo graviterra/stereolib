@@ -1,4 +1,4 @@
-# Ring source status — 22 November 2026
+# Ring source status — 23 November 2026
 
 The ring programme now has an explicit executable development profile and an independent
 source-model connection to its detected-centre report. This is a scoped source update, not a
@@ -73,13 +73,46 @@ molecular profiles. The [comparison agreement interface](TetraStereo/Engine/Ring
 relates independently derived two-geometry comparisons and auxiliary values to source observations.
 Its coverage and agreement hypotheses remain explicit; universal comparison coverage is not claimed.
 
-For a pair of ligands tied on constitutional rules at a reachable scheduled occurrence,
-`scheduled_frontier` now proves that the grouped evaluator returns a molecularly determined
-rule and signed score on each geometry. The [17-atom control](validation/ring-chronology/GroupedStereo.lean)
-gives Rule 5 scores of +2 and −2. Exchanging two coordinates moves the decision to Rule 4b,
-with −1 on both geometries. A whole-centre proof must combine the twelve directed comparisons
-into a consistent ranking or justify promotion or refusal, then show how that decision enters
-the molecular report. [Scheduled pair theorem](TetraStereo/Engine/RingGroupedStereo.lean)
+The [two-stage sphere procedure](TetraStereo/Engine/RingSphereQueue.lean) first tries a strict
+constitutional ranking, then uses a fresh occurrence-addressed auxiliary store for each root.
+It publishes an entire sphere together, from farthest to nearest, including completed refusals.
+Its whole-report equality theorem covers every requested atom list on admitted coordinates.
+Auxiliary descriptors stay fixed during each Rule 6 trial; a different original root receives
+its own assignments.
+
+The [rebuilt stereo evaluator](TetraStereo/Engine/RingRebuiltStereo.lean) now uses zero mass for
+ring duplicates at the original root, every queued centre and every stereo sibling sort,
+including marked trials. Shallow and deep sorting preserve occurrence identities, reference
+path order and selected hands. On ready stores its deciding rule and signed score agree on
+both geometries; on admitted coordinates its entire recursive state and requested report equal
+the grouped procedure. Repeated requests, lowercase assignments and completed refusals are
+included. The [occurrence controls](validation/ring-chronology/OccurrenceStereo.lean) and
+[carbon-13 closure control](validation/ring-chronology/Rule2RealMass.lean) exercise these boundaries.
+
+The [Rule 4b selector](TetraStereo/Engine/RingReferenceVotes.lean) chooses the closest occupied
+sphere and greatest eligible rank path, retaining each child's rank and inherited parent rank.
+It counts all eligible R/S occurrences across parent groups. Empty populations supply no hand,
+nonempty balanced populations both, and strict majorities one. In the
+[48-atom ring](validation/ring-chronology/ReferenceVoteRing.lean), SSS, RRS and RRS give S by five
+to four; majority-per-parent would give R. The rebuilt and grouped evaluators select S and R
+on reflection. The [21-atom unequal-rank control](validation/ring-chronology/ReferenceSelectionCut.lean)
+selects a senior S occurrence over two junior R occurrences.
+
+The [neutral-word theorem](TetraStereo/Engine/RingNeutralPromotion.lean) preserves complete
+Rule 4c row boundaries when all Rule 6 bits are zero. The
+[cut certificate](TetraStereo/Engine/RingPromotionCut.lean) derives refusal on both geometries
+from ordinary ties, at least three eligible marks, at most two returning arms and marked-atom
+locality. Its checker reads molecular identifiers and returning-arm flags; it need not run
+marked trials. A universal skip from fewer than three original-root closures still needs a
+proof connecting graph paths to the return-arm bound and locality. The
+[small-graph enumeration](validation/ring-chronology/check_promotion_topology.py) is a finite
+control, not that universal theorem.
+
+These results close the earlier whole-centre/report integration obligation for the named
+frozen-auxiliary procedure. Independent chemical justification remains open for the shared
+occurrence inventory, reference selection, stereo observations and promotion policy on the
+actual stores. Neither report equality nor the optional regenerated profile establishes
+universal IUPAC correctness.
 
 ## Runtime and coordinate controls
 
@@ -107,14 +140,13 @@ parity, exact two-pair entries and exhaustive root outcomes. The two public sour
 byte-identical to those accepted source snapshots; review verified the current and frozen source
 and compiled-artifact hashes and the saved successful bounded-build receipts.
 
-Those receipts describe the original-source build environment, not a fresh compilation against
-the public distribution's dependencies. Earlier small public-route smoke checks passed, but no
-fresh Lean compilation or full-library build was run for this publication. Publication checks
-are static only.
+For the 23 November update, a focused Lean check against the development artifacts passed
+the kernel-only assertions for the rebuilt signature, the full report, the molecular Rule 4b
+selector and the conditional Rule 6 refusal. The public export was checked for module coverage
+and reproducibility. A clean-checkout compilation of the public package remains unverified.
 
-The inventory contains **4,364 maintained Lean modules**, up from 4,131 in the preceding
-public revision. The package contains **4,365 Lean source files** including the umbrella.
-Runtime and validation drivers are listed separately from the package inventory. Module counts,
-source-model proofs, runtime examples and chemical source approval are different kinds of evidence.
+The [module inventory](source-modules.json) contains all 4,392 maintained Lean modules.
+The original umbrella brings the package total to 4,393 Lean files. The validation drivers
+are counted separately.
 The universal theorem and full chemical approval remain open. See the [README](README.md) for
 existing acyclic results, collaboration guidance and safe source checks.

@@ -1,9 +1,16 @@
 # Evaluating tetrahedral rings
 
-The source exposes two procedures with different reference policies. The accumulated-reference
-profile regenerates child observations for a new context. The pinned Centres 1.0 adapter replays
-the 2018 procedure's mutable reference and farthest-first auxiliary publication schedule.
-Agreement with one procedure does not establish agreement with the other or universal IUPAC fidelity.
+The baseline ring report keeps completed auxiliary assignments fixed during each Rule 6
+promotion trial. It first attempts a constitutional ranking, then publishes occurrence-addressed
+auxiliaries by whole spheres from farthest to nearest. The rebuilt evaluator uses zero mass for
+ring duplicates throughout its recursive constitutional and stereo sorts. Its complete state
+and report equal the grouped procedure on admitted coordinates.
+[Rebuilt evaluator and proofs](../TetraStereo/Engine/RingRebuiltStereo.lean)
+
+The separately named accumulated-reference profile regenerates child observations for a new
+context. The pinned Centres 1.0 adapter replays the 2018 procedure's mutable references and
+auxiliary publication schedule. Agreement with one procedure does not establish agreement
+with another or universal IUPAC fidelity.
 
 ## Lean entry points
 
@@ -11,6 +18,10 @@ Import the selected module rather than building the whole library.
 
 | Task | Entry point | Source |
 | --- | --- | --- |
+| Evaluate the frozen-auxiliary baseline | `Engine.ringGroupedMolecularReport?` | [Public API](../TetraStereo/Engine/PublicAPI.lean) |
+| Evaluate the rebuilt zero-duplicate-mass report | `RingRebuiltStereo.report?` | [Rebuilt report](../TetraStereo/Engine/RingRebuiltStereo.lean) |
+| Select highest-ranked Rule 4b occurrence references | `RingReferenceVotes.molecular?` | [Reference selector](../TetraStereo/Engine/RingReferenceVotes.lean) |
+| Check a sufficient Rule 6 refusal cut | `RingPromotionCut.refusal?` | [Cut certificate](../TetraStereo/Engine/RingPromotionCut.lean) |
 | Admit raw or SMILES input and coordinates | `LocalizedChemicalRing.admitRawSpatial?`, `admitSmilesSpatial?` | [Public ring API](../TetraStereo/Engine/LocalizedChemicalRingPublic.lean) |
 | Evaluate the regenerated profile | `LocalizedChemicalRing.analyze .accumulatedReferencesRegenerated` | [Public ring API](../TetraStereo/Engine/LocalizedChemicalRingPublic.lean) |
 | Evaluate one detected centre | `LocalizedChemicalRing.centerOutcome` | [Centre projection](../TetraStereo/Engine/LocalizedChemicalRingCenterProjection.lean) |
@@ -31,6 +42,29 @@ under its hypotheses. The [chronology theorem](../TetraStereo/Engine/LocalizedCh
 requires a changed downstream auxiliary reading when frozen and regenerated outcomes differ.
 The frozen control freezes auxiliary observations while retaining the underlying comparator,
 root discovery, geometry and readback. It is a diagnostic control, not a substitute for Centres.
+
+## Replaying frozen-auxiliary controls
+
+Prepare only the selected fixture's dependencies using [BUILDING.md](../BUILDING.md), inspecting
+the bounded helper's `--check` plan first. Run the fixture under an enforced aggregate memory
+scope as well. For example, after those dependencies are prepared:
+
+```sh
+systemd-run --user --scope -p MemoryMax=6G -p MemorySwapMax=0 \
+  lake env lean --run validation/ring-chronology/ReferenceVoteRing.lean
+systemd-run --user --scope -p MemoryMax=6G -p MemorySwapMax=0 \
+  lake env lean --run validation/ring-chronology/ReferenceVoteRing.lean --grouped
+```
+
+The [48-atom fixture](../validation/ring-chronology/ReferenceVoteRing.lean) defaults to rebuilt
+evaluation. It checks that nine geometric reference occurrences select S by five to four,
+and R on reflection. The `--grouped` replay checks the same references with grouped publication.
+The [unequal-rank control](../validation/ring-chronology/ReferenceSelectionCut.lean) checks that
+junior R occurrences do not outvote a senior S occurrence, and exercises the refusal cut.
+The [Figure 14 control](../validation/ring-chronology/Figure14Frozen.lean) checks explicit
+absence at both bridgeheads on the all-out and in/out configurations. These are scoped controls;
+they do not prove chemical completeness. These commands were documented without a fresh public
+compilation during publication.
 
 ## Installing and running Centres
 
@@ -88,9 +122,10 @@ These examples do not establish universal correctness of every priority order or
 The [grouped stereo machinery](../TetraStereo/Engine/RingGroupedStereo.lean) assembles molecular
 child profiles with stage-specific priorities. The [comparison agreement interface](../TetraStereo/Engine/RingComparisonAgreement.lean)
 connects independent two-geometry molecular evidence to signed rule answers and visible auxiliary
-values. Coverage and agreement remain explicit proof obligations. Neither a passing receipt nor
-a grouped comparison theorem supplies a universal chemical specification or settles all nested
-reference lifetimes. See [ring status](../RING_STATUS.md) for the scoped theorem boundary.
+values. Coverage and agreement remain explicit proof obligations. The rebuilt whole-state and report theorem closes the earlier integration step for this
+named procedure. Independent chemical justification of its comparisons, reference selection and
+promotion decisions remains open, as does the universal graph-to-locality bridge for the Rule 6
+closure-count shortcut. A passing receipt does not supply those proofs. See [ring status](../RING_STATUS.md) for the scoped theorem boundary.
 
 The report validation driver `AuditReport.lean` imports the module generated by
 `EmitReport.lean`. Generate that module first and place it on the Lean search path for audit.

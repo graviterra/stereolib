@@ -19,6 +19,12 @@ import TetraStereo.Engine.RingConfiguredPriorities
 import TetraStereo.Engine.RingConfiguredGeometry
 import TetraStereo.Engine.RingFrameCoverage
 import TetraStereo.Engine.RingRecursiveSignedReport
+import TetraStereo.Engine.RingGroupedReport
+import TetraStereo.Engine.RingSphereQueue
+import TetraStereo.Engine.RingOccurrenceStereo
+import TetraStereo.Engine.RingRebuiltStereo
+import TetraStereo.Engine.RingRawRenumbering
+import TetraStereo.Engine.RingGeometryCertificates
 import TetraStereo.Engine.RingNestedFrameCoverage
 import TetraStereo.Engine.RingConstitutionalCoverage
 import TetraStereo.Engine.RingAtomicHorizon
@@ -78,6 +84,50 @@ abbrev ringGroupedStereoComparison? := RingGroupedStereo.scheduledComparison?
 /-- Every constitutional tie at the molecular publication frontier has one
 signed result over all legal parent-group orders on each geometry. -/
 abbrev ringGroupedStereoAtFrontier := @RingGroupedStereo.scheduled_frontier
+
+/-- Two-geometry molecular report in canonical detected-centre order, with
+an explicit absence for a completed refusal. -/
+abbrev ringGroupedMolecularReport? := RingGroupedReport.report?
+
+/-- The same molecular decisions for every carbon in input order. -/
+abbrev ringGroupedCarbonReport? := RingGroupedReport.carbonReport?
+
+abbrev ringGroupedMolecularReportCorrect := RingGroupedReport.molecular_report
+abbrev ringGroupedCarbonReportCorrect := RingGroupedReport.carbon_report
+abbrev ringGroupedReportExact := RingGroupedReport.correct_iff
+
+/-- Try constitution first and generate auxiliaries only for a root with a remaining tie. -/
+abbrev ringStagedReport? := RingSphereQueue.stagedReport
+abbrev ringStagedReportExact := RingSphereQueue.staged_report_exact
+
+/-- Rebuild the zero-mass priorities inside every stereo pass at each root and auxiliary centre. -/
+abbrev ringRecursiveZeroMassReport? := RingRebuiltStereo.report?
+abbrev ringRecursiveZeroMassReportExact := RingRebuiltStereo.report_exact
+
+/-- Molecular occurrence comparisons with a rebuilt zero-duplicate-mass constitutional gate. -/
+abbrev ringOccurrenceIncidentScore? := RingOccurrenceStereo.incidentScore?
+abbrev ringOccurrenceMatrixEntry := @RingOccurrenceStereo.matrix_entry
+
+/-- Signed geometry and unordered pair reversals determine the full frozen report. -/
+abbrev ringGeometricCentreCriterion := @RingGeometryCriterion.at_centre
+abbrev ringGeometricPublicationTransport := @RingGeometryTransport.Presentation.publications
+abbrev ringConfiguredAutomorphismPublications := @RingGeometryTransport.automorphism_publications
+/-- Search the raw atom, bond and coordinate data for an exact change of numbering. -/
+abbrev ringFindRawRenumbering? := RingRawRenumbering.find?
+/-- The search succeeds exactly when a raw renumbering exists. -/
+abbrev ringFindRawRenumberingExact := @RingRawRenumbering.find_complete
+/-- Transport every scheduled ring occurrence from the physical input bijection. -/
+abbrev ringRawRenumberingPublications := @RingRawRenumbering.publications
+/-- Transport the selected report rows, including their atom identifiers. -/
+abbrev ringRawRenumberingReport := @RingRawRenumbering.report
+/-- Independently enumerated full reports agree up to atom identifiers and row order. -/
+abbrev ringRawRenumberingFullReport := @RingRawRenumbering.full_report
+abbrev ringRefusalFromMarkedExchanges := @RingGeometryExchange.refuse_of_exchanges
+abbrev ringTwoPairRefusalCriterion := @RingBridgedPairs.Pairs.refusal_iff
+abbrev ringDescriptorFromCoupledBonds := @RingMarkedIncidence.coupled_descriptor
+abbrev ringGeometryContext? := RingGeometryCertificates.prepare?
+abbrev ringCheckGeometricRefusal? := @RingGeometryCertificates.Context.refusal?
+abbrev ringCheckCoupledDescriptor? := @RingGeometryCertificates.Context.descriptor?
 
 /-- Signed edge, including molecular parent-group comparison at a remaining tie. -/
 abbrev ringSpherePriorityEdge? := RingSpherePriority.edge?
@@ -1457,5 +1507,10 @@ assert_kernel_only TetraStereo.Engine.ringSilentPairFrame_complete
 assert_kernel_only TetraStereo.Engine.RingSphereSingleTieRefusal.covered
 assert_kernel_only TetraStereo.Engine.RingSphereCoverage.frontier_consensus
 
+assert_kernel_only TetraStereo.Engine.ringGroupedMolecularReport?
+assert_kernel_only TetraStereo.Engine.ringGroupedCarbonReport?
+assert_kernel_only TetraStereo.Engine.ringGroupedMolecularReportCorrect
+assert_kernel_only TetraStereo.Engine.ringGroupedCarbonReportCorrect
+assert_kernel_only TetraStereo.Engine.ringGroupedReportExact
 assert_kernel_only TetraStereo.Engine.ringGroupedStereoComparison?
 assert_kernel_only TetraStereo.Engine.ringGroupedStereoAtFrontier
