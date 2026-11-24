@@ -582,7 +582,7 @@ theorem report (r : Renumbering i j) (coords : LocalizedChemicalRing.coordinates
       cases RingGroupedReport.forAtoms? i rest <;> simp [renameRow,a.isLt]
 
 
-private theorem centres_perm (r : Renumbering i j) :
+theorem centres_perm (r : Renumbering i j) :
     ((RingGroupedReport.centres i).map r.atoms).Perm (RingGroupedReport.centres j) := by
   have sorted (m : Input) : RingGroupedReport.centres m = m.certified.tetrahedralCenterSet.sort (· ≤ ·) := by
     simp [RingGroupedReport.centres, canonicalTetrahedralCenters, List.map_map,Function.comp_def]

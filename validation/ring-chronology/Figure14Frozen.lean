@@ -32,18 +32,21 @@ private def fixture : Except String (RawMolecule × List CartesianPoint3) := do
   let bonds ← ((lines.drop 26).take 23).mapM bondRow
   return (⟨atoms.map Prod.fst,bonds,[],[]⟩,atoms.map Prod.snd)
 
-private def check (m : RawMolecule) (positions : List CartesianPoint3) (inward : Bool) : IO Unit := do
-  let xyz := if inward then positions.modify 8 (fun p => {p with z := 27/100}) else positions
+private def check (m : RawMolecule) (positions : List CartesianPoint3)
+    (topIn bottomIn : Bool) : IO Unit := do
+  let xyz := if topIn then positions.modify 8 (fun p => {p with z := 27/100}) else positions
+  let xyz := if bottomIn then xyz.modify 9 (fun p => {p with z := -27/100}) else xyz
   let some i := LocalizedChemicalRing.admitRawSpatial? m ⟨xyz⟩ | throw (IO.userError "structural admission")
   unless LocalizedChemicalRing.coordinatesAdmitted i do throw (IO.userError "coordinate admission")
   let heads := (RingGroupedReport.centres i).filter (fun a => a.val < 2)
   unless heads.map Fin.val == [0,1] do throw (IO.userError "missing bridgehead")
   let rows := RingGroupedReport.forAtoms? i heads
   unless rows == some [(0,none),(1,none)] do throw (IO.userError s!"unexpected frozen result {repr rows}")
-  IO.println s!"grouped frozen, inward={inward}, two completed bridgehead refusals"
+  IO.println s!"grouped frozen, topIn={topIn}, bottomIn={bottomIn}, two completed bridgehead refusals"
   (← IO.getStdout).flush
 
 def main : IO Unit := do
   let (m,positions) ← IO.ofExcept fixture
-  check m positions false
-  check m positions true
+  for topIn in [false, true] do
+    for bottomIn in [false, true] do
+      check m positions topIn bottomIn

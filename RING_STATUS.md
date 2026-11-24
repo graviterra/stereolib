@@ -1,4 +1,4 @@
-# Ring source status — 23 November 2026
+# Ring source status — 24 November 2026
 
 The ring programme now has an explicit executable development profile and an independent
 source-model connection to its detected-centre report. This is a scoped source update, not a
@@ -73,6 +73,13 @@ molecular profiles. The [comparison agreement interface](TetraStereo/Engine/Ring
 relates independently derived two-geometry comparisons and auxiliary values to source observations.
 Its coverage and agreement hypotheses remain explicit; universal comparison coverage is not claimed.
 
+For the grouped frozen-auxiliary procedure, Lean derives a unique result at every simple
+bonded path and a unique report for every requested atom list on admitted coordinates. The
+existence and uniqueness proofs pass a transitive dependency check against twelve declarations
+for the global evaluator and its agreement theorems. A separate theorem connects that derivation
+to the grouped output. [Graph report](TetraStereo/Engine/RingGraphReport.lean) ·
+[Dependency check](validation/ring-chronology/GraphDerivationIndependence.lean)
+
 The [two-stage sphere procedure](TetraStereo/Engine/RingSphereQueue.lean) first tries a strict
 constitutional ranking, then uses a fresh occurrence-addressed auxiliary store for each root.
 It publishes an entire sphere together, from farthest to nearest, including completed refusals.
@@ -112,11 +119,45 @@ Auxiliary occurrences keep their frozen evaluation. [Path proof](TetraStereo/Eng
 [Count-based publication theorem](TetraStereo/Engine/RingRootReturn.lean) ·
 [Molecular controls](validation/ring-chronology/RootReturns.lean)
 
-These results close the earlier whole-centre/report integration obligation for the named
-frozen-auxiliary procedure. Independent chemical justification remains open for the shared
-occurrence inventory, reference selection, stereo observations and promotion policy on the
-actual stores. Neither report equality nor the optional regenerated profile establishes
-universal IUPAC correctness.
+## Full-path graph derivation and recursive report
+
+The earlier occurrence and rebuilt comparators agree with the grouped evaluator, including its
+parent-by-parent Rule 4b traversal. That equality is not a derivation of all grouped scores from
+Hanson et al. In the [41-atom cross-parent witness](validation/ring-chronology/Rule4bCrossParent.lean),
+both procedures read the same eight frozen geometric auxiliaries. Grouped concatenation gives
+words 1100 and 1010 and assigns R/S at the root. Full-path whole-sphere ordering gives 1100
+for both arms under either reference and ultimately refuses. The pinned Jmol default replay
+also refuses on this input. [Shared molecular file](validation/ring-chronology/Rule4bCrossParent.mol) ·
+[Jmol control](validation/ring-chronology/Rule4bCrossParent.spt)
+
+[Full-path graph derivations](TetraStereo/Engine/RingFullPathPairs.lean) expand the entire next
+sphere before sorting complete path keys. Every legal ordering of equal-key visits emits the
+same reference word, including visits with different parents. The frozen-score theorem obtains
+references and words from the actual grouped frozen store under its through-4a tie hypotheses.
+[Path-rank transport](TetraStereo/Engine/RingPathRankTransport.lean) relates molecular priority
+keys to local sibling-rank characters; this is a representation theorem for the shared priorities.
+
+The separate [full-path publication](TetraStereo/Engine/RingFullPathPublication.lean) uses its own
+recursive frozen store. `reachable_fourB` derives Hanson's best-of-four-word contest for every
+pair on either geometry; it decides only after earlier rules tie. `reachable_frame` supplies
+both geometries' four ordinary keys, signed fixed-reference Rule 5 comparisons, complete eligible
+trial lists and coordinate readings, and the result of cancelling the two vote populations.
+`molecular_iff` equates each computed result with a finite molecular derivation that recursively
+justifies its visible deeper assignments without referring to the publication table. A separate
+induction proves completion at every site on admitted coordinates.
+
+The opt-in [report interface](TetraStereo/Engine/RingFullPathReport.lean),
+`RingFullPathReport.forAtoms?`, returns exactly these source-derived rows in request order,
+including duplicates and completed refusals. It is independent of within-sphere enumeration.
+[Executable report controls](validation/ring-chronology/FullPathReport.lean) cover two spiro
+inputs and a substituted cyclopropane with deeper auxiliaries. This does not change the existing
+grouped public API. The theorem shares the molecular inventory, through-4a/4c priorities,
+marked-node policy and coordinate interpretation with its source judgments; independent chemical
+fidelity and the external source-review obligations remain open. Inherited priorities at internal
+edges and rule applicability need independent justification: the Rule 5 edge priority uses the
+lowercase stage without a separate local Rule 4b stage. Reference-count and four-list
+procedures are not claimed equivalent on every reference population. The admitted single-bond,
+constant-charge domain still requires extension.
 
 ## Runtime and coordinate controls
 
@@ -136,6 +177,24 @@ control for auxiliary regeneration, not a claim of equivalence with the pinned r
 See [setup and entry points](docs/ring-evaluator.md) for executable and offline routes, receipt
 limitations and the distinction between structural and coordinate admission.
 
+Bond-record order is a separate graph invariant. For structurally admitted inputs with identical
+numbered atom records and coordinates and permuted bond lists,
+[RingBondRecordOrder](TetraStereo/Engine/RingBondRecordOrder.lean) transports coordinate admission
+and proves literal equality of complete public grouped reports, including centre order, and
+selected grouped/cached reports with repeated requests. It assumes no computed-label agreement.
+The [single-bond VS300 derivative certificate](validation/ring-chronology/VS300SingleAdmission.lean)
+checks these premises for four presentations; it establishes equality without assigning C61 an
+absolute letter. The published VS300 has multiple bonds and lies outside this ring proof domain.
+
+The [Jmol diagnostic controls](validation/ring-chronology/check_vs300_bond_order.py) isolate a
+release-specific auxiliary return/reread defect: unchanged numbered atoms, coordinates and bonds
+can give full-mode C61 results r, absence or s when bond records exchange places. A constructed
+single-bond derivative reproduces the defect and is admitted by Lean; it has no published target
+descriptor or stability claim. Selective source interventions and
+[Figure 14/cubane controls](validation/ring-chronology/check_figure14_regeneration.py) distinguish
+auxiliary assignment from optional reassignment. These measurements neither prove universal
+Jmol correspondence nor justify retrying every baseline refusal in full mode.
+
 ## Verification boundary
 
 The earlier preserved original-source checkpoints cover **74 distinct source files and 422
@@ -149,8 +208,8 @@ the kernel-only assertions for the rebuilt signature, the full report, the molec
 selector and the conditional Rule 6 refusal. The public export was checked for module coverage
 and reproducibility. A clean-checkout compilation of the public package remains unverified.
 
-The [module inventory](source-modules.json) contains all 4,394 maintained Lean modules.
-The original umbrella brings the package total to 4,395 Lean files. The validation drivers
+The [module inventory](source-modules.json) contains all 4,412 maintained Lean modules.
+The original umbrella brings the package total to 4,413 Lean files. The validation drivers
 are counted separately.
 The universal theorem and full chemical approval remain open. See the [README](README.md) for
 existing acyclic results, collaboration guidance and safe source checks.

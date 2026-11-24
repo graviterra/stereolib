@@ -90,6 +90,20 @@ private theorem canonical_run (i : Input) (r : Reader i) (rev : Bool) :
 private def indexedRank (i : Input) (r : Reader i) (rev : Bool) (os : List Observation) (q : Arm i) :=
   (accessFor i q).run r rev os q
 
+/-- A whole-sphere traversal can share the original root's child and rank
+readers for every occurrence on its path. -/
+def withRankReaders {α : Type} (i : Input) (r : Reader i) (rev : Bool)
+    (os : List Observation) (q : Arm i)
+    (use : (Arm i → List (Arm i)) → (Arm i → Option Branch) → α) : α :=
+  let access := accessFor i q
+  use access.edges (access.run r rev os)
+
+theorem withRankReaders_eq {α : Type} (i : Input) (r : Reader i) (rev : Bool)
+    (os : List Observation) (q : Arm i)
+    (use : (Arm i → List (Arm i)) → (Arm i → Option Branch) → α) :
+    withRankReaders i r rev os q use = use (kids i) (ranked i r rev os) := by
+  simp only [withRankReaders,access_same,canonical_run]
+
 @[csimp] private theorem indexedRank_exact : @ranked = @indexedRank := by
   funext i r rev os q
   simp only [indexedRank,access_same,canonical_run]
@@ -267,7 +281,7 @@ private theorem children_total {i : Input} {f : Site i} {α : Type} (fn : Arm i 
     ((i.certified.localizedRerootChildren_root_eq q c _ frame hc).trans on)
     (by have h := i.certified.localizedRerootChild_budget_lt q c _ valid frame hc; change budget i c < budget i q at h; omega)
 
-private theorem rank_total {i : Input} {f : Site i} {r : Reader i} (ready : Ready f r) (rev : Bool)
+theorem rank_total {i : Input} {f : Site i} {r : Reader i} (ready : Ready f r) (rev : Bool)
     (os : List Observation) : ∀ q : Arm i, Valid q → On f q → ∃ b, ranked i r rev os q = some b := by
   induction os with
   | nil =>
@@ -311,7 +325,7 @@ private theorem mapM_values {α β : Type} (xs : List α) (get : α → Option �
   | nil => rfl
   | cons x xs ih => simp [List.mapM_cons,h x List.mem_cons_self,ih (fun y hy => h y (List.mem_cons_of_mem _ hy))]
 
-private theorem state_at {i f r} (ready : @Ready i f r) (rev : Bool) {q : Arm i}
+theorem state_at {i f r} (ready : @Ready i f r) (rev : Bool) {q : Arm i}
     (v : Valid q) (on : On f q) : ∃ t : State i r rev, t.q = q := by
   obtain ⟨p,hp⟩ := RingGroupedStereo.arm_ready ready q v on
   have src := RingGroupedStereo.arm_source hp
@@ -319,7 +333,7 @@ private theorem state_at {i f r} (ready : @Ready i f r) (rev : Bool) {q : Arm i}
   · exact ⟨⟨q,v,p,src⟩,rfl⟩
   · exact ⟨⟨q,v,p.reflect,src.reflect⟩,rfl⟩
 
-private theorem next_row {i f r rev os} (ready : @Ready i f r)
+theorem next_row {i f r rev os} (ready : @Ready i f r)
     (key : State i r rev → Branch) (src : ∀ t, Derives i r rev os t.q (key t))
     (t : State i r rev) (on : On f t.q) :
     ∃ sh de, Directed key t sh de ∧ next? i r rev os t.q = some (de.map State.q) ∧
@@ -611,7 +625,7 @@ private theorem inventory_exact {i f r q hs} (ready : @Ready i f r)
         rw [atRoot]
         cases upper (v.map Prod.fst) <;> rfl
 
-private theorem seeds_exact {i f r rev} (ready : @Ready i f r) (a : State i r rev) (on : On f a.q) :
+theorem seeds_exact {i f r rev} (ready : @Ready i f r) (a : State i r rev) (on : On f a.q) :
     seeds? i r rev a.q = some (RingRetainedReferenceGroup.references a.profile.hits rev) := by
   obtain ⟨xs,hit,eqn⟩ := inventory_exact ready a.source.hits a.valid on _ (Nat.lt_succ_self _)
   simp [seeds?,hit,eqn,population_exact,RingRetainedReferenceGroup.references]

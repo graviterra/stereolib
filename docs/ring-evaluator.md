@@ -1,16 +1,23 @@
 # Evaluating tetrahedral rings
 
-The baseline ring report keeps completed auxiliary assignments fixed during each Rule 6
-promotion trial. It first attempts a constitutional ranking, then publishes occurrence-addressed
-auxiliaries by whole spheres from farthest to nearest. The rebuilt evaluator uses zero mass for
-ring duplicates throughout its recursive constitutional and stereo sorts. Its complete state
-and report equal the grouped procedure on admitted coordinates.
-[Rebuilt evaluator and proofs](../TetraStereo/Engine/RingRebuiltStereo.lean)
+The existing grouped API freezes completed auxiliaries during each promotion trial and uses
+parent-by-parent Rule 4b traversal. Its rebuilt zero-mass counterpart has an equality theorem
+for the complete recursive state and report. A reachable cross-parent witness now shows that
+this grouped traversal differs from full-path whole-sphere ordering.
+[Counterexample](../validation/ring-chronology/Rule4bCrossParent.lean)
 
-The separately named accumulated-reference profile regenerates child observations for a new
-context. The pinned Centres 1.0 adapter replays the 2018 procedure's mutable references and
-auxiliary publication schedule. Agreement with one procedure does not establish agreement
-with another or universal IUPAC fidelity.
+The opt-in `RingFullPathReport.forAtoms?` publishes its own deeper auxiliaries. On admitted
+coordinates it returns a unique source-derived report, preserving request order, duplicate
+requests and completed refusals. Its source relation derives both geometries' trial hands and
+cancels opposite votes independently. The theorem covers the named molecular judgments;
+independent justification of inherited priorities at internal edges and rule applicability
+remains open. In particular the Rule 5 edge priority uses the lowercase stage without a separate
+local Rule 4b stage. This is not a universal CIP implementation claim.
+[Publication and source relation](../TetraStereo/Engine/RingFullPathPublication.lean) ·
+[Report theorem](../TetraStereo/Engine/RingFullPathReport.lean)
+
+The accumulated-reference regenerated profile and pinned Centres 1.0 adapter remain separately
+named procedures. Agreement with any one procedure does not establish agreement with another.
 
 ## Lean entry points
 
@@ -18,6 +25,7 @@ Import the selected module rather than building the whole library.
 
 | Task | Entry point | Source |
 | --- | --- | --- |
+| Evaluate the opt-in recursive full-path report | `RingFullPathReport.forAtoms?` | [Full-path report](../TetraStereo/Engine/RingFullPathReport.lean) |
 | Evaluate the frozen-auxiliary baseline | `Engine.ringGroupedMolecularReport?` | [Public API](../TetraStereo/Engine/PublicAPI.lean) |
 | Evaluate the rebuilt zero-duplicate-mass report | `RingRebuiltStereo.report?` | [Rebuilt report](../TetraStereo/Engine/RingRebuiltStereo.lean) |
 | Select highest-ranked Rule 4b occurrence references | `RingReferenceVotes.molecular?` | [Reference selector](../TetraStereo/Engine/RingReferenceVotes.lean) |
@@ -65,6 +73,52 @@ The [Figure 14 control](../validation/ring-chronology/Figure14Frozen.lean) check
 absence at both bridgeheads on the all-out and in/out configurations. These are scoped controls;
 they do not prove chemical completeness. These commands were documented without a fresh public
 compilation during publication.
+
+After preparing the selected full-path dependencies, the report fixture can be run in the same
+bounded scope:
+
+```sh
+systemd-run --user --scope -p MemoryMax=6G -p MemorySwapMax=0 \
+  lake env lean --run validation/ring-chronology/FullPathReport.lean
+```
+
+It checks R/S and refusal on two five-atom spiro inputs, and R/S, R/S and refusal on the three
+ring carbons of 1-chloro-2-fluorocyclopropane, including deeper auxiliary publication.
+The [cross-parent control](../validation/ring-chronology/Rule4bCrossParent.lean) separately checks
+the reachable grouped/full-path discrepancy on its shared molecular file.
+
+## Python and Jmol source controls
+
+The Python controls require Python 3, a JDK providing `java` and `javac` with Java source-file
+launch support, and the pinned binary, source archive and authors' dataset below. Run from the
+public repository root. These are external Jmol replays and diagnostic source interventions;
+they do not run Lean. The scripts verify input hashes and compile diagnostic overlays in
+temporary directories. Preserve both Python scripts together because the VS300 script imports
+the Figure 14 helper. The binary and source archive are Jmol 14.29.17 Maven artifacts; the
+molecular data is from the pinned authors' CIP Validation Suite revision.
+
+```sh
+mkdir -p tmp/figure14-jmol-replay tmp/ring-chemical-rules
+curl -fsSL https://repo.maven.apache.org/maven2/net/sourceforge/jmol/jmol/14.29.17/jmol-14.29.17.jar \
+  -o tmp/figure14-jmol-replay/jmol.jar
+curl -fsSL https://repo.maven.apache.org/maven2/net/sourceforge/jmol/jmol/14.29.17/jmol-14.29.17-sources.jar \
+  -o tmp/figure14-jmol-replay/sources.jar
+curl -fsSL https://raw.githubusercontent.com/CIPValidationSuite/ValidationSuite/6b9f9db46dadc6749da8234b05164e1e0fb413b9/compounds_3d.sdf \
+  -o tmp/ring-chemical-rules/compounds_3d.sdf
+python3 validation/ring-chronology/check_figure14_regeneration.py
+python3 validation/ring-chronology/check_vs300_bond_order.py
+```
+
+The first script checks assignment/reassignment, cubane and Figure 14 interventions. The second
+checks stock and diagnostic VS300 bond-record permutations, including a constructed single-bond
+derivative. Its optional `--export-single-bond NEW_DIR` writes the four derivative molfiles into
+a new directory for the separate [Lean admission and equality certificate](../validation/ring-chronology/VS300SingleAdmission.lean).
+Published VS300 has multiple bonds and is outside the single-bond theorem domain. The derivative
+has admitted graph/coordinates but no published target label; equality under bond-record order
+does not determine its absolute descriptor. The controls isolate behavior of the pinned release,
+not all implementations of auxiliary reassignment.
+[Figure 14 script](../validation/ring-chronology/check_figure14_regeneration.py) ·
+[VS300 script](../validation/ring-chronology/check_vs300_bond_order.py)
 
 ## Installing and running Centres
 
@@ -122,8 +176,9 @@ These examples do not establish universal correctness of every priority order or
 The [grouped stereo machinery](../TetraStereo/Engine/RingGroupedStereo.lean) assembles molecular
 child profiles with stage-specific priorities. The [comparison agreement interface](../TetraStereo/Engine/RingComparisonAgreement.lean)
 connects independent two-geometry molecular evidence to signed rule answers and visible auxiliary
-values. Coverage and agreement remain explicit proof obligations. The rebuilt whole-state and report theorem closes the earlier integration step for this
-named procedure. Independent chemical justification of its comparisons, reference selection and
+values. Coverage and agreement remain explicit proof obligations. The rebuilt whole-state and report theorem establishes equality for the grouped procedure.
+The opt-in full-path report has its separate recursive source theorem and can disagree with
+grouped Rule 4b traversal. Independent chemical justification of its comparisons, reference selection and
 promotion decisions remains open. At the original root, `RingRootReturn.rootByCount` skips Rule 6
 when the root has fewer than three origin-zero duplicates. Its publication equals the grouped result
 for every atom on admitted coordinates. [Evaluator and proof](../TetraStereo/Engine/RingRootReturn.lean) ·

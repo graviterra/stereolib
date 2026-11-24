@@ -1,0 +1,9 @@
+# Jmol 14.29.17. The two arms have the same four highest-ranking positions.
+load "validation/ring-chronology/Rule4bCrossParent.mol"
+set cipRule6Full false
+calculate chirality
+var letters = ""
+for (var i=8; i <= 15; i++) { letters += {atomno=i}.chirality }
+if (letters != "RRSSRSRS") { throw "source auxiliary setup differs" }
+if ({atomno=1}.chirality != "") { throw "unexpected source root assignment" }
+print "CROSS_PARENT_PASS"

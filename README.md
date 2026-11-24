@@ -5,40 +5,54 @@
 Stereolib uses Lean 4 to check how the Cahn–Ingold–Prelog (CIP) sequence rules and a molecule’s
 three-dimensional geometry determine a tetrahedral descriptor. For a restricted class of
 acyclic molecules, the evaluator has a proof for its entire report, including justified
-refusals. For rings, a rebuilt occurrence-based evaluator now has a whole-report equality theorem
-with the grouped frozen-auxiliary procedure on admitted coordinates. A chemical correctness proof for every admitted ring remains open.
+refusals. For rings, a separate full-path evaluator now derives its recursive report from
+molecular path priorities, coordinate readings and deeper auxiliary assignments. A reachable
+41-atom counterexample distinguishes it from the existing grouped report. A chemical correctness
+proof for every admitted ring remains open.
 
 [Ring proof status](RING_STATUS.md) · [Run or replay the ring evaluator](docs/ring-evaluator.md) ·
 [Proved acyclic results](#what-is-proved) · [Collaborate](#collaborate)
 
-## Ring results as of 23 November 2026
+## Ring results as of 24 November 2026
 
 | Result | What the evidence establishes |
 | --- | --- |
+| Recursive full-path source report | Every requested atom has a unique complete source-derived result on admitted coordinates, including refusals and repeated requests. [Report theorem](TetraStereo/Engine/RingFullPathReport.lean) |
+| Reachable Rule 4b discrepancy | The grouped root assigns R/S on a 41-atom ring while whole-sphere full-path ordering leaves it unassigned. The eight frozen auxiliary hands agree. [Molecular control](validation/ring-chronology/Rule4bCrossParent.lean) |
+| Presentation invariance | Permuting bond records preserves complete grouped reports and selected grouped/cached reports under the theorem's admission hypotheses. [Graph theorem](TetraStereo/Engine/RingBondRecordOrder.lean) |
 | A scheduled ligand comparison | When constitutional rules tie for a pair at an eligible occurrence, the grouped evaluator derives the first deciding stereochemical rule, or a tie, and its signed score on the original and reflected geometries. [Lean theorem](TetraStereo/Engine/RingGroupedStereo.lean#L323) |
 | A change of deciding rule | On a 17-atom ring fixture, Rule 5 gives +2 on the original geometry and −2 on its reflection. Exchanging two coordinates makes Rule 4b decide with −1 on both. [Executable control](validation/ring-chronology/GroupedStereo.lean) |
 | A 31-atom ring with frozen auxiliary labels | The grouped comparison returns the expected scores for Rules 4a, 4b, 4c and 5, and for a complete tie. A variant with constitutionally matched sibling branches checks both a Rule 4b decision and a tie. [Fixture and assertions](TetraStereo/Examples/RingRetainedUnitControl.lean) |
 | Exact reports for the regenerated profile | Under the stated admission and calibration hypotheses, independently specified priorities determine the letter, casing or refusal at every detected centre for this reference policy. [Exact report certificate](TetraStereo/Engine/LocalizedChemicalRingExactCertificate.lean) |
 | A limit of the pinned Centres 1.0 procedure | Renumbering two carbons changes its fluorospiro descriptor from `S` to `s`. The independent ring-pair calculation gives `S` under both numberings and `R` on reflection. [Renumbering witness](TetraStereo/Examples/CentresRingSpiroCasing.lean) · [Molecular calculation](TetraStereo/Examples/RingTwoPairFluorospiro.lean) |
 
-The ring baseline keeps previously assigned auxiliary descriptors fixed during each Rule 6
-trial. The rebuilt evaluator uses zero mass for ring duplicates throughout constitutional and
-stereochemical sibling sorting. Its complete recursive state and requested report agree with
-the grouped evaluator, including lowercase results and completed refusals.
-[Whole-report theorem](TetraStereo/Engine/RingRebuiltStereo.lean)
+The opt-in [full-path report](TetraStereo/Engine/RingFullPathReport.lean) has a finite recursive
+source derivation for every requested atom on admitted coordinates, with request order and
+duplicates preserved. At each reachable frame it derives both geometries' ordinary priorities,
+Rule 5 comparisons, complete promotion trials and coordinate hands. Opposite trial votes cancel;
+the two surviving hands determine letter and case. Every site completes, including refusals.
+[Publication theorem](TetraStereo/Engine/RingFullPathPublication.lean)
 
-Rule 4b reference selection now counts occurrences at the highest eligible rank, preserving
-child and inherited parent priorities. A 48-atom control distinguishes counting nine hands
-from counting three parent majorities. A separate checked Rule 6 cut certifies refusal without
-running marked trials when its return-arm and locality conditions hold.
-[Reference selection](TetraStereo/Engine/RingReferenceVotes.lean) ·
-[Refusal certificate](TetraStereo/Engine/RingPromotionCut.lean)
+The public grouped API retains its parent-by-parent Rule 4b traversal. On a reachable frozen
+state, it assigns R/S to a 41-atom ring where whole-sphere full-path comparison leaves the root
+unassigned. Both see the same eight auxiliary hands; the difference is their cross-parent
+ordering. Earlier grouped/rebuilt equality proofs remain valid for that procedure.
+[Counterexample](validation/ring-chronology/Rule4bCrossParent.lean) ·
+[Full-path graph derivation](TetraStereo/Engine/RingFullPathPairs.lean)
 
-**The remaining chemical proof** must independently justify the molecular comparisons, reference selection and
-promotion decisions on the frozen stores they actually read. At the original root, Lean now proves that fewer than three
-duplicate occurrences of that root allow the evaluator to skip Rule 6. The ordinary ranking
-still determines an assignment or a refusal. [Count-based evaluator and proof](TetraStereo/Engine/RingRootReturn.lean)
-[Proof status and domain](RING_STATUS.md#domain-and-remaining-work)
+At the original root, the graph proof now justifies skipping Rule 6 with fewer than three
+root duplicates. Bond-record permutations preserve complete grouped reports and selected
+cached reports. These invariance results do not assign an absolute descriptor to the admitted
+single-bond derivative used to expose Jmol's presentation defect.
+[Root-return theorem](TetraStereo/Engine/RingRootReturn.lean) ·
+[Bond-order theorem](TetraStereo/Engine/RingBondRecordOrder.lean)
+
+**The remaining chemical proof** must justify the priorities inherited at internal edges and
+the conditions for applying each rule. For example, the Rule 5 edge key uses the lowercase
+stage without a separate local Rule 4b stage. Agreement with the intended chemical rules
+therefore still needs an independent proof. Broader domain coverage and external source
+review also remain open.
+[Proof status and controls](RING_STATUS.md#domain-and-remaining-work)
 
 ## The proved connection
 
@@ -134,8 +148,8 @@ to chemistry is a separate scientific question, and we want experts to press on 
 
 ## The proof frontier
 
-The public exact-source interface now joins successful letters, casing and refusals across
-all detected roots of the named procedure. The frontier is independent chemical fidelity of
+The regenerated exact-source interface joins letters, casing and refusals for its named
+procedure. The separate full-path evaluator now has its own recursive molecular source theorem. The frontier is independent chemical fidelity of
 recursive priorities, auxiliary publication and nested reference handling. Grouped molecular
 comparisons and checked examples extend that connection under explicit coverage and agreement
 hypotheses. They do not establish a universal correspondence to IUPAC or to the pinned release.
@@ -185,7 +199,8 @@ in the result field. Counterexamples are useful without a repair. See
 Sources live in [OneCenter](TetraStereo/OneCenter) (models, algorithms, proofs),
 [Engine](TetraStereo/Engine), [Certificate](TetraStereo/Certificate),
 [Examples](TetraStereo/Examples) and [UniversalProof](TetraStereo/UniversalProof). The
-[module inventory](source-modules.json) records the maintained Lean modules. A module count is
+[module inventory](source-modules.json) records 4,412 maintained Lean modules, or 4,413 source
+files with the umbrella. A module count is
 not a theorem count, and the words "complete" or
 "universal" in a name do not override the hypotheses of its declarations.
 
