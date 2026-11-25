@@ -427,11 +427,16 @@ def stageWords (i : Input) (r : Reader i) (rev : Bool)
     (os : List RingRetainedStereoRefinement.Observation) (seed : RS) (q : Arm i) : Option (List Bool) :=
   (stage i r rev os).bits? (likeAt i r rev seed) q
 
+/-- Read a complete seed word using the supplied molecular child and rank
+lookups. The same lookups can serve both reference seeds. -/
+def wordWith {i : Input} (r : Reader i) (rev : Bool)
+    (edges : Arm i → List (Arm i)) (rank : Arm i → Option Branch) (seed : RS) (q : Arm i) :=
+  (sphereRun FullVisit.path (nextWith r rev seed edges rank) (budget i q + 1)
+    [rootVisit i r rev seed q]).map fun out => out.filterMap fun v => likeAt i r rev seed v.cursor
+
 private def cachedWords (i : Input) (r : Reader i) (rev : Bool)
     (os : List RingRetainedStereoRefinement.Observation) (seed : RS) (q : Arm i) : Option (List Bool) :=
-  RingOccurrenceStereo.withRankReaders i r rev os q fun edges rank =>
-    (sphereRun FullVisit.path (nextWith r rev seed edges rank) (budget i q + 1)
-      [rootVisit i r rev seed q]).map fun out => out.filterMap fun v => likeAt i r rev seed v.cursor
+  RingOccurrenceStereo.withRankReaders i r rev os q fun edges rank => wordWith r rev edges rank seed q
 
 @[csimp] private theorem cached_words_exact : @stageWords = @cachedWords := by
   funext i r rev os seed q

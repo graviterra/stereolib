@@ -39,6 +39,24 @@ def key? (i : Input) (r : Reader i) (rev : Bool) (q : Arm i) : Option Key := do
   let fr ← RingFullPathRule5.word? i r rev .R q
   return ⟨u.deep,max ar as',l.word,fr⟩
 
+/-- Evaluate each priority stage and its reference words with shared
+molecular child and rank lookups. -/
+private def indexedKey (i : Input) (r : Reader i) (rev : Bool) (q : Arm i) : Option Key :=
+  RingOccurrenceStereo.withRankReaders i r rev [] q fun edges unitRank =>
+    RingOccurrenceStereo.withRankReaders i r rev [.lowercase] q fun lowerEdges lowerRank => do
+      let u ← unitRank q
+      let l ← lowerRank q
+      let ar ← RingFullPathPairs.wordWith r rev edges unitRank .R q
+      let as' ← RingFullPathPairs.wordWith r rev edges unitRank .S q
+      let fixed ← RingFullPathPairs.wordWith r rev lowerEdges lowerRank .R q
+      return ⟨u.deep,max ar as',l.word,fixed⟩
+
+@[csimp] private theorem indexedKey_exact : @key? = @indexedKey := by
+  funext i r rev q
+  unfold indexedKey
+  simp only [RingOccurrenceStereo.withRankReaders_eq]
+  rfl
+
 theorem key_exact {i : Input} {f : Site i} {r : Reader i} (ready : RingGroupedStereo.Ready f r)
     (rev : Bool) (q : Arm i) (valid : i.certified.LocalizedRerootCursorValid q)
     (on : q.occurrence.val.root = f.val.root) :

@@ -115,12 +115,16 @@ theorem read_exact {i f} (geom : LocalizedChemicalRing.coordinatesAdmitted i = t
       obtain ⟨j,k,same,ne⟩ := injective
       exact .tie ne same
 
-def readings? {i f} (fr : @Frame i f) (r : Reader i) (rev : Bool) :
-    Option (List (Option Slot × Option RS)) := do
-  let ks ← RingActivePairReport.four? fun k => key? i r rev (RingGroupedCentre.cursor fr k)
+def readingsWith {i f} (fr : @Frame i f) (r : Reader i) (rev : Bool) (ks : Slot → Key) :
+    Option (List (Option Slot × Option RS)) :=
   (trials ks).mapM fun s => do
     let ws ← markWords? fr r s
     return (s,readTrial fr rev (fun k => trialKey (ks k) (ws k)))
+
+def readings? {i f} (fr : @Frame i f) (r : Reader i) (rev : Bool) :
+    Option (List (Option Slot × Option RS)) := do
+  let ks ← RingActivePairReport.four? fun k => key? i r rev (RingGroupedCentre.cursor fr k)
+  readingsWith fr r rev ks
 
 /-- All baseline trials start on one ready reader. Every
 reported entry agrees with every legal choice of the ordinary priorities,
@@ -148,7 +152,7 @@ theorem ready_readings {i f r} (geom : LocalizedChemicalRing.coordinatesAdmitted
       induction xs with
       | nil => rfl
       | cons s ss ih => simp [List.mapM_cons,ih]
-    simpa [readings?,hks,hw,entry] using pureRow (trials keys)
+    simpa [readings?,readingsWith,hks,hw,entry] using pureRow (trials keys)
   · simp [List.map_map,entry,Function.comp_def]
   · intro s v mem other ws hOther hWs
     obtain ⟨u,_,out⟩ := List.mem_map.mp mem

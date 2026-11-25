@@ -146,12 +146,31 @@ trial lists and coordinate readings, and the result of cancelling the two vote p
 justifies its visible deeper assignments without referring to the publication table. A separate
 induction proves completion at every site on admitted coordinates.
 
-The opt-in [report interface](TetraStereo/Engine/RingFullPathReport.lean),
+The underlying [report interface](TetraStereo/Engine/RingFullPathReport.lean),
 `RingFullPathReport.forAtoms?`, returns exactly these source-derived rows in request order,
 including duplicates and completed refusals. It is independent of within-sphere enumeration.
 [Executable report controls](validation/ring-chronology/FullPathReport.lean) cover two spiro
 inputs and a substituted cyclopropane with deeper auxiliaries. This does not change the existing
-grouped public API. The theorem shares the molecular inventory, through-4a/4c priorities,
+grouped public API. The public `Engine.ringMolecularReportFromRaw?` now admits raw graph and
+coordinates and resolves zero-based requested atom IDs. `fromRaw_graph_iff` characterizes its
+rows by the two-geometry source derivation along simple bonded paths, including every deeper
+auxiliary read. It preserves request order and repeated IDs; invalid admission, inadmissible
+coordinates and out-of-range IDs fail the request. A row with absent labels is a completed refusal.
+[Raw-to-graph API theorem](TetraStereo/Engine/RingMolecularReport.lean)
+
+The public implementation uses the [constitutional shortcut](TetraStereo/Engine/RingFullPathConstitution.lean):
+four distinct zero-duplicate-mass constitutional ranks determine both coordinate hands before
+stereo suffixes or marks are read. On any ready reader `fast_local` equates this shortcut with
+the full-path publication; `fast_state` and `fast_report_exact` extend the equality to the
+recursive state and every requested list. The shortcut runs at the root and each queued auxiliary;
+a root inventory is needed only on a constitutional tie. This proof uses the full-path keys,
+unmarked trial and reversal count directly, without a grouped-publication premise.
+`Engine.ringMolecularReport?` selects detected centres and `ringMolecularCarbonReport?` all carbons;
+`ringMolecularReportForAtoms?` accepts valid typed atoms. The older `ringGroupedMolecularReport?`
+and `ringGroupedCarbonReport?` names remain compatible aliases for their earlier grouped procedure.
+[Public names](TetraStereo/Engine/PublicAPI.lean)
+
+The theorem shares the molecular inventory, through-4a/4c priorities,
 marked-node policy and coordinate interpretation with its source judgments; independent chemical
 fidelity and the external source-review obligations remain open. Inherited priorities at internal
 edges and rule applicability need independent justification: the Rule 5 edge priority uses the
@@ -208,8 +227,8 @@ the kernel-only assertions for the rebuilt signature, the full report, the molec
 selector and the conditional Rule 6 refusal. The public export was checked for module coverage
 and reproducibility. A clean-checkout compilation of the public package remains unverified.
 
-The [module inventory](source-modules.json) contains all 4,412 maintained Lean modules.
-The original umbrella brings the package total to 4,413 Lean files. The validation drivers
+The [module inventory](source-modules.json) contains all 4,414 maintained Lean modules.
+The original umbrella brings the package total to 4,415 Lean files. The validation drivers
 are counted separately.
 The universal theorem and full chemical approval remain open. See the [README](README.md) for
 existing acyclic results, collaboration guidance and safe source checks.

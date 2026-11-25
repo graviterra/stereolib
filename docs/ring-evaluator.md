@@ -6,7 +6,8 @@ for the complete recursive state and report. A reachable cross-parent witness no
 this grouped traversal differs from full-path whole-sphere ordering.
 [Counterexample](../validation/ring-chronology/Rule4bCrossParent.lean)
 
-The opt-in `RingFullPathReport.forAtoms?` publishes its own deeper auxiliaries. On admitted
+The public `Engine.ringMolecularReportFromRaw?` admits raw graphs and coordinates and derives
+requested rows on simple bonded paths, including its own deeper auxiliary assignments. On admitted
 coordinates it returns a unique source-derived report, preserving request order, duplicate
 requests and completed refusals. Its source relation derives both geometries' trial hands and
 cancels opposite votes independently. The theorem covers the named molecular judgments;
@@ -25,8 +26,12 @@ Import the selected module rather than building the whole library.
 
 | Task | Entry point | Source |
 | --- | --- | --- |
-| Evaluate the opt-in recursive full-path report | `RingFullPathReport.forAtoms?` | [Full-path report](../TetraStereo/Engine/RingFullPathReport.lean) |
-| Evaluate the frozen-auxiliary baseline | `Engine.ringGroupedMolecularReport?` | [Public API](../TetraStereo/Engine/PublicAPI.lean) |
+| Admit and evaluate requested zero-based raw atom IDs | `Engine.ringMolecularReportFromRaw?` | [Raw API and graph theorem](../TetraStereo/Engine/RingMolecularReport.lean) |
+| Evaluate requested typed atoms | `Engine.ringMolecularReportForAtoms?` | [Public API](../TetraStereo/Engine/PublicAPI.lean) |
+| Evaluate every detected centre / every carbon | `Engine.ringMolecularReport?`, `ringMolecularCarbonReport?` | [Molecular report](../TetraStereo/Engine/RingMolecularReport.lean) |
+| Obtain raw graph / admitted report equivalence | `Engine.ringMolecularReportFromRawExact`, `ringMolecularReportExact` | [Public theorem aliases](../TetraStereo/Engine/PublicAPI.lean) |
+| Evaluate the underlying full-path report | `RingFullPathReport.forAtoms?` | [Full-path report](../TetraStereo/Engine/RingFullPathReport.lean) |
+| Evaluate the compatible grouped procedure | `Engine.ringGroupedMolecularReport?` | [Public API](../TetraStereo/Engine/PublicAPI.lean) |
 | Evaluate the rebuilt zero-duplicate-mass report | `RingRebuiltStereo.report?` | [Rebuilt report](../TetraStereo/Engine/RingRebuiltStereo.lean) |
 | Select highest-ranked Rule 4b occurrence references | `RingReferenceVotes.molecular?` | [Reference selector](../TetraStereo/Engine/RingReferenceVotes.lean) |
 | Check a sufficient Rule 6 refusal cut | `RingPromotionCut.refusal?` | [Cut certificate](../TetraStereo/Engine/RingPromotionCut.lean) |
@@ -38,6 +43,22 @@ Import the selected module rather than building the whole library.
 | Run or replay pinned Centres | `CentresRing.analyze`, `CentresRing.checkReceipt` | [Centres API](../TetraStereo/Engine/CentresRing.lean) |
 | Check recursive molecular comparisons and publications | `CentresRing.Molecular.checkSourceReceipt` | [Molecular derivation](../TetraStereo/Engine/CentresRingDerived.lean) |
 | Derive casing from original and reflected priority readings | `CentresRing.MirrorCasing.analyze`, `check` | [Mirror API](../TetraStereo/Engine/CentresRingMirror.lean) |
+
+Import `TetraStereo.Engine.PublicAPI` for the `Engine` aliases. The raw call has the form
+`Engine.ringMolecularReportFromRaw? molecule coordinates [0, 2, 0]`. IDs are zero-based;
+request order and repeats are preserved. Structural failure, coordinate failure and out-of-range
+IDs give outer `none`. A successful row `(id, none)` records a completed refusal.
+
+The public molecular evaluator first tries four distinct constitutional ranks, using zero mass
+for ring duplicates. It applies the same early exit at every auxiliary site. A tie uses the
+full-path rule on its frozen store. `RingFullPathConstitution.fast_report_exact` proves equality
+with the underlying source-derived full-path report for every requested list on admitted
+coordinates. The proof uses that procedure's own keys and coordinate readings.
+[Shortcut proof](../TetraStereo/Engine/RingFullPathConstitution.lean)
+
+The older `Engine.ringGroupedMolecularReport?`, `ringGroupedCarbonReport?`, and their correctness
+aliases retain their earlier grouped behavior. They are compatibility entry points, not aliases
+for the new full-path molecular report.
 
 These inputs are finite, single-bond, constant-charge molecules with explicit structural
 admission. The physical theorems require calibrated nondegenerate coordinates at detected
@@ -177,7 +198,7 @@ The [grouped stereo machinery](../TetraStereo/Engine/RingGroupedStereo.lean) ass
 child profiles with stage-specific priorities. The [comparison agreement interface](../TetraStereo/Engine/RingComparisonAgreement.lean)
 connects independent two-geometry molecular evidence to signed rule answers and visible auxiliary
 values. Coverage and agreement remain explicit proof obligations. The rebuilt whole-state and report theorem establishes equality for the grouped procedure.
-The opt-in full-path report has its separate recursive source theorem and can disagree with
+The public full-path molecular report has its separate recursive source theorem and can disagree with
 grouped Rule 4b traversal. Independent chemical justification of its comparisons, reference selection and
 promotion decisions remains open. At the original root, `RingRootReturn.rootByCount` skips Rule 6
 when the root has fewer than three origin-zero duplicates. Its publication equals the grouped result

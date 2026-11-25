@@ -50,6 +50,22 @@ def centre? {i f} (fr : @Frame i f) (r : Reader i) : Cell :=
   (keys? fr r false).bind fun ks => (keys? fr r true).bind fun ms =>
     (readings? fr r false).map fun out => letters ks ms (out.map Prod.snd)
 
+private def centreWithKeys {i f} (fr : @Frame i f) (r : Reader i) : Cell := do
+  let ks ← keys? fr r false
+  let ms ← keys? fr r true
+  let out ← RingFullPathTrialReadings.readingsWith fr r false ks
+  return letters ks ms (out.map Prod.snd)
+
+@[csimp] private theorem centreWithKeys_exact : @centre? = @centreWithKeys := by
+  funext i f fr r
+  unfold centre? centreWithKeys readings?
+  change _ = (keys? fr r false).bind _
+  change (keys? fr r false).bind (fun ks => (keys? fr r true).bind (fun ms =>
+    ((keys? fr r false).bind (RingFullPathTrialReadings.readingsWith fr r false)).map
+      (fun out => letters ks ms (out.map Prod.snd)))) = _
+  cases keys? fr r false <;> cases keys? fr r true <;> simp
+  all_goals cases RingFullPathTrialReadings.readingsWith fr r false _ <;> rfl
+
 /-- A site without a recognized four-coordinate frame is a completed absence. -/
 def publish? (i : Input) (f : Site i) (r : Reader i) : Cell :=
   match RingNestedActivePair.frame? i f with

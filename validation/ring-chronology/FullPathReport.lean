@@ -1,4 +1,4 @@
-import TetraStereo.Engine.RingFullPathReport
+import TetraStereo.Engine.PublicAPI
 
 open TetraStereo.OneCenter TetraStereo.Engine
 
@@ -27,8 +27,14 @@ private def verify (name : String) (mol : RawMolecule) (xyz : SpatialConfigurati
     let some a := roots.head? | throw (IO.userError "missing root")
     unless (RingActiveDistanceSchedule.sites i).any (fun q => decide (RingSphereQueue.candidate a q)) do
       throw (IO.userError "missing recursive auxiliary centre")
-  let out := RingFullPathReport.forAtoms? i roots
+  let out := ringMolecularReport? i
   unless out == some expected do throw (IO.userError s!"{name}: unexpected full-path report {repr out}")
+  let ids := roots.map Fin.val
+  unless ringMolecularReportFromRaw? mol xyz (ids.reverse ++ ids) == some (expected.reverse ++ expected) do
+    throw (IO.userError "raw molecular report disagrees on repeated or reversed requests")
+  unless ringMolecularReportFromRaw? mol xyz [] == some [] do throw (IO.userError "empty atom request")
+  unless (ringMolecularReportFromRaw? mol xyz [mol.atoms.length]).isNone do throw (IO.userError "out-of-range atom")
+  unless (ringMolecularReportFromRaw? mol ⟨[]⟩ []).isNone do throw (IO.userError "missing coordinates")
   IO.println s!"{name}: {repr out}"
   (← IO.getStdout).flush
 

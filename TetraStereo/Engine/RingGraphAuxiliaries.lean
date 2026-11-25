@@ -90,11 +90,15 @@ theorem reader_ready {i r h a} (p : Path i r h a)
       contradiction
     · exact ⟨none,rfl,rfl,fun _ => rfl⟩
 
-private theorem reader_exact {i r h a} (p : Path i r h a) (next : Continuation i r)
+/-- Bonded-path lookup agrees with a frozen store whenever it supplies
+every deeper tetrahedral site and the store gives absence at noncentres. -/
+theorem reader_eq_frozen {i r h a} (store : View i)
+    (empty : ∀ q, i.certified.localizedOccurrenceDescriptorCenter? q = none → store q = some none)
+    (p : Path i r h a) (next : Continuation i r)
     (deeper : ∀ {k b} (child : Path i r k b), h.length < k.length → b ≠ r →
       Fintype.card (i.certified.moleculeGraph.Neighbor b) = 4 →
-      next child = RingGroupedPublication.state i (site child)) :
-    reader r h.length next = frozen (RingGroupedPublication.state i) (site p) := by
+      next child = store (site child)) :
+    reader r h.length next = frozen (store) (site p) := by
   funext q
   have rep := represents_site p
   have size := RingGraphPaths.path_length rep
@@ -110,7 +114,7 @@ private theorem reader_exact {i r h a} (p : Path i r h a) (next : Continuation i
       simp only [current,ne_eq,reduceCtorEq,not_false_eq_true,and_true]
       split
       · symm
-        apply absent
+        apply empty
         cases hc : i.certified.localizedOccurrenceDescriptorCenter? q with
         | none => rfl
         | some c =>
@@ -129,7 +133,7 @@ private theorem reader_exact {i r h a} (p : Path i r h a) (next : Continuation i
         split
         · rename_i visible
           symm
-          apply absent
+          apply empty
           cases hc : i.certified.localizedOccurrenceDescriptorCenter? q with
           | none => rfl
           | some c =>
@@ -138,6 +142,13 @@ private theorem reader_exact {i r h a} (p : Path i r h a) (next : Continuation i
             exact (ok ⟨real,visible.1,visible.2,four⟩).elim
         · rfl
   · simp only [dif_neg on,if_pos on]
+
+private theorem reader_exact {i r h a} (p : Path i r h a) (next : Continuation i r)
+    (deeper : ∀ {k b} (child : Path i r k b), h.length < k.length → b ≠ r →
+      Fintype.card (i.certified.moleculeGraph.Neighbor b) = 4 →
+      next child = RingGroupedPublication.state i (site child)) :
+    reader r h.length next = frozen (RingGroupedPublication.state i) (site p) :=
+  reader_eq_frozen _ absent p next deeper
 
 theorem length_bound {i r h a} (p : Path i r h a) :
     h.length ≤ i.certified.certified.input.molecule.atomCount := by
@@ -223,20 +234,25 @@ def Agrees {i : Input} (law : LocalLaw i) : Prop :=
   ∀ q v, law q (frozen (RingGroupedPublication.state i) q) v ↔
     RingGroupedPublication.state i q = some v
 
-theorem derives_iff {i : Input} (coords : LocalizedChemicalRing.coordinatesAdmitted i = true)
-    {law : LocalLaw i} (localLaw : Agrees law) {r h a} (p : Path i r h a) (v : Option Labels) :
-    Derives law r p v ↔ RingGroupedPublication.state i (site p) = some v := by
+/-- A molecular derivation recurses on bonded paths. Its only store
+requirements are coverage, absence at noncentres and local agreement. -/
+theorem derives_iff_store {i : Input} (store : View i)
+    (empty : ∀ q, i.certified.localizedOccurrenceDescriptorCenter? q = none → store q = some none)
+    (coveredAt : ∀ q, (store q).isSome = true)
+    {law : LocalLaw i} (localLaw : ∀ q v, law q (frozen store q) v ↔ store q = some v)
+    {r h a} (p : Path i r h a) (v : Option Labels) :
+    Derives law r p v ↔ store (site p) = some v := by
   constructor
   · intro tree
     induction tree with
     | step p next observed children ih =>
-      have same := reader_exact p (fun c => some (next c)) (by
+      have same := reader_eq_frozen store empty p (fun c => some (next c)) (by
         intro k b c deeper other four
         exact (ih c deeper other four).symm)
       rw [same] at observed
       exact (localLaw _ _).mp observed
   · suffices ∀ n {k b} (c : Path i r k b), i.certified.certified.input.molecule.atomCount < k.length + n →
-        ∀ w, RingGroupedPublication.state i (site c) = some w → Derives law r c w from
+        ∀ w, store (site c) = some w → Derives law r c w from
       this (i.certified.certified.input.molecule.atomCount + 1) p (by omega) v
     intro n
     induction n with
@@ -246,16 +262,21 @@ theorem derives_iff {i : Input} (coords : LocalizedChemicalRing.coordinatesAdmit
       omega
     | succ n ih =>
       intro k b c enough w issued
-      let next {l d} (child : Path i r l d) := (RingGroupedPublication.state i (site child)).getD none
-      have covered {l d} (child : Path i r l d) : RingGroupedPublication.state i (site child) = some (next child) := by
+      let next {l d} (child : Path i r l d) := (store (site child)).getD none
+      have covered {l d} (child : Path i r l d) : store (site child) = some (next child) := by
         obtain ⟨z,hz⟩ := Option.isSome_iff_exists.mp
-          (RingGroupedPublication.complete (RingGroupedGeometry.physical coords) (site child))
+          (coveredAt (site child))
         simp [next,hz]
       apply Derives.step c next
-      · rw [reader_exact c (fun child => some (next child)) (fun child _ _ _ => (covered child).symm)]
+      · rw [reader_eq_frozen store empty c (fun child => some (next child)) (fun child _ _ _ => (covered child).symm)]
         exact (localLaw _ _).mpr issued
       · intro l d child longer _ _
         exact ih child (by omega) _ (covered child)
+
+theorem derives_iff {i : Input} (coords : LocalizedChemicalRing.coordinatesAdmitted i = true)
+    {law : LocalLaw i} (localLaw : Agrees law) {r h a} (p : Path i r h a) (v : Option Labels) :
+    Derives law r p v ↔ RingGroupedPublication.state i (site p) = some v :=
+  derives_iff_store _ absent (RingGroupedPublication.complete (RingGroupedGeometry.physical coords)) localLaw p v
 
 def Report {i : Input} (law : LocalLaw i) (atoms : List i.certified.Atom)
     (rows : RingGroupedReport.Report) : Prop :=

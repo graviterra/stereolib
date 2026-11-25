@@ -1,5 +1,6 @@
 import TetraStereo.Engine.RingRebuiltStereo
-import TetraStereo.Engine.RingFullPathReport
+import TetraStereo.Engine.PublicAPI
+import TetraStereo.Engine.RingFullPathEligibility
 
 open TetraStereo.OneCenter TetraStereo.Engine
 
@@ -88,7 +89,7 @@ def main (args : List String) : IO Unit := do
     let b ← get [2,0]
     let root := f.val.root
     if args == ["--full-path-report"] then
-      let result := RingFullPathReport.forAtoms? i [root]
+      let result := ringMolecularReportFromRaw? m ⟨g⟩ [root.val]
       unless result == some [(0,none)] do throw (IO.userError s!"cross-parent full-path report {repr result}")
       IO.println "Full-path report from its own recursive auxiliary store: root 0 unassigned."
       return

@@ -5,7 +5,7 @@
 Stereolib uses Lean 4 to check how the Cahn–Ingold–Prelog (CIP) sequence rules and a molecule’s
 three-dimensional geometry determine a tetrahedral descriptor. For a restricted class of
 acyclic molecules, the evaluator has a proof for its entire report, including justified
-refusals. For rings, a separate full-path evaluator now derives its recursive report from
+refusals. For rings, the public full-path molecular evaluator now derives its recursive report from
 molecular path priorities, coordinate readings and deeper auxiliary assignments. A reachable
 41-atom counterexample distinguishes it from the existing grouped report. A chemical correctness
 proof for every admitted ring remains open.
@@ -26,12 +26,24 @@ proof for every admitted ring remains open.
 | Exact reports for the regenerated profile | Under the stated admission and calibration hypotheses, independently specified priorities determine the letter, casing or refusal at every detected centre for this reference policy. [Exact report certificate](TetraStereo/Engine/LocalizedChemicalRingExactCertificate.lean) |
 | A limit of the pinned Centres 1.0 procedure | Renumbering two carbons changes its fluorospiro descriptor from `S` to `s`. The independent ring-pair calculation gives `S` under both numberings and `R` on reflection. [Renumbering witness](TetraStereo/Examples/CentresRingSpiroCasing.lean) · [Molecular calculation](TetraStereo/Examples/RingTwoPairFluorospiro.lean) |
 
-The opt-in [full-path report](TetraStereo/Engine/RingFullPathReport.lean) has a finite recursive
+The [public molecular report](TetraStereo/Engine/RingMolecularReport.lean) has a finite recursive
 source derivation for every requested atom on admitted coordinates, with request order and
 duplicates preserved. At each reachable frame it derives both geometries' ordinary priorities,
 Rule 5 comparisons, complete promotion trials and coordinate hands. Opposite trial votes cancel;
 the two surviving hands determine letter and case. Every site completes, including refusals.
 [Publication theorem](TetraStereo/Engine/RingFullPathPublication.lean)
+
+Import `TetraStereo.Engine.PublicAPI` and call `Engine.ringMolecularReportFromRaw?` with a raw
+molecule, exact coordinates and zero-based atom IDs. Its raw-to-graph theorem derives every
+requested row along simple bonded paths, including the deeper auxiliary reads. Invalid input,
+inadmissible coordinates or an out-of-range ID fail the request; a row with no labels is a
+completed refusal. [Raw API and graph theorem](TetraStereo/Engine/RingMolecularReport.lean)
+
+Four distinct constitutional ranks decide a centre before any stereo suffix or promotion is
+read. The same zero-duplicate-mass shortcut applies at each queued auxiliary; ties use the
+full-path rule on its frozen store. Lean proves the fast state and report equal the full-path
+source procedure without appealing to grouped publication.
+[Constitutional theorem](TetraStereo/Engine/RingFullPathConstitution.lean)
 
 The public grouped API retains its parent-by-parent Rule 4b traversal. On a reachable frozen
 state, it assigns R/S to a 41-atom ring where whole-sphere full-path comparison leaves the root
@@ -199,7 +211,7 @@ in the result field. Counterexamples are useful without a repair. See
 Sources live in [OneCenter](TetraStereo/OneCenter) (models, algorithms, proofs),
 [Engine](TetraStereo/Engine), [Certificate](TetraStereo/Certificate),
 [Examples](TetraStereo/Examples) and [UniversalProof](TetraStereo/UniversalProof). The
-[module inventory](source-modules.json) records 4,412 maintained Lean modules, or 4,413 source
+[module inventory](source-modules.json) records 4,414 maintained Lean modules, or 4,415 source
 files with the umbrella. A module count is
 not a theorem count, and the words "complete" or
 "universal" in a name do not override the hypotheses of its declarations.

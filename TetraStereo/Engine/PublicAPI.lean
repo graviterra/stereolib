@@ -19,6 +19,7 @@ import TetraStereo.Engine.RingConfiguredPriorities
 import TetraStereo.Engine.RingConfiguredGeometry
 import TetraStereo.Engine.RingFrameCoverage
 import TetraStereo.Engine.RingRecursiveSignedReport
+import TetraStereo.Engine.RingMolecularReport
 import TetraStereo.Engine.RingGroupedReport
 import TetraStereo.Engine.RingSphereQueue
 import TetraStereo.Engine.RingOccurrenceStereo
@@ -84,6 +85,16 @@ abbrev ringGroupedStereoComparison? := RingGroupedStereo.scheduledComparison?
 /-- Every constitutional tie at the molecular publication frontier has one
 signed result over all legal parent-group orders on each geometry. -/
 abbrev ringGroupedStereoAtFrontier := @RingGroupedStereo.scheduled_frontier
+
+/-- Full-path comparison on raw molecular bonds, coordinates and requested atom IDs. -/
+abbrev ringMolecularReportFromRaw? := RingMolecularReport.fromRaw?
+abbrev ringMolecularReportFromRawExact := RingMolecularReport.fromRaw_graph_iff
+
+/-- The same molecular report for an admitted input and a chosen atom inventory. -/
+abbrev ringMolecularReportForAtoms? := RingMolecularReport.forAtoms?
+abbrev ringMolecularReportExact := @RingMolecularReport.forAtoms_iff
+abbrev ringMolecularReport? := RingMolecularReport.centres?
+abbrev ringMolecularCarbonReport? := RingMolecularReport.carbons?
 
 /-- Two-geometry molecular report in canonical detected-centre order, with
 an explicit absence for a completed refusal. -/
@@ -1507,6 +1518,8 @@ assert_kernel_only TetraStereo.Engine.ringSilentPairFrame_complete
 assert_kernel_only TetraStereo.Engine.RingSphereSingleTieRefusal.covered
 assert_kernel_only TetraStereo.Engine.RingSphereCoverage.frontier_consensus
 
+assert_kernel_only TetraStereo.Engine.ringMolecularReportFromRawExact
+assert_kernel_only TetraStereo.Engine.ringMolecularReportExact
 assert_kernel_only TetraStereo.Engine.ringGroupedMolecularReport?
 assert_kernel_only TetraStereo.Engine.ringGroupedCarbonReport?
 assert_kernel_only TetraStereo.Engine.ringGroupedMolecularReportCorrect
