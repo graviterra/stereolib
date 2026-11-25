@@ -1,0 +1,10 @@
+load "validation/ring-chronology/PyramidalPhosphaneOxirane.mol"
+calculate chirality
+var actual = {atomno=1}.chirality + {atomno=2}.chirality + {atomno=3}.chirality
+if (actual != "sRS" || actual.find("sRS") != 1) { throw "unexpected original oxirane and phosphorus assignments" }
+select *
+invertSelected POINT {0 0 0}
+calculate chirality
+var mirror = {atomno=1}.chirality + {atomno=2}.chirality + {atomno=3}.chirality
+if (mirror != "sSR" || mirror.find("sSR") != 1) { throw "unexpected reflected oxirane and phosphorus assignments" }
+print "PHOSPHANE_PASS " + actual + " " + mirror

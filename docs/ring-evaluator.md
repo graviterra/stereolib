@@ -11,8 +11,8 @@ requested rows on simple bonded paths, including its own deeper auxiliary assign
 coordinates it returns a unique source-derived report, preserving request order, duplicate
 requests and completed refusals. Its source relation derives both geometries' trial hands and
 cancels opposite votes independently. The theorem covers the named molecular judgments;
-independent justification of inherited priorities at internal edges and rule applicability
-remains open. In particular the Rule 5 edge priority uses the lowercase stage without a separate
+chemical completeness of the current profile is disproved by the admitted witnesses below.
+A future repaired profile also needs independent justification of internal-edge priorities and rule applicability. In particular the Rule 5 edge priority uses the lowercase stage without a separate
 local Rule 4b stage. This is not a universal CIP implementation claim.
 [Publication and source relation](../TetraStereo/Engine/RingFullPathPublication.lean) ·
 [Report theorem](../TetraStereo/Engine/RingFullPathReport.lean)
@@ -108,6 +108,36 @@ ring carbons of 1-chloro-2-fluorocyclopropane, including deeper auxiliary public
 The [cross-parent control](../validation/ring-chronology/Rule4bCrossParent.lean) separately checks
 the reachable grouped/full-path discrepancy on its shared molecular file.
 
+## Chemical counterexamples
+
+The current public full-path profile is chemically incomplete on its admitted domain. The
+[Lean audit](../validation/ring-chronology/LocalRuleCoverage.lean) requests the public raw API.
+1-Bromo-1-fluorocyclopropane refuses with zero or four explicit H vertices but gives S/R when
+only one CH₂ arm has explicit H vertices; chemically the substituted carbon has no descriptor
+in all three spellings. The all-explicit phosphorus/oxirane witness should give carbon s/s and
+phosphorus R/S then S/R; the current API refuses at all three atoms on both geometries.
+[Hydrogen semantics, P-92.1.2.1](https://iupac.qmul.ac.uk/BlueBook/P9.html#92010201) ·
+[Pyramidal phosphorus, P-93.3.4.1](https://iupac.qmul.ac.uk/BlueBook/P9.html#93030401) ·
+[Rule 5](https://iupac.qmul.ac.uk/BlueBook/P9.html#9206)
+
+After bounded preparation of the selected dependencies, replay with:
+
+```sh
+systemd-run --user --scope -p MemoryMax=6G -p MemorySwapMax=0 \
+  lake env lean --run validation/ring-chronology/LocalRuleCoverage.lean --require-conformance
+```
+
+`--require-conformance` is a strict chemical check and fails on the current disagreements.
+An ordinary observation replay does not certify conformance. The internal source/report proofs
+remain valid for the current definitions; a future repaired profile needs consistent hydrogen
+semantics and pyramidal auxiliary frames before a universal chemical claim can be reconsidered.
+
+The pinned Jmol control uses
+[PyramidalPhosphaneOxirane.spt](../validation/ring-chronology/PyramidalPhosphaneOxirane.spt) and its
+[shared molecular file](../validation/ring-chronology/PyramidalPhosphaneOxirane.mol). With the
+Jmol binary and extracted release launcher prepared, require `PHOSPHANE_PASS sRS sSR` in its
+output. This is a separate implementation replay, not the basis of the Blue Book criterion.
+
 ## Python and Jmol source controls
 
 The Python controls require Python 3, a JDK providing `java` and `javac` with Java source-file
@@ -199,8 +229,9 @@ child profiles with stage-specific priorities. The [comparison agreement interfa
 connects independent two-geometry molecular evidence to signed rule answers and visible auxiliary
 values. Coverage and agreement remain explicit proof obligations. The rebuilt whole-state and report theorem establishes equality for the grouped procedure.
 The public full-path molecular report has its separate recursive source theorem and can disagree with
-grouped Rule 4b traversal. Independent chemical justification of its comparisons, reference selection and
-promotion decisions remains open. At the original root, `RingRootReturn.rootByCount` skips Rule 6
+grouped Rule 4b traversal. The current public full-path profile fails chemical completeness on the admitted witnesses
+above. A future repaired profile also needs independent justification of comparisons, reference
+selection and promotion decisions. At the original root, `RingRootReturn.rootByCount` skips Rule 6
 when the root has fewer than three origin-zero duplicates. Its publication equals the grouped result
 for every atom on admitted coordinates. [Evaluator and proof](../TetraStereo/Engine/RingRootReturn.lean) ·
 [Molecular controls](../validation/ring-chronology/RootReturns.lean). See [ring status](../RING_STATUS.md) for the scoped theorem boundary.

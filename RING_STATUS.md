@@ -172,11 +172,43 @@ and `ringGroupedCarbonReport?` names remain compatible aliases for their earlier
 
 The theorem shares the molecular inventory, through-4a/4c priorities,
 marked-node policy and coordinate interpretation with its source judgments; independent chemical
-fidelity and the external source-review obligations remain open. Inherited priorities at internal
+fidelity is disproved over the current admitted domain by the witnesses below; external
+source-review obligations remain open. Inherited priorities at internal
 edges and rule applicability need independent justification: the Rule 5 edge priority uses the
 lowercase stage without a separate local Rule 4b stage. Reference-count and four-list
 procedures are not claimed equivalent on every reference population. The admitted single-bond,
 constant-charge domain still requires extension.
+
+## Chemical counterexamples to the current public profile
+
+Chemical completeness of the current public full-path profile is disproved over its admitted
+neutral, single-bond domain. Neither witness relies on duplicate-mass interpretation or Rule 6.
+
+| Admitted witness | Chemical answer | Current public original / mirror output |
+| --- | --- | --- |
+| 1-Bromo-1-fluorocyclopropane, substituted carbon | No descriptor: the two CH₂ arms are equivalent. | No descriptor with zero or four explicit H vertices; S/R with hydrogens explicit on only one CH₂ arm. |
+| All-explicit oxirane carbon bearing mirror-related P(F)(Cl) arms | Carbon s/s; phosphorus R/S on the original, S/R on reflection. | Completed refusals at the carbon and both phosphorus atoms on both geometries. |
+
+The first witness changes hydrogen representation while preserving the chemical ligands.
+[Blue Book P-92.1.2.1](https://iupac.qmul.ac.uk/BlueBook/P9.html#92010201) supplies the hydrogen
+semantics. In the second, pyramidal phosphorus priorities are Cl, F, ring carbon, phantom atom.
+The determinant signs −14 and +14 give opposite phosphorus hands; Rule 5 ranks R-P before S-P.
+The carbon determinant +128 gives s, preserved on reflection. The current frame requires four
+molecular neighbors and therefore supplies neither phosphorus auxiliary hand.
+[Blue Book P-93.3.4.1](https://iupac.qmul.ac.uk/BlueBook/P9.html#93030401) ·
+[Sequence Rule 5](https://iupac.qmul.ac.uk/BlueBook/P9.html#9206) ·
+[Lean audit](validation/ring-chronology/LocalRuleCoverage.lean) ·
+[Coordinates](validation/ring-chronology/PyramidalPhosphaneOxirane.mol)
+
+The strict Lean audit flag `--require-conformance` fails on these current disagreements.
+The separate pinned Jmol control requires `PHOSPHANE_PASS sRS sSR`.
+[Jmol replay](validation/ring-chronology/PyramidalPhosphaneOxirane.spt) ·
+[Replay prerequisites](docs/ring-evaluator.md#chemical-counterexamples)
+
+The internal molecular/report equivalence theorems still characterize their named source
+relation. A future repaired profile must normalize hydrogen semantics and provide the relevant
+pyramidal auxiliary frames; its chemical theorem is a new obligation. Internal-edge priorities,
+rule applicability and external approval also require independent review.
 
 ## Runtime and coordinate controls
 
@@ -230,5 +262,6 @@ and reproducibility. A clean-checkout compilation of the public package remains 
 The [module inventory](source-modules.json) contains all 4,414 maintained Lean modules.
 The original umbrella brings the package total to 4,415 Lean files. The validation drivers
 are counted separately.
-The universal theorem and full chemical approval remain open. See the [README](README.md) for
+The current public profile cannot satisfy a universal chemical completeness theorem on its
+admitted domain. Such a theorem for a future repaired profile and full chemical approval remain open. See the [README](README.md) for
 existing acyclic results, collaboration guidance and safe source checks.

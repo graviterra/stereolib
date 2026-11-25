@@ -7,8 +7,8 @@ three-dimensional geometry determine a tetrahedral descriptor. For a restricted 
 acyclic molecules, the evaluator has a proof for its entire report, including justified
 refusals. For rings, the public full-path molecular evaluator now derives its recursive report from
 molecular path priorities, coordinate readings and deeper auxiliary assignments. A reachable
-41-atom counterexample distinguishes it from the existing grouped report. A chemical correctness
-proof for every admitted ring remains open.
+41-atom counterexample distinguishes it from the existing grouped report. Two admitted molecular witnesses disprove chemical completeness of the current public full-path
+profile. Its internal source/report proofs remain valid.
 
 [Ring proof status](RING_STATUS.md) · [Run or replay the ring evaluator](docs/ring-evaluator.md) ·
 [Proved acyclic results](#what-is-proved) · [Collaborate](#collaborate)
@@ -59,12 +59,21 @@ single-bond derivative used to expose Jmol's presentation defect.
 [Root-return theorem](TetraStereo/Engine/RingRootReturn.lean) ·
 [Bond-order theorem](TetraStereo/Engine/RingBondRecordOrder.lean)
 
-**The remaining chemical proof** must justify the priorities inherited at internal edges and
-the conditions for applying each rule. For example, the Rule 5 edge key uses the lowercase
-stage without a separate local Rule 4b stage. Agreement with the intended chemical rules
-therefore still needs an independent proof. Broader domain coverage and external source
-review also remain open.
-[Proof status and controls](RING_STATUS.md#domain-and-remaining-work)
+**The current public profile is chemically incomplete on its admitted domain.** In
+1-bromo-1-fluorocyclopropane, the substituted carbon correctly refuses when zero or four H atoms
+are explicit vertices, but gives S/R when only one CH₂ arm's hydrogens are vertices. The two
+chemical ring arms remain equivalent. In an all-explicit oxirane bearing two mirror-related
+P(F)(Cl) arms, the carbon should give lowercase s/s and the phosphorus atoms R/S then S/R;
+the public report refuses at all three atoms on both geometries.
+[Lean witnesses](validation/ring-chronology/LocalRuleCoverage.lean) ·
+[Hydrogen semantics: Blue Book P-92.1.2.1](https://iupac.qmul.ac.uk/BlueBook/P9.html#92010201) ·
+[Pyramidal phosphorus: P-93.3.4.1](https://iupac.qmul.ac.uk/BlueBook/P9.html#93030401) ·
+[Rule 5](https://iupac.qmul.ac.uk/BlueBook/P9.html#9206)
+
+A future repaired profile must reconcile explicit and implied hydrogens and provide pyramidal
+auxiliary frames before seeking a universal chemical theorem. Internal-edge priorities, rule
+applicability, broader domain coverage and external source review remain further obligations.
+[Strict replay and limits](docs/ring-evaluator.md#chemical-counterexamples)
 
 ## The proved connection
 
@@ -161,10 +170,10 @@ to chemistry is a separate scientific question, and we want experts to press on 
 ## The proof frontier
 
 The regenerated exact-source interface joins letters, casing and refusals for its named
-procedure. The separate full-path evaluator now has its own recursive molecular source theorem. The frontier is independent chemical fidelity of
-recursive priorities, auxiliary publication and nested reference handling. Grouped molecular
-comparisons and checked examples extend that connection under explicit coverage and agreement
-hypotheses. They do not establish a universal correspondence to IUPAC or to the pinned release.
+procedure. The separate full-path evaluator now has its own recursive molecular source theorem. The current profile's chemical completeness is disproved by the two admitted witnesses above.
+Its internal source derivation does not repair hydrogen presentation dependence or supply missing
+pyramidal auxiliary hands. A future repaired profile needs those changes and independent chemical
+justification of its local rules.
 See [RING_STATUS.md](RING_STATUS.md) and the [API guide](docs/ring-evaluator.md).
 
 The domain hypotheses, including single bonds and constant formal charge, also need separate
