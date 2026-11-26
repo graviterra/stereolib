@@ -281,6 +281,18 @@ the kernel-only assertions for the rebuilt signature, the full report, the molec
 selector and the conditional Rule 6 refusal. The public export was checked for module coverage
 and reproducibility. A clean-checkout compilation of the public package remains unverified.
 
+For the [November 25 source checkpoint](https://github.com/graviterra/stereolib/commit/febab3b4de8864518467311c21c23cd4774508a8),
+the export reproduced all 4,617 maintained modules. The [strict chemical controls](validation/ring-chronology/LocalRuleCoverage.lean)
+and [VS084 replay](validation/ring-chronology/OriginTwinVS084.lean) passed using the exported
+fixtures and the existing development compilation. The focused Lean replays ran serially with
+a 6 GiB aggregate memory limit and swap disabled. Both the [Lean spiro replay](validation/ring-chronology/OriginMetricSpiro.lean)
+and the pinned Java replay reproduced R/S on the supplied geometry and S/R on reflection,
+in public-distance/active-distance order.
+The exported receipt generator also reproduced both deep-marked Centres receipts.
+[Spiro replay](validation/ring-chronology/CentresOriginMetricSpiro.java) ·
+[Receipt generator](validation/ring-chronology/generate_deep_marked_source.py) ·
+[GitHub source checks](https://github.com/graviterra/stereolib/actions/runs/45768097529)
+
 The [module inventory](source-modules.json) contains all 4,617 maintained Lean modules.
 The original umbrella brings the package total to 4,618 Lean files. The validation drivers
 are counted separately.

@@ -236,11 +236,10 @@ needs only Python 3.11+ and Git and does not run Lean:
 python3 -B tools/check_source_tree.py
 ```
 
-Build only selected modules, under an enforced memory limit, as described in
-[BUILDING.md](BUILDING.md). Never start an unrestricted whole-library build. This transformed
-source distribution has not been freshly compiled here or rebuilt from a
-clean checkout. Publication validation is static only; CI runs static checks only. The
-original-source checkpoint and its limits are described in [RING_STATUS.md](RING_STATUS.md).
+Build selected modules under an enforced memory limit. GitHub runs static source checks.
+The November 25 verification also ran the exported ring controls against the existing
+development compilation. A clean build of the full public distribution remains unverified.
+[Build instructions](BUILDING.md) · [Verification record](RING_STATUS.md#verification-boundary)
 
 ## Citation and license
 
