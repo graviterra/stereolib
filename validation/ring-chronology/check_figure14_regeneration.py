@@ -12,7 +12,7 @@ from zipfile import ZipFile
 
 
 ROOT = Path(__file__).resolve().parents[2]
-REPLAY = ROOT / "tmp/figure14-jmol-replay"
+REPLAY = ROOT / ".cache" / "jmol-14.29.17"
 FIXTURE = Path(__file__).with_name("Figure14AllOut.mol")
 CIP = "org/jmol/symmetry/CIPChirality.java"
 LAUNCHER = "org/openscience/jmol/app/JmolData.java"
@@ -41,7 +41,7 @@ def require_equal(actual, expected):
 
 def pinned(path, digest):
     require_equal(sha256(path.read_bytes()).hexdigest(), digest)
-    return path
+    return path.resolve()
 
 
 def rows(script, directory, jar, mode, overlay=None, trace_vs300=False):
@@ -83,9 +83,9 @@ def molecule_record(corpus, name, directory):
 
 
 def pinned_inputs(directory):
-    jar = pinned(REPLAY / "jmol.jar", "6d760b21af0c87ba5e6b6304f7c37b96f7412700a40e07b524402cc22914cf07")
-    sources = pinned(REPLAY / "sources.jar", "6298864075f2aa2502b676219db455ba5da4f1f324d22355ae83dfb29b927ae9")
-    corpus = pinned(ROOT / "tmp/ring-chemical-rules/compounds_3d.sdf",
+    jar = pinned(Path(os.environ.get("JMOL_JAR", str(REPLAY / "jmol.jar"))), "6d760b21af0c87ba5e6b6304f7c37b96f7412700a40e07b524402cc22914cf07")
+    sources = pinned(Path(os.environ.get("JMOL_SOURCES", str(REPLAY / "sources.jar"))), "6298864075f2aa2502b676219db455ba5da4f1f324d22355ae83dfb29b927ae9")
+    corpus = pinned(Path(os.environ.get("HANSON_SDF", str(ROOT / ".cache" / "compounds_3d.sdf"))),
                     "28a000b36506dabe5a45f6d7672451c61c6e34f3e0f027f2599000d850273325")
     with ZipFile(sources) as archive:
         launcher = directory / LAUNCHER

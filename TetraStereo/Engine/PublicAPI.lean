@@ -19,12 +19,49 @@ import TetraStereo.Engine.RingConfiguredPriorities
 import TetraStereo.Engine.RingConfiguredGeometry
 import TetraStereo.Engine.RingFrameCoverage
 import TetraStereo.Engine.RingRecursiveSignedReport
-import TetraStereo.Engine.RingMolecularReport
+import TetraStereo.Engine.RingPopulationReport
+import TetraStereo.Engine.RingHydrogenReport
+import TetraStereo.Engine.RingHydrogenReportDomain
+import TetraStereo.Engine.RingWrittenHydrogenReadings
+import TetraStereo.Engine.RingHydrogenPlacementExact
+import TetraStereo.Engine.RingFrameTransport
 import TetraStereo.Engine.RingGroupedReport
 import TetraStereo.Engine.RingSphereQueue
 import TetraStereo.Engine.RingOccurrenceStereo
 import TetraStereo.Engine.RingRebuiltStereo
 import TetraStereo.Engine.RingRawRenumbering
+import TetraStereo.Engine.RingChemicalRenumbering
+import TetraStereo.Engine.RingConstitutionalHand
+import TetraStereo.Engine.RingSphereStore
+import TetraStereo.Engine.RingCommonOriginCriterion
+import TetraStereo.Engine.RingOriginPriorityStore
+import TetraStereo.Engine.RingOriginCausal
+import TetraStereo.Engine.RingOriginIndexedKeys
+import TetraStereo.Engine.RingHistoryReport
+import TetraStereo.Engine.RingOriginAncestry
+import TetraStereo.Engine.RingOriginOrderGraph
+import TetraStereo.Engine.RingAtomicMetricPublication
+import TetraStereo.Engine.RingOriginTwinStore
+import TetraStereo.Engine.RingOriginTwinLeaves
+import TetraStereo.Engine.RingOriginMarkRenumber
+import TetraStereo.Engine.RingOriginOrderRawCheck
+import TetraStereo.Engine.RingRawLigandOrder
+import TetraStereo.Engine.RingLigandFirstDifference
+import TetraStereo.Engine.RingConstitutionalResidual
+import TetraStereo.Engine.RingStereoUnitResidual
+import TetraStereo.Engine.RingSourceUnitPriority
+import TetraStereo.Engine.RingPyramidalInventoryConservation
+import TetraStereo.Engine.RingBridgeheadReport
+import TetraStereo.Engine.RingOxaziridineAuxiliaryReport
+import TetraStereo.Engine.RingOxaziridineReport
+import TetraStereo.Engine.RingBondImplicitReport
+import TetraStereo.Engine.RingBridgeheadPaths
+import TetraStereo.Engine.RingNumericPairReport
+import TetraStereo.Engine.RingDecidingPairOccurrence
+import TetraStereo.Engine.RingIndependentInventory
+import TetraStereo.Engine.RingPyramidalConstitution
+import TetraStereo.Engine.RingPlacementSignatures
+import TetraStereo.Engine.RingBranchSymmetry
 import TetraStereo.Engine.RingGeometryCertificates
 import TetraStereo.Engine.RingNestedFrameCoverage
 import TetraStereo.Engine.RingConstitutionalCoverage
@@ -86,15 +123,84 @@ abbrev ringGroupedStereoComparison? := RingGroupedStereo.scheduledComparison?
 signed result over all legal parent-group orders on each geometry. -/
 abbrev ringGroupedStereoAtFrontier := @RingGroupedStereo.scheduled_frontier
 
-/-- Full-path comparison on raw molecular bonds, coordinates and requested atom IDs. -/
-abbrev ringMolecularReportFromRaw? := RingMolecularReport.fromRaw?
-abbrev ringMolecularReportFromRawExact := RingMolecularReport.fromRaw_graph_iff
+/-- Full-path report shared by all orientations of unplaced P–H bonds. An
+undetermined request returns outer none; a common refusal stays in its row. -/
+abbrev ringMolecularReportFromRaw? := RingHydrogenReport.fromRaw?
+/-- Literal public report equality on hydrogen-complete presentations that
+agree on the atoms and coordinates and permute the bond records. -/
+abbrev ringMolecularReportBondOrder := @RingBondRecordOrder.closed_raw_public
+/-- Bond-list permutation on raw inputs, through implicit H placement and
+the full consensus search. Includes malformed input and invalid atom IDs. -/
+abbrev ringMolecularReportRawBondOrder := @RingBondRecordOrder.raw_public
+/-- Two independently admitted presentations can also change their stored
+neighbor ordering while retaining the same physical graph and coordinates. -/
+abbrev ringMolecularReportPresentation := @RingBondRecordOrder.implicit_raw_public
+abbrev ringShortBridgePaths := @RingBridgeheadNitrogen.test_iff_paths
+abbrev ringOxaziridineReport := @RingOxaziridineReport.from_source
+abbrev ringOxaziridinePathRow := @RingOxaziridineAuxiliaryReport.row_iff
+/-- Complete rooted-graph criterion for equality of actual ring-duplicate origins. -/
+abbrev ringClosureCommonOriginCriterion := @RingCommonOriginCriterion.commonOrigin_iff
+abbrev ringClosureAllRealFoci := @RingCommonOriginCriterion.all_foci_iff
+abbrev ringClosureAllRoots := @RingCommonOriginCriterion.all_roots_iff
+/-- Rebuild the constitutional early exits at the active focus and compare
+each ordered public sphere store on a common-origin root slice. -/
+abbrev ringClosurePriorityStore := @RingOriginPriorityStore.rows_exact
+abbrev ringClosurePriorityReport := @RingOriginPriorityStore.report_exact
+/-- Evaluate the complete raw request with every duplicate distance measured
+from the active focus on the original retained digraph. -/
+abbrev ringActiveOriginReportFromRaw? := RingOriginMetricReport.fromRaw?
+abbrev ringActiveOriginStore := @RingOriginMetricReport.rows_exact
+abbrev ringHistoryStore := @RingHistoryReport.rows_exact
+abbrev ringHistoryRaw := RingHistoryReport.raw_exact
+abbrev ringClosureOriginOnPath := @RingOriginAncestry.closure_between_iff
+abbrev ringClosureOriginOffPath := @RingOriginAncestry.every_closure_has_off_path_focus
+/-- Certify every reached root of the request before evaluating descriptors.
+An outer failure means both metric-based evaluators reject the request. -/
+abbrev ringOriginOrderCheckFromRaw? := RingOriginOrderRawCheck.check
+abbrev ringOriginOrderCheckedRaw := @RingOriginOrderRawCheck.raw_exact
+abbrev ringOriginOrderCheckedStore := @RingOriginOrderRawCheck.rows_exact
+abbrev ringOriginOrderRawRejected := @RingOriginOrderRawCheck.none_sound
+abbrev ringOriginTwinStructuralCheck := RingOriginTwinStore.structuralCheck
+abbrev ringOriginTwinStructuralStores := @RingOriginTwinStore.structural_stores
+abbrev ringOriginTwinCheckFromRaw? := RingOriginTwinStore.structuralFromRaw?
+abbrev ringOriginTwinRawStores := @RingOriginTwinStore.raw_stores
+abbrev ringOriginTwinRawCertified := @RingOriginTwinStore.raw_certified
+abbrev ringThreeTerminalRefusal := @RingOriginTriplePublication.refusal
+abbrev ringOriginTwinStoreAudit := RingOriginTwinStore.audit
+abbrev ringOriginTwinStoreTrajectory := @RingOriginTwinStore.audit_stores
+abbrev ringOriginTwinStoreRaw := RingOriginTwinStore.raw_exact
+abbrev ringAtomicMetricStoreCheck := RingAtomicMetricPublication.check
+abbrev ringAtomicMetricStoresExact := @RingAtomicMetricPublication.rows_exact
+abbrev ringAtomicMetricRawExact := RingAtomicMetricPublication.raw_exact
+abbrev ringAtomicMetricRawWitness := @RingAtomicMetricPublication.raw_witness
+abbrev ringOriginOrderGraph := @RingOriginOrderGraph.criterion_iff
+abbrev ringOriginOrderGraphOrDecided := RingOriginOrderGraph.raw_of_graph_or_decided
+abbrev ringOriginOrderRawWitness := @RingOriginOrderDomain.raw_witness
+abbrev ringActiveOriginRawGraph := RingOriginMetricReport.raw_of_graph
+abbrev ringActiveOriginRawDisagreement := @RingOriginMetricReport.raw_disagreement
+abbrev ringActiveOriginRootPublication := @RingOriginRootAll.publish_origin
+abbrev ringActiveOriginRawSwitch := @RingOriginCausal.raw_switch
+abbrev ringTerminalLigandComparison := @RingTerminalLigandOrder.compare_exhausted
+abbrev ringOxaziridineStored := @RingOxaziridinePublication.stored
+abbrev ringPyramidalTwoShell := @RingPyramidalTwoShell.sound
+abbrev ringMolecularHydrogenCompletionTotal := RingHydrogenCertificate.prepare?_total
+abbrev ringMolecularReportFromRawMaterializedEq := @RingHydrogenReport.fromRaw_materialized_eq
+abbrev ringMolecularReportFromRawExact := RingHydrogenReport.fromRaw_graph_iff
+abbrev ringMolecularRule4bPolicies := @RingPopulationReport.reachable_fourB
+abbrev ringMolecularReportFromRawPopulationExact := RingHydrogenReport.fromRaw_population_iff
+abbrev ringMolecularReportWrittenPopulationExact := RingWrittenPHReadings.fromRaw_iff_written_population
+abbrev ringMolecularReportCoordinatesInvariant := RingWrittenPHReadings.fromRaw_physicalAgreement
+abbrev ringMolecularReportFromRawAllWritten := @RingWrittenPHReadings.fromRaw_all_placements
+abbrev ringMolecularReportWrittenRepresentative := @RingWrittenPHReadings.all_requests_represented
+abbrev ringMolecularReportFromRawDisagreement := @RingSpatialTransport.fromRaw_none_iff_disagree
+abbrev ringMolecularReportFromRawDomain := RingHydrogenReport.fromRaw_domain_iff
+abbrev ringMolecularReportFromRawClosedTotal := @RingHydrogenReport.fromRaw_closed_total
 
 /-- The same molecular report for an admitted input and a chosen atom inventory. -/
-abbrev ringMolecularReportForAtoms? := RingMolecularReport.forAtoms?
-abbrev ringMolecularReportExact := @RingMolecularReport.forAtoms_iff
-abbrev ringMolecularReport? := RingMolecularReport.centres?
-abbrev ringMolecularCarbonReport? := RingMolecularReport.carbons?
+abbrev ringMolecularReportForAtoms? := RingHydrogenReport.forAtoms?
+abbrev ringMolecularReportExact := @RingHydrogenReport.forAtoms_iff
+abbrev ringMolecularReport? := RingHydrogenReport.centres?
+abbrev ringMolecularCarbonReport? := RingHydrogenReport.carbons?
 
 /-- Two-geometry molecular report in canonical detected-centre order, with
 an explicit absence for a completed refusal. -/
@@ -110,6 +216,51 @@ abbrev ringGroupedReportExact := RingGroupedReport.correct_iff
 /-- Try constitution first and generate auxiliaries only for a root with a remaining tie. -/
 abbrev ringStagedReport? := RingSphereQueue.stagedReport
 abbrev ringStagedReportExact := RingSphereQueue.staged_report_exact
+
+/-- The public evaluator's addressed rows at every committed sphere, rebuilt from ligand comparisons. -/
+abbrev ringMolecularLigandStores := @RingLigandNativeAnswers.native_rows
+/-- Exact comparison-only reconstruction through the raw admission and placement pipeline. -/
+abbrev ringMolecularLigandReportExact := RingRawLigandOrder.native
+/-- A raw mismatch reaches a changed cell and a differing directed pair on an identical prior store. -/
+abbrev ringMolecularLigandDisagreement := RingRawLigandOrder.disagreement
+/-- Exact rule-stage scan for each pair of retained arms in a ready molecular read. -/
+abbrev ringMolecularLigandStages := @RingLigandFirstDifference.all_active_arms
+/-- Compare another center inventory and local procedure on every molecular occurrence. -/
+abbrev checkRingMolecularPolicy := RingIndependentInventory.check
+abbrev ringMolecularPolicyCheckExact := RingIndependentInventory.check_true_iff_states
+/-- Return a deepest disagreement with the native molecular state. -/
+abbrev diagnoseRingMolecularPolicy := RingIndependentInventory.diagnose?
+abbrev ringMolecularPolicyDiagnosis := @RingIndependentInventory.diagnose_some
+abbrev ringMolecularPolicyPriorStores := @RingIndependentInventory.diagnose_prior_stores
+/-- A change to the raw result can originate in either center recognition or local publication. -/
+abbrev ringRawPolicyDisagreement := RingRawPolicy.disagreement
+/-- Replacing direct molecular decisions leaves exactly the unresolved local obligations. -/
+abbrev ringResidualLigandTie := @RingConstitutionalResidual.unresolved_ligands
+abbrev ringResidualPriorityExact := @RingConstitutionalResidual.state_iff
+abbrev ringResidualPriorityReport := RingConstitutionalResidual.native_raw
+abbrev ringResidualPriorityStores := @RingConstitutionalResidual.stores_and_reports
+
+/-- Complete Rule 4a prefix on all molecular arms and all recursively assigned centers. -/
+abbrev ringUnitLigandComparisons := @RingStereoUnitResidual.all_ligand_comparisons
+abbrev ringUnitClassDecision := @RingSourceUnitPriority.native_trial_comparison
+abbrev ringResidualUnitTie := @RingStereoUnitResidual.unresolved
+abbrev ringPublicUnitStores := @RingStereoUnitResidual.public_stores
+abbrev ringUnitReportExact := RingStereoUnitResidual.raw_exact
+
+/-- Conservation against the historical P/As inventory on graphs with neither
+a selected antimony nor a selected pyramidal nitrogen. -/
+abbrev ringPyramidalInventoryStores := @RingPyramidalInventoryConservation.stored_eq
+abbrev ringPyramidalInventoryReport := @RingPyramidalInventoryConservation.report_eq
+
+/-- Binary integer scoring on actual Rule 4b and fixed-reference readings. -/
+abbrev ringPairScoreComparison := @RingMolecularPairScore.all_ligands
+abbrev ringPairScoreWidths := @RingMolecularPairScore.four_widths
+abbrev ringFirstRule4bOccurrencePair := @RingDecidingPairOccurrence.first_deciding_occurrences
+abbrev ringPairScoreStores := @RingNumericPairReport.stores_and_reports
+abbrev ringMolecularNumericReportFromRaw? := RingNumericPairReport.fromRaw?
+abbrev ringMolecularNumericReportExact := RingNumericPairReport.raw_exact
+/-- An independent atom-and-bond calculation on requests covered by the direct-neighbor test. -/
+abbrev ringMolecularAtomicNeighborReport := RingAtomicNeighborOrder.source_report_iff
 
 /-- Rebuild the zero-mass priorities inside every stereo pass at each root and auxiliary centre. -/
 abbrev ringRecursiveZeroMassReport? := RingRebuiltStereo.report?
@@ -133,6 +284,70 @@ abbrev ringRawRenumberingPublications := @RingRawRenumbering.publications
 abbrev ringRawRenumberingReport := @RingRawRenumbering.report
 /-- Independently enumerated full reports agree up to atom identifiers and row order. -/
 abbrev ringRawRenumberingFullReport := @RingRawRenumbering.full_report
+/-- At every batch of the chemical evaluator, corresponding occurrences hold identical cells. -/
+abbrev ringMolecularStoreAfterSphere {i j} (r : RingRawRenumbering.Renumbering i j) :=
+  RingReportRenumber.chemical_stored_addressed_row r.toAtomMap
+/-- Matching physical signs transport the entire native store at all roots and sphere prefixes. -/
+abbrev ringMolecularPhysicalSignatureStores := @RingPhysicalSignatures.signature_rows
+/-- For a fixed hydrogen-complete graph, all admitted coordinate tables reduce to finite representatives. -/
+abbrev ringMolecularFiniteGeometryReports := @RingPhysicalSignatures.representative_reports
+/-- A raw P–H request succeeds exactly when the selected physical signatures agree on its rows. -/
+abbrev ringMolecularPlacementSignatureConsensus := @RingPhysicalSignatures.raw_iff_signature_consensus
+abbrev ringMolecularPlacementStoreRows := @RingPhysicalSignatures.placement_rows
+abbrev ringMolecularFullTableConsensus := @RingPhysicalSignatures.raw_iff_full_tables
+abbrev ringMolecularGeometryClassBound := @RingPhysicalSignatures.realized_card_bound
+/-- Distinct first atomic numbers give the native pyramidal publication on a ready reader. -/
+abbrev ringMolecularPyramidalAtomicPriority := @RingPyramidalConstitution.pLabels_first_Z
+/-- A materialized cell contains exactly the recursive graph derivation at a scheduled path. -/
+abbrev ringMolecularStoreDerivation := @RingSphereStore.row_iff_derives
+abbrev ringMolecularStoreRowsRenumber := @RingSphereStore.chemical_stored_perm
+abbrev ringMolecularSpellingStoreRows := @RingSphereStore.spelling_rows
+abbrev ringMolecularBranchStoreRows := @RingSphereStore.branch_rows
+abbrev ringMolecularRootFromSphere := @RingChemicalGraphProof.fastRoot_from_sphere
+/-- Renumbering a hydrogen-complete graph preserves the entire raw request, including refusals. -/
+abbrev ringMolecularClosedReportRenumbering {i j} (r : RingRawRenumbering.Renumbering i j) :=
+  RingReportRenumber.closed_raw_report r.toAtomMap
+/-- Compare the original requests on two ordinary-H spellings through both actual preparations. -/
+abbrev ringMolecularHydrogenSpelling := @RingHydrogenSpelling.spelling_report
+/-- Independently placed terminal twins may reverse the local written orientation. -/
+abbrev ringMolecularTwinMotion := @RingHydrogenSpelling.twin_motion_nondegenerate
+/-- Original spelling reports for one moving pair when each preparation has a single placement. -/
+abbrev ringMolecularTwinSpelling := @RingHydrogenSpelling.prepared_twin_spelling
+/-- Exact native store cells after every committed sphere on independently positioned spellings. -/
+abbrev ringMolecularSpellingStoreAfterSphere := @RingHydrogenSpelling.graph_sphereEntry
+/-- One H correspondence matches the materialized stores at every depth and every root. -/
+abbrev ringMolecularTwinMotionStores := @RingHydrogenSpelling.twin_motion_stores
+/-- One atom map matches all auxiliary stores across independent terminal-pair swaps. -/
+abbrev ringMolecularPairStores := @RingHydrogenSpelling.many_twin_stores
+abbrev ringMolecularPairMotionExact := @RingHydrogenSpelling.many_twin_motion_iff
+/-- The molecule supplies the complete inventory of tetrahedral parents with terminal twins. -/
+abbrev ringMolecularDetectedTerminalMotion := @RingHydrogenSpelling.detected_terminal_motion_iff
+abbrev ringMolecularPairSpelling := @RingHydrogenSpelling.many_twin_spelling_report
+/-- An identical terminal pair forces a completed refusal in the native chemical root. -/
+abbrev ringMolecularTwinParentRefusal := @RingHydrogenSpelling.TwinPair.root_refusal
+/-- The original atom receives the same refusal after implicit-H preparation and P–H choices. -/
+abbrev ringMolecularPreparedTwinRefusal := @RingHydrogenSpelling.TwinPair.prepared_refusal
+/-- The scheduled occurrence at the twin parent has a stored refusal exactly after its sphere. -/
+abbrev ringMolecularTwinSphereRefusal := @RingHydrogenSpelling.TwinPair.sphere_refusal
+/-- Each matching row of a successful mixed original request is a refusal. -/
+abbrev ringMolecularTwinRefusalRows := @RingHydrogenSpelling.TwinPair.prepared_rows_refusal
+abbrev ringMolecularAllTwinRefusals := @RingHydrogenSpelling.prepared_all_twin_refusals
+/-- A coordinate-independent constitutional orientation gives the native tetrahedral
+hand and mirror hand on every admitted table of the same molecular graph. -/
+abbrev ringMolecularConstitutionalHand := @RingConstitutionalHand.root_atGeometry
+/-- Validate a proposed molecular permutation against projected chemical atom records and effective bond orders. -/
+abbrev ringCheckBranchSymmetry? := RingHydrogenSpelling.checkGraphSymmetry?
+/-- One geometry's actual auxiliary stores agree along a whole-branch exchange. -/
+abbrev ringMolecularBranchStores := @RingHydrogenSpelling.GraphMap.branch_stores
+/-- An odd stabilizer of the root gives a refusal when other active physical readings agree. -/
+abbrev ringMolecularOddBranchRefusal := @RingHydrogenSpelling.GraphMap.odd_branch_refusal
+/-- An assignment under an odd graph symmetry locates a changed physical reading at a reachable off-root center. -/
+abbrev ringMolecularBranchDifference := @RingHydrogenSpelling.GraphMap.assignment_forces_branch_difference
+/-- Raw refusal when the signed branch criterion holds across every prepared placement. -/
+abbrev ringMolecularPreparedStereoBranchRefusal := @RingHydrogenSpelling.GraphMap.prepared_stereo_branch_refusal
+/-- The graph-only subclass requires no comparison of coordinate hands. -/
+abbrev ringMolecularPreparedBranchRefusal := @RingHydrogenSpelling.GraphMap.prepared_branch_refusal
+abbrev ringMolecularTwinMotionExact := @RingHydrogenSpelling.twin_motion_iff
 abbrev ringRefusalFromMarkedExchanges := @RingGeometryExchange.refuse_of_exchanges
 abbrev ringTwoPairRefusalCriterion := @RingBridgedPairs.Pairs.refusal_iff
 abbrev ringDescriptorFromCoupledBonds := @RingMarkedIncidence.coupled_descriptor
@@ -1519,6 +1734,7 @@ assert_kernel_only TetraStereo.Engine.RingSphereSingleTieRefusal.covered
 assert_kernel_only TetraStereo.Engine.RingSphereCoverage.frontier_consensus
 
 assert_kernel_only TetraStereo.Engine.ringMolecularReportFromRawExact
+assert_kernel_only TetraStereo.Engine.ringMolecularReportFromRawPopulationExact
 assert_kernel_only TetraStereo.Engine.ringMolecularReportExact
 assert_kernel_only TetraStereo.Engine.ringGroupedMolecularReport?
 assert_kernel_only TetraStereo.Engine.ringGroupedCarbonReport?

@@ -321,20 +321,20 @@ theorem simpleBond_realCenter_childFrames
 /-- Every atom carried by an uncut child of a real center is a physical neighbor, and every
 physical neighbor is carried by some uncut child. The parent atom is included. A neighbor already
 on the history is included as well. -/
-theorem simpleBond_realCenter_rerootChildren_current_iff_adjacent
+theorem simpleBond_realAtom_rerootChildren_current_iff_adjacent
     (singleBonded : input.moleculeGraph.SimpleBonded)
     {carrierFuel : Nat}
     (enough : input.certified.input.molecule.atomCount ≤ carrierFuel)
     (target : input.LocalizedCIPOccurrence carrierFuel)
-    (center : input.TetrahedralCenter)
-    (meaning : input.RealTetrahedralCenterNode target.1.node center)
+    (atom : input.Atom)
+    (meaning : target.1.node.provenance = .realAtom ∧ target.1.node.current? = some atom)
     (children : List (input.LocalizedRerootCursor carrierFuel))
     (computed : input.localizedRerootChildren?
       ({ occurrence := target, previous? := none } :
         input.LocalizedRerootCursor carrierFuel) = some children) :
     ∀ w, (∃ child ∈ children, child.occurrence.1.node.current? = some w) ↔
-      input.moleculeGraph.Adj center.1 w := by
-  have oObserved : target.1.node.current? = some center.1 := meaning.2
+      input.moleculeGraph.Adj atom w := by
+  have oObserved : target.1.node.current? = some atom := meaning.2
   have real : target.1.node.provenance = OfficialCIPNodeProvenance.realAtom := meaning.1
   have frames := input.simpleBond_realCenter_childFrames target real children computed
   intro w
@@ -415,12 +415,10 @@ theorem simpleBond_realCenter_rerootChildren_current_iff_adjacent
       obtain ⟨child, childPresent, frameEq⟩ := member
       exact ⟨child, childPresent, by simpa [frameEq] using frameCurrent⟩
 
-/-- Sibling cursors of one real center have distinct current atoms. Equal current atoms determine
-the same raw zero-copy, hence the same carrier address. A ring-duplicate child may repeat an
-ancestor atom; it does not repeat a sibling. The parent atom occurs once, as the parent frame. -/
-theorem simpleBond_realCenter_rerootChildren_current_injective
+theorem simpleBond_realCenter_rerootChildren_current_iff_adjacent
     (singleBonded : input.moleculeGraph.SimpleBonded)
     {carrierFuel : Nat}
+    (enough : input.certified.input.molecule.atomCount ≤ carrierFuel)
     (target : input.LocalizedCIPOccurrence carrierFuel)
     (center : input.TetrahedralCenter)
     (meaning : input.RealTetrahedralCenterNode target.1.node center)
@@ -428,10 +426,27 @@ theorem simpleBond_realCenter_rerootChildren_current_injective
     (computed : input.localizedRerootChildren?
       ({ occurrence := target, previous? := none } :
         input.LocalizedRerootCursor carrierFuel) = some children) :
+    ∀ w, (∃ child ∈ children, child.occurrence.1.node.current? = some w) ↔
+      input.moleculeGraph.Adj center.1 w :=
+  input.simpleBond_realAtom_rerootChildren_current_iff_adjacent singleBonded enough target center.1 meaning children computed
+
+/-- Sibling cursors of one real center have distinct current atoms. Equal current atoms determine
+the same raw zero-copy, hence the same carrier address. A ring-duplicate child may repeat an
+ancestor atom; it does not repeat a sibling. The parent atom occurs once, as the parent frame. -/
+theorem simpleBond_realAtom_rerootChildren_current_injective
+    (singleBonded : input.moleculeGraph.SimpleBonded)
+    {carrierFuel : Nat}
+    (target : input.LocalizedCIPOccurrence carrierFuel)
+    (atom : input.Atom)
+    (meaning : target.1.node.provenance = .realAtom ∧ target.1.node.current? = some atom)
+    (children : List (input.LocalizedRerootCursor carrierFuel))
+    (computed : input.localizedRerootChildren?
+      ({ occurrence := target, previous? := none } :
+        input.LocalizedRerootCursor carrierFuel) = some children) :
     ∀ left ∈ children, ∀ right ∈ children,
       left.occurrence.1.node.current? = right.occurrence.1.node.current? →
         left = right := by
-  have oObserved : target.1.node.current? = some center.1 := meaning.2
+  have oObserved : target.1.node.current? = some atom := meaning.2
   have real : target.1.node.provenance = OfficialCIPNodeProvenance.realAtom := meaning.1
   have frames := input.simpleBond_realCenter_childFrames target real children computed
   intro left leftPresent right rightPresent sameCurrent
@@ -572,19 +587,34 @@ theorem simpleBond_realCenter_rerootChildren_current_injective
         rootEq addressEq
       exact LocalizedRerootCursor.ext input (Subtype.ext frameEq) previousEq
 
+theorem simpleBond_realCenter_rerootChildren_current_injective
+    (singleBonded : input.moleculeGraph.SimpleBonded)
+    {carrierFuel : Nat}
+    (target : input.LocalizedCIPOccurrence carrierFuel)
+    (center : input.TetrahedralCenter)
+    (meaning : input.RealTetrahedralCenterNode target.1.node center)
+    (children : List (input.LocalizedRerootCursor carrierFuel))
+    (computed : input.localizedRerootChildren?
+      ({ occurrence := target, previous? := none } :
+        input.LocalizedRerootCursor carrierFuel) = some children) :
+    ∀ left ∈ children, ∀ right ∈ children,
+      left.occurrence.1.node.current? = right.occurrence.1.node.current? →
+        left = right :=
+  input.simpleBond_realAtom_rerootChildren_current_injective singleBonded target center.1 meaning children computed
+
 /-- **Immediate actual children biject with the physical neighbors.**  The uncut expansion at a
-real detected center is in explicit bijection with `Neighbor center.1`, reading each child's
+real atom is in explicit bijection with its physical neighbors, reading each child's
 `current?`. The parent atom is one neighbor, carried by the parent frame. Every other neighbor,
 including an atom already on the history, is carried by its zero-copy outward child. -/
-theorem simpleBond_realCenter_rerootChildren_neighborEquiv
+theorem simpleBond_realAtom_rerootChildren_neighborEquiv
     (singleBonded : input.moleculeGraph.SimpleBonded)
     {carrierFuel : Nat}
     (enough : input.certified.input.molecule.atomCount ≤ carrierFuel)
     (target : input.LocalizedCIPOccurrence carrierFuel)
-    (center : input.TetrahedralCenter)
-    (meaning : input.RealTetrahedralCenterNode target.1.node center) :
+    (atom : input.Atom)
+    (meaning : target.1.node.provenance = .realAtom ∧ target.1.node.current? = some atom) :
     ∃ (children : List (input.LocalizedRerootCursor carrierFuel))
-      (ligand : {child // child ∈ children} ≃ input.moleculeGraph.Neighbor center.1),
+      (ligand : {child // child ∈ children} ≃ input.moleculeGraph.Neighbor atom),
       input.localizedRerootChildren?
         ({ occurrence := target, previous? := none } :
           input.LocalizedRerootCursor carrierFuel) = some children ∧
@@ -594,10 +624,10 @@ theorem simpleBond_realCenter_rerootChildren_neighborEquiv
     { occurrence := target, previous? := none }
   obtain ⟨children, computed⟩ := input.exists_localizedRerootChildren rootCursor
   have correspondence :=
-    input.simpleBond_realCenter_rerootChildren_current_iff_adjacent singleBonded enough
-      target center meaning children computed
+    input.simpleBond_realAtom_rerootChildren_current_iff_adjacent singleBonded enough
+      target atom meaning children computed
   have injective :=
-    input.simpleBond_realCenter_rerootChildren_current_injective singleBonded target center
+    input.simpleBond_realAtom_rerootChildren_current_injective singleBonded target atom
       meaning children computed
   let atomOf : {child // child ∈ children} → input.Atom :=
     fun child => Classical.choose (input.localizedRerootCursor_current_exists child.1)
@@ -605,9 +635,9 @@ theorem simpleBond_realCenter_rerootChildren_neighborEquiv
       child.1.occurrence.1.node.current? = some (atomOf child) :=
     fun child => Classical.choose_spec (input.localizedRerootCursor_current_exists child.1)
   have adjOf : ∀ child : {child // child ∈ children},
-      input.moleculeGraph.Adj center.1 (atomOf child) :=
+      input.moleculeGraph.Adj atom (atomOf child) :=
     fun child => (correspondence (atomOf child)).mp ⟨child.1, child.2, atomOf_spec child⟩
-  let toNeighbor : {child // child ∈ children} → input.moleculeGraph.Neighbor center.1 :=
+  let toNeighbor : {child // child ∈ children} → input.moleculeGraph.Neighbor atom :=
     fun child => ⟨atomOf child, adjOf child⟩
   have toNeighbor_injective : Function.Injective toNeighbor := by
     intro left right equal
@@ -624,6 +654,21 @@ theorem simpleBond_realCenter_rerootChildren_neighborEquiv
     exact Option.some.inj ((atomOf_spec ⟨child, present⟩).symm.trans current)
   exact ⟨children, Equiv.ofBijective toNeighbor ⟨toNeighbor_injective, toNeighbor_surjective⟩,
     computed, fun child => atomOf_spec child⟩
+
+theorem simpleBond_realCenter_rerootChildren_neighborEquiv
+    (singleBonded : input.moleculeGraph.SimpleBonded)
+    {carrierFuel : Nat}
+    (enough : input.certified.input.molecule.atomCount ≤ carrierFuel)
+    (target : input.LocalizedCIPOccurrence carrierFuel)
+    (center : input.TetrahedralCenter)
+    (meaning : input.RealTetrahedralCenterNode target.1.node center) :
+    ∃ (children : List (input.LocalizedRerootCursor carrierFuel))
+      (ligand : {child // child ∈ children} ≃ input.moleculeGraph.Neighbor center.1),
+      input.localizedRerootChildren?
+        ({ occurrence := target, previous? := none } :
+          input.LocalizedRerootCursor carrierFuel) = some children ∧
+        (∀ child, child.1.occurrence.1.node.current? = some (ligand child).1) :=
+  input.simpleBond_realAtom_rerootChildren_neighborEquiv singleBonded enough target center.1 meaning
 
 /-- Each uncut child is either the active-simple parent frame or one outward zero-copy.
 An outward atom already on the history is a terminal ring duplicate. An outward fresh atom is
@@ -816,21 +861,21 @@ theorem simpleBond_realCenter_visitedNeighbor_terminalRingDuplicate
 
 /-- The uncut child count equals the physical degree. The count is the cardinality of the
 neighbor bijection. -/
-theorem simpleBond_realCenter_rerootChildren_length_eq_neighbor_card
+theorem simpleBond_realAtom_rerootChildren_length_eq_neighbor_card
     (singleBonded : input.moleculeGraph.SimpleBonded)
     {carrierFuel : Nat}
     (enough : input.certified.input.molecule.atomCount ≤ carrierFuel)
     (target : input.LocalizedCIPOccurrence carrierFuel)
-    (center : input.TetrahedralCenter)
-    (meaning : input.RealTetrahedralCenterNode target.1.node center)
+    (atom : input.Atom)
+    (meaning : target.1.node.provenance = .realAtom ∧ target.1.node.current? = some atom)
     (children : List (input.LocalizedRerootCursor carrierFuel))
     (computed : input.localizedRerootChildren?
       ({ occurrence := target, previous? := none } :
         input.LocalizedRerootCursor carrierFuel) = some children) :
-    children.length = Fintype.card (input.moleculeGraph.Neighbor center.1) := by
+    children.length = Fintype.card (input.moleculeGraph.Neighbor atom) := by
   classical
   obtain ⟨built, ligand, builtComputed, _spec⟩ :=
-    input.simpleBond_realCenter_rerootChildren_neighborEquiv singleBonded enough target center
+    input.simpleBond_realAtom_rerootChildren_neighborEquiv singleBonded enough target atom
       meaning
   have childrenEq : children = built :=
     Option.some.inj (computed.symm.trans builtComputed)
@@ -843,6 +888,20 @@ theorem simpleBond_realCenter_rerootChildren_length_eq_neighbor_card
       input.LocalizedRerootCursor carrierFuel) built sound
   have cardEq := Fintype.card_congr ((List.Nodup.getEquiv built nodup).trans ligand)
   simpa [Fintype.card_fin] using cardEq
+
+theorem simpleBond_realCenter_rerootChildren_length_eq_neighbor_card
+    (singleBonded : input.moleculeGraph.SimpleBonded)
+    {carrierFuel : Nat}
+    (enough : input.certified.input.molecule.atomCount ≤ carrierFuel)
+    (target : input.LocalizedCIPOccurrence carrierFuel)
+    (center : input.TetrahedralCenter)
+    (meaning : input.RealTetrahedralCenterNode target.1.node center)
+    (children : List (input.LocalizedRerootCursor carrierFuel))
+    (computed : input.localizedRerootChildren?
+      ({ occurrence := target, previous? := none } :
+        input.LocalizedRerootCursor carrierFuel) = some children) :
+    children.length = Fintype.card (input.moleculeGraph.Neighbor center.1) :=
+  input.simpleBond_realAtom_rerootChildren_length_eq_neighbor_card singleBonded enough target center.1 meaning children computed
 
 /-! ## Actual four-ligand frame and detected ligand permutation -/
 

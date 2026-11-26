@@ -126,7 +126,67 @@ private theorem node_parent {n m : Nat} (e : Fin n ≃ Fin m) (v : OfficialCIPNo
   obtain rfl := count_eq e
   exact mapOfficialNode_parent?_ne e h
 
-private theorem simple_image (r : Renumbering i j) {root v addr}
+
+/-- Input fields used by the full-path publisher once the graph is materialized. -/
+structure MolecularRecord where
+  element : Element
+  mass : Option Nat
+  charge : Int
+  aromatic : Bool
+  deriving DecidableEq
+
+def molecularRecord (atom : AtomSpec) : MolecularRecord :=
+  ⟨atom.element, CIPRule2MassData.rule2MassPico? atom.element.atomicNumber atom.isotope?, atom.charge, atom.aromatic⟩
+
+/-- A molecular correspondence after hydrogen materialization. The graph keeps the isotope
+mass used by Rule 2, the element, formal charge, and aromaticity used by center selection. -/
+structure AtomMap (i j : Input) where
+  atoms : i.certified.Atom ≃ j.certified.Atom
+  records : ∀ a, (j.molecule.atoms[(atoms a).val]?).map molecularRecord =
+    (i.molecule.atoms[a.val]?).map molecularRecord
+  bonds : ∀ a b, j.molecule.bondOrder (atoms a).val (atoms b).val = i.molecule.bondOrder a.val b.val
+  positions : ∀ a, j.spatial.positions[(atoms a).val]? = i.spatial.positions[a.val]?
+
+def Renumbering.toAtomMap (r : Renumbering i j) : AtomMap i j :=
+  ⟨r.atoms, fun a => congrArg (Option.map molecularRecord) (r.records a), r.bonds, r.positions⟩
+
+instance : Coe (Renumbering i j) (AtomMap i j) := ⟨Renumbering.toAtomMap⟩
+
+namespace AtomMap
+def symm (r : AtomMap i j) : AtomMap j i where
+  atoms := r.atoms.symm
+  records := fun b => by simpa using (r.records (r.atoms.symm b)).symm
+  bonds := fun a b => by simpa using (r.bonds (r.atoms.symm a) (r.atoms.symm b)).symm
+  positions := fun b => by simpa using (r.positions (r.atoms.symm b)).symm
+
+theorem adj (r : AtomMap i j) (a b : i.certified.Atom) :
+    i.certified.moleculeGraph.Adj a b ↔ j.certified.moleculeGraph.Adj (r.atoms a) (r.atoms b) := by
+  rw [raw_adj,raw_adj,r.bonds]
+
+private theorem observation_record (i : Input) (q : Arm i) (terminal : Bool) :
+    RingRetainedChemicalTrace.observation? i q terminal = (do
+      let node := q.occurrence.val.node
+      let a ← node.current?
+      let recd ← (i.molecule.atoms[a.val]?).map molecularRecord
+      let z := recd.element.atomicNumber
+      guard (z > 0)
+      match node.provenance with
+      | .realAtom =>
+        let mass ← recd.mass
+        return ⟨z,RingRetainedChemicalTrace.duplicateValue i.molecule.atomCount none,mass⟩
+      | .ringDuplicate origin =>
+        guard (terminal && origin ≤ i.molecule.atomCount && node.history.head? == some a &&
+          node.history.tail.reverse.idxOf a == origin && node.history.tail.contains a)
+        let mass ← CIPRule2MassData.rule2MassPico? z none
+        return ⟨z,RingRetainedChemicalTrace.duplicateValue i.molecule.atomCount (some origin),mass⟩
+      | _ => none) := by
+  unfold RingRetainedChemicalTrace.observation?
+  simp only [Option.bind_eq_bind]
+  congr 1
+  funext a
+  cases i.molecule.atoms[a.val]? <;> rfl
+
+private theorem simple_image (r : AtomMap i j) {root v addr}
     (path : SimpleOccurrencePath i.certified root v addr) :
     ∃ address, SimpleOccurrencePath j.certified (r.atoms root) (nodeMap r.atoms v) address ∧
       address.length = addr.length := by
@@ -139,7 +199,7 @@ private theorem simple_image (r : Renumbering i j) {root v addr}
       ((r.adj a b).mp adj) (node_parent _ _ np) (by simpa [nodeMap] using fresh), ?_⟩
     simp [len]
 
-private theorem legitimate_image (r : Renumbering i j) {root v addr}
+private theorem legitimate_image (r : AtomMap i j) {root v addr}
     (occ : LegitimateOccurrence i.certified root v addr) :
     ∃ address, LegitimateOccurrence j.certified (r.atoms root) (nodeMap r.atoms v) address ∧
       address.length = addr.length := by
@@ -157,10 +217,10 @@ private theorem legitimate_image (r : Renumbering i j) {root v addr}
     rw [i.single a b adj] at bound
     exact (pos (Nat.lt_one_iff.mp bound)).elim
 
-private def address (r : Renumbering i j) (q : Site i) : List Nat :=
+private def address (r : AtomMap i j) (q : Site i) : List Nat :=
   j.certified.canonicalAddress (r.atoms q.val.root) (nodeMap r.atoms q.val.node)
 
-private theorem site_path (r : Renumbering i j) (q : Site i) :
+private theorem site_path (r : AtomMap i j) (q : Site i) :
     LegitimateOccurrence j.certified (r.atoms q.val.root) (nodeMap r.atoms q.val.node) (address r q) ∧
       (address r q).length = q.val.address.length := by
   obtain ⟨a, path, len⟩ := legitimate_image r (i.certified.carrierOccurrence_legitimate i.single q)
@@ -170,13 +230,13 @@ private theorem site_path (r : Renumbering i j) (q : Site i) :
   exact ⟨path, len⟩
 
 /-- The target enumerates its own child slots along the renamed molecular path. -/
-def site (r : Renumbering i j) (q : Site i) : Site j :=
+def site (r : AtomMap i j) (q : Site i) : Site j :=
   ⟨_, j.certified.legitimateOccurrence_mem_localizedOccurrences_of_length (site_path r q).1 (by
     rw [(site_path r q).2, ← count_eq r.atoms]
     have grade := i.certified.localizedCIPOccurrence_depthGrade q
     omega)⟩
 
-theorem visible (r : Renumbering i j) (q t : Site i) :
+theorem visible (r : AtomMap i j) (q t : Site i) :
     Visible (site r q) (site r t) ↔ Visible q t := by
   have depth (u : Site i) : distance (site r u) = distance u := (site_path r u).2
   unfold Visible
@@ -194,7 +254,7 @@ private theorem site_ext {q t : Site i} (root : q.val.root = t.val.root)
     ((i.certified.mem_localizedOccurrences_iff _ _).mp t.property) root
     (by rw [canon q, canon t, root, node])
 
-@[simp] theorem site_back (r : Renumbering i j) (q : Site i) : site r.symm (site r q) = q := by
+@[simp] theorem site_back (r : AtomMap i j) (q : Site i) : site r.symm (site r q) = q := by
   apply site_ext
   · exact r.atoms.symm_apply_apply _
   · change nodeMap r.atoms.symm (nodeMap r.atoms q.val.node) = _
@@ -202,16 +262,16 @@ private theorem site_ext {q t : Site i} (root : q.val.root = t.val.root)
     cases v with
     | mk current history prov => cases current <;> simp [nodeMap, List.map_map]
 
-def sites (r : Renumbering i j) : Site i ≃ Site j where
+def sites (r : AtomMap i j) : Site i ≃ Site j where
   toFun := site r
   invFun := site r.symm
   left_inv := site_back r
   right_inv := site_back r.symm
 
-def arm (r : Renumbering i j) (u : Arm i) : Arm j :=
+def arm (r : AtomMap i j) (u : Arm i) : Arm j :=
   ⟨site r u.occurrence, u.previous?.map (site r)⟩
 
-@[simp] theorem arm_back (r : Renumbering i j) (u : Arm i) : arm r.symm (arm r u) = u := by
+@[simp] theorem arm_back (r : AtomMap i j) (u : Arm i) : arm r.symm (arm r u) = u := by
   cases u with
   | mk occ prev => cases prev <;> simp [arm]
 
@@ -250,7 +310,7 @@ private theorem outward_extension {p c : Site i} (edge : outward p c) :
       have zero := i.certified.executableOfficialChildCopy_index_zero i.single _ _ _ (List.mem_of_getElem? h)
       exact ⟨copy.1, actual.trans (by simpa [h, zero] using mem.symm)⟩
 
-private theorem outward_map (r : Renumbering i j) {p c : Site i} (edge : outward p c) :
+private theorem outward_map (r : AtomMap i j) {p c : Site i} (edge : outward p c) :
     outward (site r p) (site r c) := by
   obtain ⟨real, a, ext⟩ := outward_extension edge
   unfold outward localizedCarrierOutwardChildFrames at edge ⊢
@@ -270,7 +330,7 @@ private theorem outward_map (r : Renumbering i j) {p c : Site i} (edge : outward
 private abbrev near {i : Input} (p c : Site i) := c.val ∈ i.certified.localizedRerootNeighborFrames
   (fuel := i.certified.certified.input.molecule.atomCount + 1) p.val
 
-private theorem near_map (r : Renumbering i j) {p c : Site i} (h : near p c) :
+private theorem near_map (r : AtomMap i j) {p c : Site i} (h : near p c) :
     near (site r p) (site r c) := by
   unfold near localizedRerootNeighborFrames at h ⊢
   rw [List.mem_append, i.certified.mem_localizedCarrierParentFrames_iff_outward] at h
@@ -285,14 +345,14 @@ private theorem equal_address {p q : Site i} (root : p.val.root = q.val.root) :
   rintro rfl
   rfl
 
-private theorem aligned (r : Renumbering i j) {u : Arm i} (h : i.certified.cursorPreviousRootAligned u) :
+private theorem aligned (r : AtomMap i j) {u : Arm i} (h : i.certified.cursorPreviousRootAligned u) :
     j.certified.cursorPreviousRootAligned (arm r u) := by
   intro x hx
   change u.previous?.map _ = some x at hx
   obtain ⟨v, hv, rfl⟩ := Option.map_eq_some_iff.mp hx
   exact congrArg r.atoms (h v hv)
 
-private theorem child_map (r : Renumbering i j) {u v : Arm i} (h : i.certified.cursorPreviousRootAligned u)
+private theorem child_map (r : AtomMap i j) {u v : Arm i} (h : i.certified.cursorPreviousRootAligned u)
     (mem : v ∈ i.certified.executableLocalizedRerootChildren u) :
     arm r v ∈ j.certified.executableLocalizedRerootChildren (arm r u) := by
   rw [i.certified.executableLocalizedRerootChildren_mem_iff, i.certified.mem_intendedLocalizedRerootChildFrames_iff] at mem
@@ -307,7 +367,7 @@ private theorem child_map (r : Renumbering i j) {u v : Arm i} (h : i.certified.c
     (site r t).val.root)).mp eq
   exact cut t ht ((equal_address root).mpr ((sites r).injective eqSite))
 
-private theorem children (r : Renumbering i j) {u : Arm i} (h : i.certified.cursorPreviousRootAligned u) :
+private theorem children (r : AtomMap i j) {u : Arm i} (h : i.certified.cursorPreviousRootAligned u) :
     ((i.certified.executableLocalizedRerootChildren u).map (arm r)).Perm
       (j.certified.executableLocalizedRerootChildren (arm r u)) := by
   have inj : Function.Injective (arm r) := Function.LeftInverse.injective (arm_back r)
@@ -337,7 +397,7 @@ private theorem current_eq {α β : Type} [DecidableEq α] [DecidableEq β] (s :
   | none => rfl
   | some b => by_cases h : b = a <;> simp [h]
 
-private theorem observation (r : Renumbering i j) (q : Arm i) (terminal : Bool) :
+private theorem observation (r : AtomMap i j) (q : Arm i) (terminal : Bool) :
     observation? j (arm r q) terminal = observation? i q terminal := by
   let s := r.atoms
   let xs := q.occurrence.val.node.history
@@ -348,7 +408,7 @@ private theorem observation (r : Renumbering i j) (q : Arm i) (terminal : Bool) 
     rw [← List.map_tail,← List.map_reverse,idx_map]
   have head (a : i.certified.Atom) : ((xs.map s).head? == some (s a)) = (xs.head? == some a) := by
     rw [List.head?_map,current_eq]
-  unfold observation?
+  rw [observation_record,observation_record]
   simp only [arm,site,nodeMap]
   cases h : q.occurrence.val.node.current? with
   | none => rfl
@@ -364,7 +424,7 @@ private theorem observation (r : Renumbering i j) (q : Arm i) (terminal : Bool) 
 
 /-- A raw renumbering supplies the whole child correspondence and
 all constitutional observations, for every rooted, directed molecular cursor. -/
-def carrier (r : Renumbering i j) : Carrier i j where
+def carrier (r : AtomMap i j) : Carrier i j where
   image := arm r
   domain := i.certified.cursorPreviousRootAligned
   below := fun q _ t ht => i.certified.executableLocalizedRerootChildren_cursorAligned q t ht
@@ -381,7 +441,7 @@ def carrier (r : Renumbering i j) : Carrier i j where
       simp [← List.length_eq_zero_iff,h]
     rw [empty,observation r]
 
-theorem mark (r : Renumbering i j) (a : i.certified.Atom) :
+theorem mark (r : AtomMap i j) (a : i.certified.Atom) :
     Marked (carrier r) a.val (r.atoms a).val := by
   intro q _
   unfold RingGroupedMark.bit
@@ -401,19 +461,19 @@ open RingGroupedCentre (cursor)
 open LocalizedChemicalRingPhysicalSense (inputGeometry)
 open LocalizedGenericMarkedRecalculation (readback?)
 
-private def neighbors (r : Renumbering i j) (a : i.certified.Atom) :
+private def neighbors (r : AtomMap i j) (a : i.certified.Atom) :
     i.certified.moleculeGraph.Neighbor a ≃ j.certified.moleculeGraph.Neighbor (r.atoms a) where
   toFun b := ⟨r.atoms b.val, (r.adj a b.val).mp b.property⟩
   invFun b := ⟨r.atoms.symm b.val, (r.adj a _).mpr (by simpa using b.property)⟩
   left_inv _ := Subtype.ext (r.atoms.symm_apply_apply _)
   right_inv _ := Subtype.ext (r.atoms.apply_symm_apply _)
 
-private def center (r : Renumbering i j) (c : i.certified.TetrahedralCenter) : j.certified.TetrahedralCenter :=
+private def center (r : AtomMap i j) (c : i.certified.TetrahedralCenter) : j.certified.TetrahedralCenter :=
   ⟨r.atoms c.val, (j.certified.moleculeGraph.mem_tetrahedralCenterSet _).mpr
     ((Fintype.card_congr (neighbors r c.val)).symm.trans
       ((i.certified.moleculeGraph.mem_tetrahedralCenterSet _).mp c.property))⟩
 
-private theorem recognized (r : Renumbering i j) {q : Site i} {c}
+private theorem recognized (r : AtomMap i j) {q : Site i} {c}
     (h : i.certified.localizedOccurrenceDescriptorCenter? q = some c) :
     j.certified.localizedOccurrenceDescriptorCenter? (site r q) = some (center r c) := by
   obtain ⟨real, atCenter⟩ := (i.certified.localizedOccurrenceDescriptorCenter?_eq_some_iff _ _).mp h
@@ -432,7 +492,7 @@ private theorem slot_inj {q : Site i} (x : Frame i q) : Function.Injective x.arm
   have nd := i.certified.executableLocalizedRerootChildren_nodup (⟨q,none⟩ : Arm i)
   exact Fin.ext (congrArg (fun k : Fin (RingRetainedAuxiliary.frame i.certified q).length => k.val) (nd.get_inj_iff.mp h))
 
-private theorem incident_slots (r : Renumbering i j) {q : Site i} (x : Frame i q) (y : Frame j (site r q)) :
+private theorem incident_slots (r : AtomMap i j) {q : Site i} (x : Frame i q) (y : Frame j (site r q)) :
     ∃ slots : Equiv.Perm Slot, ∀ k, arm r (x.arm k) = y.arm (slots k) := by
   classical
   have perm := children r (u := (⟨q,none⟩ : Arm i)) (i.certified.cursorPreviousRootAligned_of_none _ rfl)
@@ -450,7 +510,7 @@ private theorem incident_slots (r : Renumbering i j) {q : Site i} (x : Frame i q
     rw [matchArm,matchArm,h]
   exact ⟨Equiv.ofBijective slots ⟨inj,Finite.surjective_of_injective inj⟩,matchArm⟩
 
-private theorem position (r : Renumbering i j) (a : i.certified.Atom) :
+private theorem position (r : AtomMap i j) (a : i.certified.Atom) :
     inputGeometry i.certified a.val = inputGeometry j.certified (r.atoms a).val := by
   simp [LocalizedChemicalRingPhysicalSense.inputGeometry_val, spatialPointAt?, i.spatial_eq,
     j.spatial_eq, r.positions]
@@ -460,7 +520,7 @@ open LocalizedActualPhysicalBranchDecision (actualCanonicalMolecule coordinateVo
 
 /-- The four ligand coordinates at each centre can be reordered. Nonzero volume
 survives that permutation, so one geometry admission suffices for both inputs. -/
-theorem coordinates (r : Renumbering i j) (ok : LocalizedChemicalRing.coordinatesAdmitted i = true) :
+theorem coordinates (r : AtomMap i j) (ok : LocalizedChemicalRing.coordinatesAdmitted i = true) :
     LocalizedChemicalRing.coordinatesAdmitted j = true := by
   apply (allCentersAdmitted_iff j.certified).mpr
   intro d
@@ -482,7 +542,7 @@ theorem coordinates (r : Renumbering i j) (ok : LocalizedChemicalRing.coordinate
   refine ⟨_,?_,cartesianOrientedVolume_perm_ne_zero points slots nonzero⟩
   simp [coordinateVolume?,pos]
 
-private theorem frameMap (r : Renumbering i j) {q : Site i} (x : Frame i q) (y : Frame j (site r q)) :
+private theorem frameMap (r : AtomMap i j) {q : Site i} (x : Frame i q) (y : Frame j (site r q)) :
     ∃ p : RingGeometryTransport.FrameMap x y, p.carrier = carrier r := by
   obtain ⟨slots, edge⟩ := incident_slots r x y
   have ids (k : Slot) : ∃ a : i.certified.Atom,
@@ -520,7 +580,7 @@ private theorem frameMap (r : Renumbering i j) {q : Site i} (x : Frame i q) (y :
     rw [read]
 
 /-- The atom bijection alone constructs all occurrence, branch and physical frame matches. -/
-def presentation (r : Renumbering i j) : RingGeometryTransport.Presentation i j where
+def presentation (r : AtomMap i j) : RingGeometryTransport.Presentation i j where
   site := site r
   root := fun _ _ => r.atoms.injective.eq_iff
   visible := visible r
@@ -542,6 +602,36 @@ def presentation (r : Renumbering i j) : RingGeometryTransport.Presentation i j 
       exact ⟨.centre hx hy p (fun u _ => by rw [hp]; rfl)⟩
 
 
+
+/-- Change report identifiers using the core molecular correspondence. -/
+def renameRow (r : AtomMap i j) (row : Nat × Option RingNestedActivePair.Labels) :=
+  (if h : row.1 < i.certified.certified.input.molecule.atomCount then
+    (r.atoms ⟨row.1,h⟩).val else row.1, row.2)
+
+end AtomMap
+
+open RingGeometryExchange (Marked)
+open RingActiveDistanceSchedule (Visible)
+
+/-- Exact raw record renumberings specialize the molecular correspondence. -/
+abbrev site (r : Renumbering i j) := AtomMap.site r.toAtomMap
+theorem visible (r : Renumbering i j) (q t : Site i) :
+    Visible (site r q) (site r t) ↔ Visible q t :=
+  AtomMap.visible r.toAtomMap q t
+@[simp] theorem site_back (r : Renumbering i j) (q : Site i) : site r.symm (site r q) = q :=
+  AtomMap.site_back r.toAtomMap q
+abbrev sites (r : Renumbering i j) := AtomMap.sites r.toAtomMap
+abbrev arm (r : Renumbering i j) := AtomMap.arm r.toAtomMap
+@[simp] theorem arm_back (r : Renumbering i j) (q : Arm i) : arm r.symm (arm r q) = q :=
+  AtomMap.arm_back r.toAtomMap q
+abbrev carrier (r : Renumbering i j) := AtomMap.carrier r.toAtomMap
+theorem mark (r : Renumbering i j) (a : i.certified.Atom) :
+    Marked (carrier r) a.val (r.atoms a).val :=
+  AtomMap.mark r.toAtomMap a
+theorem coordinates (r : Renumbering i j) (ok : LocalizedChemicalRing.coordinatesAdmitted i = true) :
+    LocalizedChemicalRing.coordinatesAdmitted j = true :=
+  AtomMap.coordinates r.toAtomMap ok
+abbrev presentation (r : Renumbering i j) := AtomMap.presentation r.toAtomMap
 /-- Separately admitted numberings publish identical frozen outcomes at corresponding sites. -/
 theorem publications (r : Renumbering i j) (coords : LocalizedChemicalRing.coordinatesAdmitted i = true)
     (q : Site i) :
@@ -553,12 +643,16 @@ theorem root_publications (r : Renumbering i j) (coords : LocalizedChemicalRing.
     RingGroupedPublication.state i (RingGroupedReport.origin i a) =
       RingGroupedPublication.state j (RingGroupedReport.origin j (r.atoms a)) := by
   have origin : site r (RingGroupedReport.origin i a) = RingGroupedReport.origin j (r.atoms a) :=
-    site_ext rfl rfl
+    RingGroupedReport.origin_unique _ rfl
   exact origin ▸ publications r coords (RingGroupedReport.origin i a)
 
 /-- Change the identifier of a report row. Every emitted identifier is in range. -/
 def renameRow (r : Renumbering i j) (row : Nat × Option RingNestedActivePair.Labels) :=
   (if h : row.1 < i.certified.certified.input.molecule.atomCount then (r.atoms ⟨row.1,h⟩).val else row.1, row.2)
+
+@[simp] theorem renameRow_toAtomMap (r : Renumbering i j)
+    (row : Nat × Option RingNestedActivePair.Labels) :
+    AtomMap.renameRow (r : AtomMap i j) row = renameRow r row := rfl
 
 /-- The complete selected report retains its query order and all assigned/refused values.
 The returned atom identifiers use the target numbering. -/
@@ -593,9 +687,9 @@ theorem centres_perm (r : Renumbering i j) :
   simp only [List.mem_map,Finset.mem_sort]
   constructor
   · rintro ⟨a,ha,rfl⟩
-    exact (center r ⟨a,ha⟩).property
+    exact (AtomMap.center r.toAtomMap ⟨a,ha⟩).property
   · intro hb
-    exact ⟨r.atoms.symm b,(center r.symm ⟨b,hb⟩).property,r.atoms.apply_symm_apply _⟩
+    exact ⟨r.atoms.symm b,(AtomMap.center r.symm.toAtomMap ⟨b,hb⟩).property,r.atoms.apply_symm_apply _⟩
 
 private def rendered (i : Input) (a : i.certified.Atom) :=
   (a.val, (RingGroupedPublication.state i (RingGroupedReport.origin i a)).getD none)

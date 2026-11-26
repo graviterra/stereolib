@@ -8,3 +8,17 @@ calculate chirality
 var mirror = {atomno=1}.chirality + {atomno=2}.chirality + {atomno=3}.chirality
 if (mirror != "sSR" || mirror.find("sSR") != 1) { throw "unexpected reflected oxirane and phosphorus assignments" }
 print "PHOSPHANE_PASS " + actual + " " + mirror
+
+load "validation/ring-chronology/PyramidalPhosphaneOxirane.mol"
+{atomno=6 or atomno=8}.element = "H"
+calculate chirality
+var opp = {atomno=1}.chirality + {atomno=2}.chirality + {atomno=3}.chirality
+print "PH_OPPOSITE=" + opp
+if (opp != "sRS") { throw "opposite P-H arms" }
+{atomno=8}.xyz = {-3 0 2}
+calculate chirality
+var root = {atomno=1}.chirality
+var ends = {atomno=2}.chirality + {atomno=3}.chirality
+print "PH_SAME=" + root + "/" + ends
+if (root != "" || ends != "RR") { throw "same P-H arms" }
+print "PH_EXPLICIT_CONTROLS_PASS"

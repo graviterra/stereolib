@@ -7,3 +7,30 @@ for (var i=8; i <= 15; i++) { letters += {atomno=i}.chirality }
 if (letters != "RRSSRSRS") { throw "source auxiliary setup differs" }
 if ({atomno=1}.chirality != "") { throw "unexpected source root assignment" }
 print "CROSS_PARENT_PASS"
+
+# Atom numbers are one-based in Jmol. Exchanging F and Cl coordinates
+# inverts one leaf while preserving all bonds and the central frame.
+function flipLeaf(f, cl) {
+  var a = {atomno=f}.xyz
+  var b = {atomno=cl}.xyz
+  {atomno=f}.xyz = b
+  {atomno=cl}.xyz = a
+}
+function expectHands(expected, rootHand) {
+  calculate chirality
+  var leafHands = ""
+  for (var j=8; j <= 15; j++) { leafHands += {atomno=j}.chirality }
+  if (leafHands != expected) { throw "unexpected leaf population" }
+  if ({atomno=1}.chirality != rootHand) { throw "unexpected root hand" }
+}
+flipLeaf(22,23)
+expectHands("RRRSRSRS","R")
+select all
+invertSelected POINT {0 0 0}
+expectHands("SSSRSRSR","S")
+invertSelected POINT {0 0 0}
+flipLeaf(28,29)
+expectHands("RRRSSSRS","r")
+invertSelected POINT {0 0 0}
+expectHands("SSSRRRSR","r")
+print "MAJORITY_REFERENCE_PASS"

@@ -41,7 +41,7 @@ private theorem nat_lt (a b : List Nat) : compare a b = .lt ↔ a < b :=
   DeclarativeCIP.compareLex_eq_lt_iff_of compare (fun _ _ => compare_lt_iff_lt)
     (fun _ _ => Std.compare_eq_eq_iff_eq) a b
 
-private theorem word_lt (a b : List Word) : compare a b = .lt ↔ a < b :=
+theorem word_lt (a b : List Word) : compare a b = .lt ↔ a < b :=
   DeclarativeCIP.compareLex_eq_lt_iff_of compare
     (DeclarativeCIP.compareLex_eq_lt_iff_of compare nat_lt (fun _ _ => Std.compare_eq_eq_iff_eq))
     (fun _ _ => Std.compare_eq_eq_iff_eq) a b
@@ -175,7 +175,7 @@ private theorem position_order {κ : Type} [LinearOrder κ] {w : Slot → κ} (i
     exact absurd (before other) (not_le.mpr lt)
 
 /-- Parity of the sorting permutation from the six comparisons of the keys. -/
-private theorem sorted_parity {κ : Type} [LinearOrder κ] {w : Slot → κ} (inj : Function.Injective w)
+theorem sorted_parity {κ : Type} [LinearOrder κ] {w : Slot → κ} (inj : Function.Injective w)
     {row : List Slot} (legal : Legal w (List.finRange 4) row)
     (test : Slot → Slot → Bool) (law : ∀ j k, j ≠ k → (w j < w k ↔ test j k = true)) :
     RingJointObservations.parity ⟨row,legal.perm⟩ =
@@ -194,7 +194,7 @@ private theorem sorted_parity {κ : Type} [LinearOrder κ] {w : Slot → κ} (in
   change RawMolecule.permutationIsEven (row.map Fin.val) = _
   rw [← parity row (List.mem_permutations'.mpr legal.perm),count]
 
-private theorem strict_orientation {α : Type} [Ord α] [Std.LawfulEqOrd α] (key : Slot → α)
+theorem strict_orientation {α : Type} [Ord α] [Std.LawfulEqOrd α] (key : Slot → α)
     (inj : Function.Injective key) :
     RingOrientation.orientation key =
       if LocalizedChemicalRing.ConstitutionalPartition.pairs.countP
@@ -391,3 +391,6 @@ assert_kernel_only TetraStereo.Engine.RingFullPathConstitution.strict_centre
 assert_kernel_only TetraStereo.Engine.RingFullPathConstitution.early_publish
 assert_kernel_only TetraStereo.Engine.RingFullPathConstitution.fast_state
 assert_kernel_only TetraStereo.Engine.RingFullPathConstitution.fast_report_exact
+
+assert_kernel_only TetraStereo.Engine.RingFullPathConstitution.sorted_parity
+assert_kernel_only TetraStereo.Engine.RingFullPathConstitution.strict_orientation

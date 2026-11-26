@@ -1,0 +1,10 @@
+load "validation/ring-chronology/OriginMetricSpiro.mol"
+if ({*}.count != 13 || {*}.bonds.count != 16) { throw "unexpected spiro graph" }
+calculate chirality
+var actual = {atomno=1}.chirality
+select *
+invertSelected POINT {0 0 0}
+calculate chirality
+var reflected = {atomno=1}.chirality
+if (actual.find("R") != 1 || reflected.find("S") != 1) { throw "unexpected spiro root assignment" }
+print "SPIRO_ROOT_PASS " + actual + " " + reflected

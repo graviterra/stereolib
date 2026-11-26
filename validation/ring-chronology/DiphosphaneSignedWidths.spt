@@ -1,0 +1,11 @@
+load "validation/ring-chronology/DiphosphaneSignedWidths.mol"
+calculate chirality
+var actual = {atomno=1}.chirality + {atomno=2}.chirality + {atomno=3}.chirality + {atomno=6}.chirality + {atomno=8}.chirality
+print "DIPHOSPHANE_ORIGINAL=" + actual
+select *
+invertSelected POINT {0 0 0}
+calculate chirality
+var refl = {atomno=1}.chirality + {atomno=2}.chirality + {atomno=3}.chirality + {atomno=6}.chirality + {atomno=8}.chirality
+print "DIPHOSPHANE_MIRROR=" + refl
+if (actual.find("sRSRS") != 1 || refl.find("sSRSR") != 1 || actual.length != 5 || refl.length != 5) { throw "unexpected diphosphane chirality" }
+print "SIGNED_WIDTHS_PASS"

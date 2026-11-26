@@ -20,7 +20,7 @@ test "$(sha256sum "$guava" | cut -d' ' -f1)" = a82f12e66fe140d9180b67ba136cd5b23
 git -C "$checkout" archive "$commit" core/src/main/java/com | tar -x -C "$dest/core"
 lake env lean --run "$probe/ExportInputs.lean" > "$dest/frames.txt"
 rg --files "$dest/core" -g '*.java' | sort > "$dest/sources.txt"
-java -Xmx512m -jar /usr/share/java/eclipse-jdt-core-compiler-batch.jar -1.8 -proc:none -warn:none \
+java -Xmx512m -jar "${ECJ_JAR:-/usr/share/java/eclipse-jdt-core-compiler-batch.jar}" -1.8 -proc:none -warn:none \
   -cp "$guava" -d "$dest/classes" @"$dest/sources.txt" "$probe/CentresProbe.java"
 java -Xmx512m -cp "$dest/classes:$guava" CentresProbe "$dest/frames.txt" \
   > "$dest/reports.txt" 2> "$dest/diagnostics.txt"

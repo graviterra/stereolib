@@ -24,10 +24,10 @@ def centres? (i : Input) := forAtoms? i (RingGroupedReport.centres i)
 /-- Report on carbon atoms in input order. -/
 def carbons? (i : Input) := forAtoms? i (RingGroupedReport.carbons i)
 
-private def resolve (i : Input) (ids : List Nat) : Option (List i.certified.Atom) :=
+def resolve (i : Input) (ids : List Nat) : Option (List i.certified.Atom) :=
   ids.mapM fun id => if h : id < i.certified.certified.input.molecule.atomCount then some ⟨id,h⟩ else none
 
-private theorem resolve_iff (i : Input) (ids : List Nat) (atoms : List i.certified.Atom) :
+theorem resolve_iff (i : Input) (ids : List Nat) (atoms : List i.certified.Atom) :
     resolve i ids = some atoms ↔ atoms.map Fin.val = ids := by
   induction ids generalizing atoms with
   | nil => cases atoms <;> simp [resolve]

@@ -1,6 +1,8 @@
 import TetraStereo.Engine.RingRebuiltStereo
 import TetraStereo.Engine.PublicAPI
 import TetraStereo.Engine.RingFullPathEligibility
+import TetraStereo.Engine.RingStereoSphereInventory
+import TetraStereo.Engine.RingSparseTwinReport
 
 open TetraStereo.OneCenter TetraStereo.Engine
 
@@ -77,8 +79,54 @@ private def entry (i : Input) (geom : LocalizedChemicalRing.coordinatesAdmitted 
 
 def main (args : List String) : IO Unit := do
   let (m,g) ← IO.ofExcept (parse (include_str "Rule4bCrossParent.mol"))
+  if args == ["--majority-controls"] then
+    let flipLeaf (points : List CartesianPoint3) (j : Nat) : IO (List CartesianPoint3) := do
+      let f := 15 + 3*j
+      let some fluorine := points[f]? | throw (IO.userError "missing fluorine")
+      let some chlorine := points[f+1]? | throw (IO.userError "missing chlorine")
+      return (points.set f chlorine).set (f+1) fluorine
+    let majority ← flipLeaf g 2
+    let opposite ← flipLeaf majority 4
+    for (points,expected) in [(majority,(.chiral .R,.chiral .S)),
+        (opposite,(.pseudoasymmetric .r,.pseudoasymmetric .r))] do
+      let rows := ringMolecularReportFromRaw? m ⟨points⟩ [0]
+      unless rows == some [(0,some expected)] do throw (IO.userError s!"majority report {repr rows}")
+      IO.println s!"Majority control: {repr expected}"
+      (← IO.getStdout).flush
+    return
   let some i := LocalizedChemicalRing.admitRawSpatial? m ⟨g⟩ | throw (IO.userError "structure")
   if geom : LocalizedChemicalRing.coordinatesAdmitted i = true then
+    if args == ["--sphere-inventory"] then
+      if h : 0 < i.certified.certified.input.molecule.atomCount then
+        let root : i.certified.Atom := ⟨0,h⟩
+        let f := RingGroupedReport.origin i root
+        let rows := RingSparseTwinReport.audit i root 0
+        unless rows.length == 8 do throw (IO.userError "unexpected auxiliary count")
+        for (q,cell) in rows do
+          let some a := q.val.node.current? | throw (IO.userError "missing auxiliary atom")
+          unless 7 ≤ a.val && a.val < 15 do throw (IO.userError "unexpected auxiliary atom")
+          let s : RS := if [7,8,11,13].contains a.val then .R else .S
+          unless cell == some (some (.chiral s,.chiral s.swap)) do
+            throw (IO.userError s!"wrong public hand at {a.val}")
+        IO.println "All eight public auxiliary cells agree with the specified leaf hands."
+        (← IO.getStdout).flush
+        let read := RingSphereQueue.reader root (RingSphereQueue.viewOf rows)
+        let arms := (RingSecondShellDecision.armsFast i f).filter fun a =>
+          (a.occurrence.val.node.current?.map Fin.val).any fun id => id == 1 || id == 2
+        unless arms.length == 2 do throw (IO.userError "missing nitrogen ligand")
+        for rev in [false,true] do
+          for arm in arms do
+            for stages in [[],[RingRetainedStereoRefinement.Observation.lowercase]] do
+              let some spheres := RingStereoSphereInventory.inventory? i read rev stages arm
+                | throw (IO.userError "missing sphere inventory")
+              for seed in [RS.R,RS.S] do
+                let bits := RingStereoSphereInventory.reading seed spheres
+                unless bits == [true,true,false,false] do
+                  throw (IO.userError s!"unexpected inventory reading {repr bits}")
+          IO.println s!"Mirror={rev}. Both arms read 1100 with each reference through Rule 4a and through Rule 4c."
+          (← IO.getStdout).flush
+      else throw (IO.userError "empty molecule")
+      return
     let sites := (RingActiveDistanceSchedule.sites i).filter fun q => q.val.root.val == 0
     let get (path : List Nat) : IO (Site i) := do
       let some q := sites.find? (fun q => q.val.node.history.map Fin.val == path && q.val.node.provenance == .realAtom)

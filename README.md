@@ -5,75 +5,79 @@
 Stereolib uses Lean 4 to check how the Cahn–Ingold–Prelog (CIP) sequence rules and a molecule’s
 three-dimensional geometry determine a tetrahedral descriptor. For a restricted class of
 acyclic molecules, the evaluator has a proof for its entire report, including justified
-refusals. For rings, the public full-path molecular evaluator now derives its recursive report from
-molecular path priorities, coordinate readings and deeper auxiliary assignments. A reachable
-41-atom counterexample distinguishes it from the existing grouped report. Two admitted molecular witnesses disprove chemical completeness of the current public full-path
-profile. Its internal source/report proofs remain valid.
+refusals. For rings, the public molecular API completes ordinary hydrogens, supplies selected pyramidal
+frames and returns a report only when all admitted orientations of unplaced P–H bonds agree.
+Its recursive source and presentation theorems characterize this named procedure. Independent
+chemical fidelity remains open: an admitted spiro witness reverses its final carbon descriptor
+when auxiliary Rule 1b distances are measured from the active focus instead of the original root.
 
 [Ring proof status](RING_STATUS.md) · [Run or replay the ring evaluator](docs/ring-evaluator.md) ·
 [Proved acyclic results](#what-is-proved) · [Collaborate](#collaborate)
 
-## Ring results as of 24 November 2026
+## Ring results as of 25 November 2026
 
 | Result | What the evidence establishes |
 | --- | --- |
-| Recursive full-path source report | Every requested atom has a unique complete source-derived result on admitted coordinates, including refusals and repeated requests. [Report theorem](TetraStereo/Engine/RingFullPathReport.lean) |
+| Recursive full-path source report | On one admitted, prepared geometry, each requested atom has a unique source-derived result, including refusals and repeated requests. [Report theorem](TetraStereo/Engine/RingFullPathReport.lean) |
 | Reachable Rule 4b discrepancy | The grouped root assigns R/S on a 41-atom ring while whole-sphere full-path ordering leaves it unassigned. The eight frozen auxiliary hands agree. [Molecular control](validation/ring-chronology/Rule4bCrossParent.lean) |
-| Presentation invariance | Permuting bond records preserves complete grouped reports and selected grouped/cached reports under the theorem's admission hypotheses. [Graph theorem](TetraStereo/Engine/RingBondRecordOrder.lean) |
+| Public presentation invariance | Bond-list permutations preserve the raw public request through hydrogen placement and consensus, including failure and invalid IDs. Independently admitted presentations may also vary stored neighbor order under the theorem's graph and coordinate hypotheses. [Graph theorem](TetraStereo/Engine/RingBondRecordOrder.lean) |
 | A scheduled ligand comparison | When constitutional rules tie for a pair at an eligible occurrence, the grouped evaluator derives the first deciding stereochemical rule, or a tie, and its signed score on the original and reflected geometries. [Lean theorem](TetraStereo/Engine/RingGroupedStereo.lean#L323) |
 | A change of deciding rule | On a 17-atom ring fixture, Rule 5 gives +2 on the original geometry and −2 on its reflection. Exchanging two coordinates makes Rule 4b decide with −1 on both. [Executable control](validation/ring-chronology/GroupedStereo.lean) |
 | A 31-atom ring with frozen auxiliary labels | The grouped comparison returns the expected scores for Rules 4a, 4b, 4c and 5, and for a complete tie. A variant with constitutionally matched sibling branches checks both a Rule 4b decision and a tie. [Fixture and assertions](TetraStereo/Examples/RingRetainedUnitControl.lean) |
 | Exact reports for the regenerated profile | Under the stated admission and calibration hypotheses, independently specified priorities determine the letter, casing or refusal at every detected centre for this reference policy. [Exact report certificate](TetraStereo/Engine/LocalizedChemicalRingExactCertificate.lean) |
 | A limit of the pinned Centres 1.0 procedure | Renumbering two carbons changes its fluorospiro descriptor from `S` to `s`. The independent ring-pair calculation gives `S` under both numberings and `R` on reflection. [Renumbering witness](TetraStereo/Examples/CentresRingSpiroCasing.lean) · [Molecular calculation](TetraStereo/Examples/RingTwoPairFluorospiro.lean) |
 
-The [public molecular report](TetraStereo/Engine/RingMolecularReport.lean) has a finite recursive
-source derivation for every requested atom on admitted coordinates, with request order and
-duplicates preserved. At each reachable frame it derives both geometries' ordinary priorities,
-Rule 5 comparisons, complete promotion trials and coordinate hands. Opposite trial votes cancel;
-the two surviving hands determine letter and case. Every site completes, including refusals.
-[Publication theorem](TetraStereo/Engine/RingFullPathPublication.lean)
+The public `Engine.ringMolecularReportFromRaw?` is
+[`RingHydrogenReport.fromRaw?`](TetraStereo/Engine/RingHydrogenReport.lean). It completes ordinary
+hydrogens and evaluates the whole requested list over the orientations of unplaced P–H bonds.
+A successful result preserves zero-based requested IDs, order, repeats and completed refusals.
+Outer `none` includes invalid admission or coordinates, invalid IDs, and disagreement or failed
+admission among the placement readings. A completed refusal remains `(id, none)` inside a
+successful report. [Domain characterization](TetraStereo/Engine/RingHydrogenReportDomain.lean) ·
+[Public aliases](TetraStereo/Engine/PublicAPI.lean)
 
-Import `TetraStereo.Engine.PublicAPI` and call `Engine.ringMolecularReportFromRaw?` with a raw
-molecule, exact coordinates and zero-based atom IDs. Its raw-to-graph theorem derives every
-requested row along simple bonded paths, including the deeper auxiliary reads. Invalid input,
-inadmissible coordinates or an out-of-range ID fail the request; a row with no labels is a
-completed refusal. [Raw API and graph theorem](TetraStereo/Engine/RingMolecularReport.lean)
+The current procedure repairs the earlier mixed explicit/implied hydrogen cyclopropane witness
+and the missing phosphorus auxiliaries in the oxirane witness. The former now refuses; the latter
+returns carbon s/s and phosphorus R/S then S/R. Selected pyramidal frames include neutral
+three-coordinate P, As and Sb, and structurally selected bridgehead and N-alkyl oxaziridine
+nitrogen. These are scoped eligibility rules, not a universal inventory of stable centres.
+[Chemical controls](validation/ring-chronology/LocalRuleCoverage.lean) ·
+[Frame selector](TetraStereo/Engine/RingPyramidalPublication.lean)
 
-Four distinct constitutional ranks decide a centre before any stereo suffix or promotion is
-read. The same zero-duplicate-mass shortcut applies at each queued auxiliary; ties use the
-full-path rule on its frozen store. Lean proves the fast state and report equal the full-path
-source procedure without appealing to grouped publication.
-[Constitutional theorem](TetraStereo/Engine/RingFullPathConstitution.lean)
+The public recursion uses full-path whole-sphere Rule 4b ordering. On its ready molecular store,
+the reference-population and four-list procedures give the same score for valid arms tied through
+Rule 4a. A signed priority-path inventory reconstructs complete ordinary ties and strict
+priorities. These results retain the evaluator's earlier priorities and auxiliary readings.
+The separate grouped API keeps parent-by-parent traversal: on the 41-atom control it assigns R/S
+where the public full-path report refuses, despite the same eight leaf hands.
+[Population theorem](TetraStereo/Engine/RingPopulationReport.lean) ·
+[Inventory report](TetraStereo/Engine/RingStereoInventoryReport.lean) ·
+[Cross-parent control](validation/ring-chronology/Rule4bCrossParent.lean)
 
-The public grouped API retains its parent-by-parent Rule 4b traversal. On a reachable frozen
-state, it assigns R/S to a 41-atom ring where whole-sphere full-path comparison leaves the root
-unassigned. Both see the same eight auxiliary hands; the difference is their cross-parent
-ordering. Earlier grouped/rebuilt equality proofs remain valid for that procedure.
-[Counterexample](validation/ring-chronology/Rule4bCrossParent.lean) ·
-[Full-path graph derivation](TetraStereo/Engine/RingFullPathPairs.lean)
+**Rule 1b after rerooting remains a chemical interpretation question.** On a hydrogen-complete
+13-atom spiro graph, the public original-root distance convention gives R/S; the alternative
+active-focus convention gives S/R. Four auxiliary readings change. Pinned Centres with the same
+policy change reproduces the reversal; Jmol agrees with the public convention on these coordinates.
+Agreement of programs does not settle the normative choice. Lean proves store/report equality on
+specified graph domains and locates the changed auxiliary occurrence when final reports differ.
+[Coordinate witness and trace](validation/ring-chronology/OriginMetricSpiro.lean) ·
+[Alternative raw evaluator](TetraStereo/Engine/RingOriginMetricReport.lean) ·
+[Disagreement theorem](TetraStereo/Engine/RingOriginCausal.lean)
 
-At the original root, the graph proof now justifies skipping Rule 6 with fewer than three
-root duplicates. Bond-record permutations preserve complete grouped reports and selected
-cached reports. These invariance results do not assign an absolute descriptor to the admitted
-single-bond derivative used to expose Jmol's presentation defect.
-[Root-return theorem](TetraStereo/Engine/RingRootReturn.lean) ·
-[Bond-order theorem](TetraStereo/Engine/RingBondRecordOrder.lean)
+An auxiliary mismatch need not change a final descriptor. The VS084 fixture, using published
+one-based atom numbers, finds R versus S on path 4–5–6–7–1–2–3 in batch 4 for root 4,
+while that root keeps S/R. Its strict constitutional order fixes the root independently of
+auxiliary stores; root 1 has store agreement. The fixture records the computation, and a separate
+Lean theorem proves immunity of strict constitutional tetrahedral roots. The remaining challenge
+is determining which disagreements propagate at roots whose constitution ties.
+[VS084 replay](validation/ring-chronology/OriginTwinVS084.lean) ·
+[Strict-root theorem](TetraStereo/Engine/RingOriginTwinStore.lean)
 
-**The current public profile is chemically incomplete on its admitted domain.** In
-1-bromo-1-fluorocyclopropane, the substituted carbon correctly refuses when zero or four H atoms
-are explicit vertices, but gives S/R when only one CH₂ arm's hydrogens are vertices. The two
-chemical ring arms remain equivalent. In an all-explicit oxirane bearing two mirror-related
-P(F)(Cl) arms, the carbon should give lowercase s/s and the phosphorus atoms R/S then S/R;
-the public report refuses at all three atoms on both geometries.
-[Lean witnesses](validation/ring-chronology/LocalRuleCoverage.lean) ·
-[Hydrogen semantics: Blue Book P-92.1.2.1](https://iupac.qmul.ac.uk/BlueBook/P9.html#92010201) ·
-[Pyramidal phosphorus: P-93.3.4.1](https://iupac.qmul.ac.uk/BlueBook/P9.html#93030401) ·
-[Rule 5](https://iupac.qmul.ac.uk/BlueBook/P9.html#9206)
-
-A future repaired profile must reconcile explicit and implied hydrogens and provide pyramidal
-auxiliary frames before seeking a universal chemical theorem. Internal-edge priorities, rule
-applicability, broader domain coverage and external source review remain further obligations.
-[Strict replay and limits](docs/ring-evaluator.md#chemical-counterexamples)
+The accumulated-reference regenerated, grouped, public hydrogen-consensus and pinned Centres
+procedures remain distinct. Internal source exactness does not establish full CIP correctness.
+Independent justification of internal-edge priorities, rule applicability, centre coverage,
+reference lifetime, promotion decisions and external source approval remains open.
+See [ring status](RING_STATUS.md) and the [API guide](docs/ring-evaluator.md).
 
 ## The proved connection
 
@@ -170,11 +174,11 @@ to chemistry is a separate scientific question, and we want experts to press on 
 ## The proof frontier
 
 The regenerated exact-source interface joins letters, casing and refusals for its named
-procedure. The separate full-path evaluator now has its own recursive molecular source theorem. The current profile's chemical completeness is disproved by the two admitted witnesses above.
-Its internal source derivation does not repair hydrogen presentation dependence or supply missing
-pyramidal auxiliary hands. A future repaired profile needs those changes and independent chemical
-justification of its local rules.
-See [RING_STATUS.md](RING_STATUS.md) and the [API guide](docs/ring-evaluator.md).
+procedure. The public hydrogen-consensus report has a separate recursive source characterization
+and presentation theorems. The earlier hydrogen and phosphorus failure cases are repaired;
+the rerooted Rule 1b witness exposes a remaining normative choice with observable final effects.
+Internal source derivations retain their local definitions and do not establish independent
+chemical fidelity. See [RING_STATUS.md](RING_STATUS.md) and the [API guide](docs/ring-evaluator.md).
 
 The domain hypotheses, including single bonds and constant formal charge, also need separate
 extensions toward the intended molecular domain. The earlier acyclic results and fixture above
@@ -220,7 +224,7 @@ in the result field. Counterexamples are useful without a repair. See
 Sources live in [OneCenter](TetraStereo/OneCenter) (models, algorithms, proofs),
 [Engine](TetraStereo/Engine), [Certificate](TetraStereo/Certificate),
 [Examples](TetraStereo/Examples) and [UniversalProof](TetraStereo/UniversalProof). The
-[module inventory](source-modules.json) records 4,414 maintained Lean modules, or 4,415 source
+[module inventory](source-modules.json) records 4,617 maintained Lean modules, or 4,618 source
 files with the umbrella. A module count is
 not a theorem count, and the words "complete" or
 "universal" in a name do not override the hypotheses of its declarations.
