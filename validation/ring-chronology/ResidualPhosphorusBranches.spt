@@ -1,0 +1,65 @@
+load "validation/ring-chronology/ResidualPhosphorusBranches.mol"
+for (var trial = 0; trial < 2; trial++) {
+  if (trial == 1) { {atomno=33}.xyz = {32 256 2048} }
+  for (var rev = 0; rev < 2; rev++) {
+    calculate chirality
+    var rootHand = {atomno=1}.chirality
+    var tips = ""
+    for (var n = 10; n <= 17; n++) { tips += {atomno=n}.chirality }
+    if (trial == 0 && (rootHand != "" || (rev == 0 && tips != "SSRRSRSR") || (rev == 1 && tips != "RRSSRSRS"))) { throw "balanced branches" }
+    if (trial == 1 && ((rev == 0 && rootHand + tips != "RSSRRSRSS") || (rev == 1 && rootHand + tips != "SRRSSRSRR"))) { throw "one phosphorus inverted" }
+    select *
+    invertSelected POINT {0 0 0}
+  }
+}
+
+
+# Enumerate all eight phosphorus hands. Each mask sets the eight chlorine positions.
+for (var mask = 0; mask < 256; mask++) {
+  var qmask = mask
+  var wanted = ""
+  var nleft = 0
+  var nright = 0
+  var weight = 128
+  for (var k = 7; k >= 0; k--) {
+    var b = qmask >= weight
+    if (b) { qmask = qmask-weight }
+    weight = weight/2
+    var t = 18 + 2*k
+    var c = 9+k
+    var cl = point(t,t*t/4,t*t*t/16)
+    if (b) {
+      cl = point(2*c-t,(2*c*c-t*t)/4,(2*c*c*c-t*t*t)/16)
+      wanted = "R"+wanted
+      if (k < 4) { nleft++ } else { nright++ }
+    } else { wanted = "S"+wanted }
+    var anum = t+1
+    {atomno=anum}.xyz = cl
+  }
+  var leftBest = nleft
+  var rightBest = nright
+  if (leftBest < 2) { leftBest = 4-nleft }
+  if (rightBest < 2) { rightBest = 4-nright }
+  var orig = ""
+  var refl = ""
+  if (leftBest > rightBest) { orig = "S"; refl = "R" }
+  if (rightBest > leftBest) { orig = "R"; refl = "S" }
+  if (leftBest == rightBest && nleft > nright) { orig = "s"; refl = "s" }
+  if (leftBest == rightBest && nright > nleft) { orig = "r"; refl = "r" }
+  for (var rev = 0; rev < 2; rev++) {
+    calculate chirality
+    var rootHand = {atomno=1}.chirality
+    var expectation = (rev == 0 ? orig : refl)
+    var tips = ""
+    for (var n = 10; n <= 17; n++) { tips += {atomno=n}.chirality }
+    if (rootHand != expectation || tips != wanted) {
+      print "mismatch " + mask + " " + rev + " " + rootHand + "/" + expectation + " " + tips + "/" + wanted
+      throw "phosphorus configuration"
+    }
+    wanted = wanted.replace("R","x").replace("S","R").replace("x","S")
+    select *
+    invertSelected POINT {0 0 0}
+  }
+}
+print "PHOSPHORUS_512_PASS"
+print "RESIDUAL_BRANCHES_PASS"

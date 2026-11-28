@@ -354,11 +354,14 @@ theorem public_of_constitution (base : Input) (target : base.molecule = source 7
   intro valid a small
   obtain ⟨fr,⟨cert⟩⟩ := frames a small
   have nonP : RingPyramidalPublication.phosphorus base a = false := by
-    have carbon : (base.molecule.atoms[a.val]?).any (fun atom =>
-        atom.element == .P && atom.charge == 0 && !atom.aromatic) = false := by
+    have carbon : (base.molecule.atoms[a.val]?).map AtomSpec.element = some .C := by
       rw [target]
       rcases (by omega : a.val = 0 ∨ a.val = 1) with h | h <;> rw [h] <;> decide
-    simp [RingPyramidalPublication.phosphorus,carbon]
+    cases found : base.molecule.atoms[a.val]? with
+    | none => simp [found] at carbon
+    | some recd =>
+      have element : recd.element = .C := by simpa [found] using carbon
+      simp [RingPyramidalPublication.phosphorus,found,element]
   have tetra : RingPyramidalPublication.focusP base (RingGroupedReport.origin base a) = none := by
     change (some a).filter (RingPyramidalPublication.phosphorus base) = none
     simp [Option.filter,nonP]

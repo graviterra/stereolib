@@ -82,16 +82,22 @@ def molecule_record(corpus, name, directory):
     return path, fields
 
 
-def pinned_inputs(directory):
+def pinned_jmol_inputs(directory):
+    """Prepare the pinned Jmol runtime and launcher without requiring a corpus."""
     jar = pinned(Path(os.environ.get("JMOL_JAR", str(REPLAY / "jmol.jar"))), "6d760b21af0c87ba5e6b6304f7c37b96f7412700a40e07b524402cc22914cf07")
     sources = pinned(Path(os.environ.get("JMOL_SOURCES", str(REPLAY / "sources.jar"))), "6298864075f2aa2502b676219db455ba5da4f1f324d22355ae83dfb29b927ae9")
-    corpus = pinned(Path(os.environ.get("HANSON_SDF", str(ROOT / ".cache" / "compounds_3d.sdf"))),
-                    "28a000b36506dabe5a45f6d7672451c61c6e34f3e0f027f2599000d850273325")
     with ZipFile(sources) as archive:
         launcher = directory / LAUNCHER
         launcher.parent.mkdir(parents=True)
         launcher.write_bytes(archive.read(LAUNCHER))
         original = archive.read(CIP).decode().replace("\r\n", "\n")
+    return jar, original
+
+
+def pinned_inputs(directory):
+    jar, original = pinned_jmol_inputs(directory)
+    corpus = pinned(Path(os.environ.get("HANSON_SDF", str(ROOT / ".cache" / "compounds_3d.sdf"))),
+                    "28a000b36506dabe5a45f6d7672451c61c6e34f3e0f027f2599000d850273325")
     return jar, corpus, original
 
 

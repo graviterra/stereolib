@@ -1,0 +1,128 @@
+# One near tip and two farther tips per boron arm.
+data "model mol"
+layered phosphorus branches
+  TetraStereo       3D
+
+ 25 25  0  0  0  0            999 V2000
+    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0
+    1.0000    0.2500    0.0625 O   0  0  0  0  0  0  0  0  0  0  0  0
+    2.0000    1.0000    0.5000 S   0  0  0  0  0  0  0  0  0  0  0  0
+    3.0000    2.2500    1.6875 B   0  0  0  0  0  0  0  0  0  0  0  0
+    4.0000    4.0000    4.0000 B   0  0  0  0  0  0  0  0  0  0  0  0
+    5.0000    6.2500    7.8125 B   0  0  0  0  0  0  0  0  0  0  0  0
+    6.0000    9.0000   13.5000 B   0  0  0  0  0  0  0  0  0  0  0  0
+    7.0000   12.2500   21.4375 P   0  0  0  0  0  0  0  0  0  0  0  0
+    8.0000   16.0000   32.0000 P   0  0  0  0  0  0  0  0  0  0  0  0
+    9.0000   20.2500   45.5625 P   0  0  0  0  0  0  0  0  0  0  0  0
+   10.0000   25.0000   62.5000 P   0  0  0  0  0  0  0  0  0  0  0  0
+   11.0000   30.2500   83.1875 P   0  0  0  0  0  0  0  0  0  0  0  0
+   12.0000   36.0000  108.0000 P   0  0  0  0  0  0  0  0  0  0  0  0
+   13.0000   42.2500  137.3125 F   0  0  0  0  0  0  0  0  0  0  0  0
+   14.0000   49.0000  171.5000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+   15.0000   56.2500  210.9375 F   0  0  0  0  0  0  0  0  0  0  0  0
+   16.0000   64.0000  256.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+   17.0000   72.2500  307.0625 F   0  0  0  0  0  0  0  0  0  0  0  0
+   18.0000   81.0000  364.5000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+   19.0000   90.2500  428.6875 F   0  0  0  0  0  0  0  0  0  0  0  0
+   20.0000  100.0000  500.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+   21.0000  110.2500  578.8125 F   0  0  0  0  0  0  0  0  0  0  0  0
+   22.0000  121.0000  665.5000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+   23.0000  132.2500  760.4375 F   0  0  0  0  0  0  0  0  0  0  0  0
+   24.0000  144.0000  864.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0
+  1  2  1  0  0  0  0
+  2  3  1  0  0  0  0
+  3  1  1  0  0  0  0
+  1  4  1  0  0  0  0
+  1  5  1  0  0  0  0
+  4  6  1  0  0  0  0
+  5  7  1  0  0  0  0
+  4  8  1  0  0  0  0
+  5  9  1  0  0  0  0
+  6 10  1  0  0  0  0
+  6 11  1  0  0  0  0
+  7 12  1  0  0  0  0
+  7 13  1  0  0  0  0
+  8 14  1  0  0  0  0
+  8 15  1  0  0  0  0
+  9 16  1  0  0  0  0
+  9 17  1  0  0  0  0
+ 10 18  1  0  0  0  0
+ 10 19  1  0  0  0  0
+ 11 20  1  0  0  0  0
+ 11 21  1  0  0  0  0
+ 12 22  1  0  0  0  0
+ 12 23  1  0  0  0  0
+ 13 24  1  0  0  0  0
+ 13 25  1  0  0  0  0
+M  END
+end "model mol";
+for (var mask = 0; mask < 64; mask++) {
+  var qmask = mask
+  var wanted = ""
+  var nearL = 0
+  var nearR = 0
+  var farL = 0
+  var farR = 0
+  var weight = 32
+  for (var k = 5; k >= 0; k--) {
+    var b = qmask >= weight
+    if (b) { qmask = qmask-weight }
+    weight = weight/2
+    var t = 14 + 2*k
+    var c = 7+k
+    var cl = point(t,t*t/4,t*t*t/16)
+    if (b) {
+      cl = point(2*c-t,(2*c*c-t*t)/4,(2*c*c*c-t*t*t)/16)
+      wanted = "R"+wanted
+      if (k == 0) { nearL = 1 }
+      if (k == 1) { nearR = 1 }
+      if (k == 2 || k == 3) { farL++ }
+      if (k == 4 || k == 5) { farR++ }
+    } else { wanted = "S"+wanted }
+    var anum = t+1
+    {atomno=anum}.xyz = cl
+  }
+  var leftBest = (nearL == 1 ? farL : 2-farL)
+  var rightBest = (nearR == 1 ? farR : 2-farR)
+  var orig = ""
+  var refl = ""
+  if (leftBest > rightBest) { orig = "S"; refl = "R" }
+  if (rightBest > leftBest) { orig = "R"; refl = "S" }
+  if (leftBest == rightBest && nearL > nearR) { orig = "s"; refl = "s" }
+  if (leftBest == rightBest && nearR > nearL) { orig = "r"; refl = "r" }
+  for (var rev = 0; rev < 2; rev++) {
+    calculate chirality
+    var rootHand = {atomno=1}.chirality
+    var expectation = (rev == 0 ? orig : refl)
+    var tips = ""
+    for (var n = 8; n <= 13; n++) { tips += {atomno=n}.chirality }
+    if (rootHand != expectation || tips != wanted) {
+      print "mismatch " + mask + " " + rev + " " + rootHand + "/" + expectation + " " + tips + "/" + wanted
+      throw "phosphorus configuration"
+    }
+    wanted = wanted.replace("R","x").replace("S","R").replace("x","S")
+    select *
+    invertSelected POINT {0 0 0}
+  }
+}
+print "LAYERED_PHOSPHORUS_128_PASS"
+
+# Split the rank of the far tips on each side by replacing one chlorine with bromine.
+{atomno=19 or atomno=23}.elemno = 35
+if ({bromine}.count != 2) { throw "bromine substitution" }
+{atomno=15}.xyz = {0 -24.5 -128.625}
+{atomno=17}.xyz = {0 -32.0 -192.0}
+{atomno=19}.xyz = {0 -40.5 -273.375}
+{atomno=21}.xyz = {20 100.0 500.0}
+{atomno=23}.xyz = {22 121.0 665.5}
+{atomno=25}.xyz = {0 -72.0 -648.0}
+for (var rev = 0; rev < 2; rev++) {
+  calculate chirality
+  var tips = ""
+  for (var n = 8; n <= 13; n++) { tips += {atomno=n}.chirality }
+  var expected = (rev == 0 ? "SRRRSSR" : "RSSSRRS")
+  if ({atomno=1}.chirality + tips != expected) { throw "mixed-path descriptor" }
+  select *
+  invertSelected POINT {0 0 0}
+}
+print "MIXED_PHOSPHORUS_PASS"

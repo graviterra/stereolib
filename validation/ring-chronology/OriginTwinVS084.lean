@@ -1,4 +1,5 @@
 import TetraStereo.Engine.RingOriginTwinStore
+import TetraStereo.Engine.RingStoreDecision
 /-! Hanson 3D validation molecule VS084. The V2000 coordinates were multiplied
 by 10,000 exactly. Atom 1 in that file is the zero-based request [0]. -/
 open TetraStereo.OneCenter TetraStereo.Engine
@@ -36,3 +37,12 @@ def main : IO Unit := do
       publicRoot == some (.chiral .S, .chiral .R) && activeRoot == publicRoot do
     throw (IO.userError "the published S root and its R reflection must survive the auxiliary disagreement")
   IO.println s!"VS084 atom 4 constitutional exit at the root: public {repr publicRoot}, active {repr activeRoot}"
+  match RingStoreDecision.scan (RingOriginIndexedKeys.publish i) r4 (n + 1) with
+  | .ok _ => throw (IO.userError "expected the first differing sphere")
+  | .error (batch,site) =>
+    unless batch == n && site == f do throw (IO.userError "unexpected first differing occurrence")
+  match RingStoreDecision.scan (RingPyramidalPublication.publish i) r4 (n + 1) with
+  | .error _ => throw (IO.userError "public self-comparison differed")
+  | .ok rows =>
+    unless rows == RingSphereStore.rows i r4 (n + 1) do throw (IO.userError "incorrect accepted rows")
+  IO.println s!"Verified first differing occurrence at batch {n + 1}, path {wanted}, and the public self-comparison"

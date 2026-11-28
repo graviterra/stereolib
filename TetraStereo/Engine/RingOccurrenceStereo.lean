@@ -1,5 +1,6 @@
 import TetraStereo.Engine.RingGroupedGeometry
 import TetraStereo.Engine.RingZeroDuplicateMass
+import TetraStereo.OneCenter.LocalizedSelectedRootReader
 
 /-! # Stereo comparisons by visits to molecular occurrences
 
@@ -56,9 +57,8 @@ private def Access.run {i : Input} (access : Access i) (r : Reader i) (rev : Boo
   | o::os,q => access.refinePass r rev o (access.run r rev os) (budget i q + 1) q
 
 private def accessFor (i : Input) (q : Arm i) : Access i :=
-  let slice := localizedRerootRootSliceCache (i.certified.localizedRerootCarrierCache
-    (i.certified.certified.input.molecule.atomCount+1)) q.occurrence.val.root
-  ⟨fun c => (slice.reader.readChildren c).getD [],RingRetainedChemicalTrace.keyWith i slice.reader⟩
+  let reader := SelectedRoot.reader i.certified (i.certified.certified.input.molecule.atomCount+1) q.occurrence.val.root
+  ⟨fun c => (reader.readChildren c).getD [],RingRetainedChemicalTrace.keyWith i reader⟩
 
 private theorem access_same (i : Input) (q : Arm i) :
     accessFor i q = ⟨kids i,RingRetainedChemicalTrace.key? i⟩ := by

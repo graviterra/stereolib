@@ -4,9 +4,9 @@ import com.simolecule.centres.config.Tetrahedral;
 
 /** Read one explicitly framed, root-zero graph; compare native and both metrics. */
 public final class CentresPublishedMetric {
-  public static void main(String[] args) throws Exception {
-    CentresProbe molecule = new CentresProbe("published");
-    for (String line : Files.readAllLines(Paths.get(args[0]))) {
+  static CentresProbe read(java.nio.file.Path file) throws Exception {
+    CentresProbe molecule = new CentresProbe(file.getFileName().toString());
+    for (String line : Files.readAllLines(file)) {
       String[] fields = line.split(" ");
       switch (fields[0]) {
         case "a":
@@ -19,7 +19,8 @@ public final class CentresPublishedMetric {
         case "f":
           molecule.frames.add(new int[] {
               Integer.parseInt(fields[1]),
-              fields[2].equals("R") ? Tetrahedral.RIGHT : Tetrahedral.LEFT,
+              switch (fields[2]) { case "R" -> Tetrahedral.RIGHT; case "S" -> Tetrahedral.LEFT;
+                default -> throw new IllegalArgumentException(line); },
               Integer.parseInt(fields[3]), Integer.parseInt(fields[4]),
               Integer.parseInt(fields[5]), Integer.parseInt(fields[6])});
           break;
@@ -27,6 +28,11 @@ public final class CentresPublishedMetric {
           throw new IllegalArgumentException(line);
       }
     }
+    return molecule;
+  }
+
+  public static void main(String[] args) throws Exception {
+    CentresProbe molecule = read(Paths.get(args[0]));
     String nativeLabel = CentresOxaziridineRoot.run(molecule, 0);
     String control = CentresAuxiliaryDistance.run(
         molecule, false, new CentresAuxiliaryDistance.Measurements(false));

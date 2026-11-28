@@ -1,0 +1,117 @@
+--- a/cdk/src/main/java/com/simolecule/centres/LabelCip.java
++++ b/cdk/src/main/java/com/simolecule/centres/LabelCip.java
+@@ -119,7 +119,13 @@
+   }
+ 
+   private static void processMol(IAtomContainer mol) {
++    System.err.println("@record " + mol.getTitle().split("\t")[0]);
++    com.simolecule.centres.rules.Rule1b.comparisons = 0;
++    com.simolecule.centres.rules.Rule1b.changed = 0;
++    com.simolecule.centres.rules.Rule1b.reversed = 0;
+     CdkLabeller.label(mol);
++    System.err.println("@counts " + com.simolecule.centres.rules.Rule1b.comparisons + " " +
++        com.simolecule.centres.rules.Rule1b.changed + " " + com.simolecule.centres.rules.Rule1b.reversed);
+     String actual = getCipKeys(mol);
+     if (cipKey != null) {
+       String expected = mol.getProperty(cipKey);
+--- a/core/src/main/java/com/simolecule/centres/Labeller.java
++++ b/core/src/main/java/com/simolecule/centres/Labeller.java
+@@ -111,6 +111,8 @@
+       }
+       Configuration<A, B> config = e.getValue();
+       Descriptor          label  = config.label(node, digraph, rules);
++      if (Boolean.getBoolean("cip.trace"))
++        System.err.println("@aux " + node.auditPath() + " " + label);
+       queue.put(node, label);
+     }
+ 
+--- a/core/src/main/java/com/simolecule/centres/Node.java
++++ b/core/src/main/java/com/simolecule/centres/Node.java
+@@ -41,6 +41,29 @@
+   private final short         atomicnumDen;
+   private       Descriptor    aux;
+   private int flags = 0;
++  private Node<A,B> constructionParent;
++  private Node<A,B> origin;
++
++  public String auditPath() {
++    java.util.LinkedList<Integer> path = new java.util.LinkedList<>();
++    for (Node<A,B> n = this; n != null; n = n.constructionParent)
++      path.addFirst(g.getMol().getAtomIdx(n.atom) + 1);
++    return path.toString();
++  }
++
++  public int auditedRingDistance(boolean active) {
++    if (origin == null || origin.dist != dist)
++      throw new AssertionError("unverified ring origin");
++    if (!active) return origin.dist;
++    Node<A,B> left = g.getCurrRoot(), right = origin;
++    int distance = 0;
++    while (left.dist > right.dist) { left = left.constructionParent; distance++; }
++    while (right.dist > left.dist) { right = right.constructionParent; distance++; }
++    while (left != right) {
++      left = left.constructionParent; right = right.constructionParent; distance += 2;
++    }
++    return distance + 1;
++  }
+ 
+ 
+   final         char[]           visit;
+@@ -76,7 +99,9 @@
+   {
+     final char[] visit = this.visit.clone();
+     visit[idx] = (char) (dist + 1);
+-    return new Node<>(g, visit, atom, g.getMol().getAtomicNum(atom), 1, dist + 1, 0);
++    Node<A,B> child = new Node<>(g, visit, atom, g.getMol().getAtomicNum(atom), 1, dist + 1, 0);
++    child.constructionParent = this;
++    return child;
+   }
+ 
+   Node<A, B> newTerminalChild(int idx, A atom, int flags)
+@@ -99,7 +124,14 @@
+       anum = g.getMol().getAtomicNum(atom);
+       aden = 1;
+     }
+-    return new Node<>(g, null, atom, anum, aden, dist, flags);
++    Node<A,B> child = new Node<>(g, null, atom, anum, aden, dist, flags);
++    if ((flags & RING_DUPLICATE) != 0) {
++      Node<A,B> p = this;
++      while (p != null && g.getMol().getAtomIdx(p.atom) != idx) p = p.constructionParent;
++      if (p == null || p.dist != dist) throw new AssertionError("closure anchor mismatch");
++      child.origin = p;
++    }
++    return child;
+   }
+ 
+   void add(Edge<A, B> e)
+--- a/core/src/main/java/com/simolecule/centres/rules/Rule1b.java
++++ b/core/src/main/java/com/simolecule/centres/rules/Rule1b.java
+@@ -43,6 +43,9 @@
+     super(mol);
+   }
+ 
++  public static long comparisons, changed, reversed;
++  private static final boolean ACTIVE = Boolean.getBoolean("cip.active");
++
+   @Override
+   public int compare(Edge<A, B> a, Edge<A, B> b) {
+     if (IUPAC_2013) {
+@@ -51,8 +54,16 @@
+     } else {
+       if (a.getEnd().isSet(Node.RING_DUPLICATE) &&
+           b.getEnd().isSet(Node.RING_DUPLICATE))
+-        return -Integer.compare(a.getEnd().getDistance(),
+-                                b.getEnd().getDistance());
++        {
++          int fixed = -Integer.compare(a.getEnd().auditedRingDistance(false), b.getEnd().auditedRingDistance(false));
++          int moved = -Integer.compare(a.getEnd().auditedRingDistance(true), b.getEnd().auditedRingDistance(true));
++          if (fixed != -Integer.compare(a.getEnd().getDistance(), b.getEnd().getDistance()))
++            throw new AssertionError("failed fixed control");
++          comparisons++;
++          if (fixed != moved) changed++;
++          if (fixed * moved < 0) reversed++;
++          return ACTIVE ? moved : fixed;
++        }
+       else {
+         if (a.getEnd().isSet(Node.RING_DUPLICATE) && !b.getEnd()
+                                                        .isSet(Node.RING_DUPLICATE))

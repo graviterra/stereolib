@@ -1,4 +1,6 @@
 import TetraStereo.Engine.RingSparseTwinReport
+import TetraStereo.Engine.RingMetricChoiceRobustness
+import TetraStereo.Engine.RingRootIndexedEarly
 open TetraStereo.OneCenter TetraStereo.Engine
 open CertifiedLocalizedCIPInput
 open LocalizedChemicalRing (Input)
@@ -78,11 +80,42 @@ private def intervention (i : Input) (a : i.certified.Atom) (mode : String) : IO
     | _ => some none
   unless result == expected do throw (IO.userError "unexpected intervention result")
 
+open private indexedPublish indexedPublish_eq from TetraStereo.Engine.RingRootIndexedEarly
+
+/-- Reuse the root-local constitutional index at every stock publication, even
+on a store resulting from earlier switches. -/
+private def indexedTrial (i : Input) (r : i.certified.Atom) (paths : List (List Nat)) :=
+  let hybrid : RingActiveDistanceSchedule.Rule i := fun q =>
+    if RingMetricChoiceRobustness.address q ∈ paths then RingOriginIndexedKeys.publish i q else indexedPublish i q
+  indexedPublish i (RingGroupedReport.origin i r)
+    (RingSphereQueue.reader r (RingSphereQueue.viewOf
+      (RingRootLayerStore.rows i (RingPyramidalPublication.eligible i) hybrid r)))
+
+private theorem indexedTrial_eq (i : Input) (r : i.certified.Atom) (paths : List (List Nat)) :
+    indexedTrial i r paths = RingMetricChoiceRobustness.trialPaths i r paths := by
+  simp only [indexedTrial,RingMetricChoiceRobustness.trialPaths,indexedPublish_eq]
+assert_kernel_only indexedTrial_eq
+
+/-- Switch Rule 1b itself at each chosen address and rerun the full schedule. -/
+private def metricTrial (i : Input) (root : i.certified.Atom) (mode : String) : IO Unit := do
+  let left := [0,6,7,8,5,4,3]
+  let right := [0,12,13,14,11,10,9]
+  let (paths,expected) : List (List Nat) × RingActiveDistanceSchedule.Cell := match mode with
+    | "metric-left" => ([left],some (some (.chiral .S,.chiral .R)))
+    | "metric-right" => ([right],some (some (.chiral .R,.chiral .S)))
+    | "metric-both" => ([left,right],some none)
+    | _ => ([],some none)
+  let result := indexedTrial i root paths
+  unless result == expected do throw (IO.userError s!"{mode}: {repr result}")
+  IO.println s!"{mode} {paths} {repr result}"
+  (← IO.getStdout).flush
+
 def main (args : List String) : IO Unit := do
   let some (m,g) := RingHydrogenCompletion.prepare? molecule geom | throw (IO.userError "prepare")
   let some i := LocalizedChemicalRing.admitRawSpatial? m g | throw (IO.userError "structural admission")
   unless LocalizedChemicalRing.coordinatesAdmitted i do throw (IO.userError "geometry admission")
   checkFrames m g
+  (← IO.getStdout).flush
   let some root := (List.finRange i.certified.certified.input.molecule.atomCount)[0]?
     | throw (IO.userError "missing root")
   for mode in args do
@@ -92,4 +125,6 @@ def main (args : List String) : IO Unit := do
       unless result == some [(0,none)] do throw (IO.userError "unexpected raw report")
     else if mode == "left" || mode == "right" || mode == "both" then
       intervention i root mode
+    else if ["metric-left","metric-right","metric-both","metric-neither"].contains mode then
+      metricTrial i root mode
     else throw (IO.userError s!"unknown replay mode {mode}")

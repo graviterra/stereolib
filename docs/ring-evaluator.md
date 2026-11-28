@@ -145,6 +145,48 @@ pinned Jmol phosphorus replay uses
 [PyramidalPhosphaneOxirane.spt](../validation/ring-chronology/PyramidalPhosphaneOxirane.spt) and
 requires `PHOSPHANE_PASS sRS sSR`. Program agreement is separate from the chemical criterion.
 
+## Graph and whole-report results
+
+The general molecular-history theorems reconstruct constitutional priorities from the written
+bonds and isotope records at every valid incident direction, including parent-facing edges and
+ring closures. With a ready frozen table as input they reconstruct exact signed donor inventories
+sphere by sphere. This general theorem does not independently derive that table from coordinates.
+[Graph inventory](../TetraStereo/Engine/RingGraphHistoryInventory.lean) ·
+[Deep constitutional comparison](../TetraStereo/Examples/RingDeepHistoryComparison.lean)
+
+Whole-report theorems do derive the public rows from oriented volumes on four specified graphs,
+for every admitted coordinate table and request list: paired cyclopropyl, cross-parent, decalin
+and hexachlorocyclohexane. Requests preserve repeats and order; invalid IDs fail. These stronger
+results retain their graph and admission hypotheses.
+[Paired report](../TetraStereo/Examples/PairedCyclopropylPublic.lean) ·
+[Cross-parent report](../TetraStereo/Examples/CrossParentAllAtoms.lean) ·
+[Decalin report](../TetraStereo/Examples/DecalinPublicReport.lean) ·
+[Hexachlorocyclohexane report](../TetraStereo/Examples/HexachlorocyclohexanePublicReport.lean)
+
+The paired-cyclopropyl family has 64 ordered donor-triple pairs: 48 Rule 4b decisions,
+eight complementary pairs reaching lowercase Rule 5 and eight identical-pair refusals.
+The `--sparse-folded --paired-report FAMILY_SDF` mode of
+[VS242PublicReport.lean](../validation/ring-chronology/VS242PublicReport.lean) checks all 25 rows
+on each model and its explicit reflection (3,200 rows). Generate the pinned family SDF with
+[check_paired_cyclopropyl_donors.py](../validation/ring-chronology/check_paired_cyclopropyl_donors.py)
+with `--export-family FAMILY_SDF`. Family replay is executable evidence alongside the graph theorem.
+
+After preparing selected dependencies with the bounded build helper, run the raw query driver
+inside the same enforced aggregate memory scope as the preceding examples:
+
+```sh
+systemd-run --user --scope -p MemoryMax=6G -p MemorySwapMax=0 \
+  lake env lean --run validation/ring-chronology/VS242PublicReport.lean
+systemd-run --user --scope -p MemoryMax=6G -p MemorySwapMax=0 \
+  lake env lean --run validation/ring-chronology/VS242PublicReport.lean --vs262
+```
+
+The default input is the digest-checked `.cache/compounds_3d.sdf` prepared below.
+The queries give R/S at published VS242 C36 and VS262 C27, respectively. Both published graphs
+are acyclic. VS242 exercises a fifth-bit Rule 5 decision; VS262 exercises Figure 8's deeper
+reference ranking. These checks do not certify all labels on either structure. Independent
+Python/Jmol controls require Python 3 and the pinned Jmol/JDK inputs below.
+
 ## Rerooted Rule 1b distance
 
 The public convention measures ring-duplicate origins from the original root. The alternative
@@ -176,6 +218,17 @@ occurrence with identical incoming stores and different local publications.
 
 ## Python and Jmol source controls
 
+The [decalin Rule 5 replay](../validation/ring-chronology/check_decalin_rule5.py) takes three
+paths in order: the authors’ 3D SDF, the Centres 1.0 executable jar and the release’s
+`core/src/main/java/com/simolecule/centres/rules/Sort.java`. It checks their digests before
+compiling an instrumented comparator with `javac`. The [fused-ligand](../validation/ring-chronology/CentresFusedLigands.java)
+and [site-distance](../validation/ring-chronology/CentresSiteMetrics.java) probes require a
+JDK 17 or later. The [fused Jmol replay](../validation/ring-chronology/check_fused_jmol.py)
+uses the compiled adapter classpath and a separate JmolData 14.32.10 jar
+(SHA-256 `d107d385c8f8fde2273faba125a99f7f81d3f48b8415b1811c83777d3d65e3c8`).
+The [Rule 1b intervention patch](../validation/ring-chronology/centres-rule1b-distance.patch)
+applies to the upstream Centres 1.0 core and CDK sources for comparisons between distance policies.
+
 The Python controls require Python 3, a JDK providing `java` and `javac` with Java source-file
 launch support, and the pinned binary, source archive and authors' dataset below. Run from the
 public repository root. These are external Jmol replays and diagnostic source interventions;
@@ -185,13 +238,13 @@ the Figure 14 helper. The binary and source archive are Jmol 14.29.17 Maven arti
 molecular data is from the pinned authors' CIP Validation Suite revision.
 
 ```sh
-mkdir -p tmp/figure14-jmol-replay tmp/ring-chemical-rules
+mkdir -p .cache/jmol-14.29.17
 curl -fsSL https://repo.maven.apache.org/maven2/net/sourceforge/jmol/jmol/14.29.17/jmol-14.29.17.jar \
-  -o tmp/figure14-jmol-replay/jmol.jar
+  -o .cache/jmol-14.29.17/jmol.jar
 curl -fsSL https://repo.maven.apache.org/maven2/net/sourceforge/jmol/jmol/14.29.17/jmol-14.29.17-sources.jar \
-  -o tmp/figure14-jmol-replay/sources.jar
+  -o .cache/jmol-14.29.17/sources.jar
 curl -fsSL https://raw.githubusercontent.com/CIPValidationSuite/ValidationSuite/6b9f9db46dadc6749da8234b05164e1e0fb413b9/compounds_3d.sdf \
-  -o tmp/ring-chemical-rules/compounds_3d.sdf
+  -o .cache/compounds_3d.sdf
 python3 validation/ring-chronology/check_figure14_regeneration.py
 python3 validation/ring-chronology/check_vs300_bond_order.py
 ```

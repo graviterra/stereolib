@@ -14,10 +14,11 @@ when auxiliary Rule 1b distances are measured from the active focus instead of t
 [Ring proof status](RING_STATUS.md) · [Run or replay the ring evaluator](docs/ring-evaluator.md) ·
 [Proved acyclic results](#what-is-proved) · [Collaborate](#collaborate)
 
-## Ring results as of 25 November 2026
+## Ring results as of 27 November 2026
 
 | Result | What the evidence establishes |
 | --- | --- |
+| Whole-report cyclic family | On the 25-atom paired-cyclopropyl graph, seven oriented volumes determine every requested row. Of 64 donor-triple pairs, Rule 4b decides 48, Rule 5 decides eight complementary pairs, and eight identical pairs refuse. [Report](TetraStereo/Examples/PairedCyclopropylPublic.lean) · [Classification](TetraStereo/Examples/PairedCyclopropylComparison.lean) |
 | Recursive full-path source report | On one admitted, prepared geometry, each requested atom has a unique source-derived result, including refusals and repeated requests. [Report theorem](TetraStereo/Engine/RingFullPathReport.lean) |
 | Reachable Rule 4b discrepancy | The grouped root assigns R/S on a 41-atom ring while whole-sphere full-path ordering leaves it unassigned. The eight frozen auxiliary hands agree. [Molecular control](validation/ring-chronology/Rule4bCrossParent.lean) |
 | Public presentation invariance | Bond-list permutations preserve the raw public request through hydrogen placement and consensus, including failure and invalid IDs. Independently admitted presentations may also vary stored neighbor order under the theorem's graph and coordinate hypotheses. [Graph theorem](TetraStereo/Engine/RingBondRecordOrder.lean) |
@@ -26,6 +27,24 @@ when auxiliary Rule 1b distances are measured from the active focus instead of t
 | A 31-atom ring with frozen auxiliary labels | The grouped comparison returns the expected scores for Rules 4a, 4b, 4c and 5, and for a complete tie. A variant with constitutionally matched sibling branches checks both a Rule 4b decision and a tie. [Fixture and assertions](TetraStereo/Examples/RingRetainedUnitControl.lean) |
 | Exact reports for the regenerated profile | Under the stated admission and calibration hypotheses, independently specified priorities determine the letter, casing or refusal at every detected centre for this reference policy. [Exact report certificate](TetraStereo/Engine/LocalizedChemicalRingExactCertificate.lean) |
 | A limit of the pinned Centres 1.0 procedure | Renumbering two carbons changes its fluorospiro descriptor from `S` to `s`. The independent ring-pair calculation gives `S` under both numberings and `R` on reflection. [Renumbering witness](TetraStereo/Examples/CentresRingSpiroCasing.lean) · [Molecular calculation](TetraStereo/Examples/RingTwoPairFluorospiro.lean) |
+
+The latest ring proofs connect more of the public report directly to graph paths and geometry.
+On arbitrary admitted single-bond graphs, molecular histories reconstruct constitutional priorities,
+including parent-facing edges and closures. Given a ready frozen publication table, the graph
+also reconstructs signed donor inventories at every sphere with multiplicities. The table remains
+an input to this general result: independently deriving every auxiliary hand from coordinates
+on arbitrary graphs is still open.
+[Deep constitutional comparisons](TetraStereo/Examples/RingDeepHistoryComparison.lean) ·
+[Graph inventory theorem](TetraStereo/Engine/RingGraphHistoryInventory.lean)
+
+For specified graphs, stronger whole-report theorems derive the actual public API from oriented
+volumes at every admitted coordinate table and for every request list. They include the
+25-atom paired-cyclopropyl scaffold, the 41-atom cross-parent scaffold, fully hydrogenated decalin,
+and hexachlorocyclohexane. These are graph-specific results with explicit admission hypotheses.
+[Paired cyclopropyl report](TetraStereo/Examples/PairedCyclopropylPublic.lean) ·
+[Cross-parent all-atom report](TetraStereo/Examples/CrossParentAllAtoms.lean) ·
+[Decalin report](TetraStereo/Examples/DecalinPublicReport.lean) ·
+[Hexachlorocyclohexane report](TetraStereo/Examples/HexachlorocyclohexanePublicReport.lean)
 
 The public `Engine.ringMolecularReportFromRaw?` is
 [`RingHydrogenReport.fromRaw?`](TetraStereo/Engine/RingHydrogenReport.lean). It completes ordinary
@@ -53,6 +72,13 @@ where the public full-path report refuses, despite the same eight leaf hands.
 [Population theorem](TetraStereo/Engine/RingPopulationReport.lean) ·
 [Inventory report](TetraStereo/Engine/RingStereoInventoryReport.lean) ·
 [Cross-parent control](validation/ring-chronology/Rule4bCrossParent.lean)
+
+Pinned raw replays also give R/S at C36 of published VS242 and C27 of VS262 (Figure 8).
+Both published structures are acyclic; they test deeper stereo comparisons admitted by this
+API. VS242 first separates its competing arms at the fifth Rule 5 bit. These executable checks
+are distinct from the graph-specific whole-report theorems above.
+[Raw replays](validation/ring-chronology/VS242PublicReport.lean) ·
+[VS242 graph and coordinate check](validation/ring-chronology/vs242_branch_words.py)
 
 **Rule 1b after rerooting remains a chemical interpretation question.** On a hydrogen-complete
 13-atom spiro graph, the public original-root distance convention gives R/S; the alternative
@@ -224,7 +250,7 @@ in the result field. Counterexamples are useful without a repair. See
 Sources live in [OneCenter](TetraStereo/OneCenter) (models, algorithms, proofs),
 [Engine](TetraStereo/Engine), [Certificate](TetraStereo/Certificate),
 [Examples](TetraStereo/Examples) and [UniversalProof](TetraStereo/UniversalProof). The
-[module inventory](source-modules.json) records 4,617 maintained Lean modules, or 4,618 source
+[module inventory](source-modules.json) records 4,745 maintained Lean modules, or 4,746 source
 files with the umbrella. A module count is
 not a theorem count, and the words "complete" or
 "universal" in a name do not override the hypotheses of its declarations.
@@ -237,8 +263,9 @@ python3 -B tools/check_source_tree.py
 ```
 
 Build selected modules under an enforced memory limit. GitHub runs static source checks.
-The November 25 verification also ran the exported ring controls against the existing
-development compilation. A clean build of the full public distribution remains unverified.
+The November 27 verification checked eleven proof endpoints against the existing development
+compilation and replayed the decalin and paired-cyclopropyl controls. A clean build of the
+full public distribution remains unverified.
 [Build instructions](BUILDING.md) · [Verification record](RING_STATUS.md#verification-boundary)
 
 ## Citation and license

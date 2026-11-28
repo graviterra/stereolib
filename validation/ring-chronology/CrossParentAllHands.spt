@@ -1,0 +1,67 @@
+# Jmol 14.29.17. Check every numbered donor pattern on both root orientations.
+load "validation/ring-chronology/Rule4bCrossParent.mol"
+set cipRule6Full false
+
+function exchangeHalogens(j) {
+  var fno = 16 + 3*j
+  var clno = fno + 1
+  var oldF = {atomno=fno}.xyz
+  var oldCl = {atomno=clno}.xyz
+  {atomno=fno}.xyz = oldCl
+  {atomno=clno}.xyz = oldF
+}
+
+function checkConfig(wanted, reflected) {
+  calculate chirality
+  var letters = ""
+  var leftR = 0
+  var rightR = 0
+  for (var j = 1; j <= 8; j++) {
+    var atomID = 7+j
+    var letter = {atomno=atomID}.chirality
+    letters += letter
+    if (letter == "R") {
+      if (j <= 4) {leftR++} else {rightR++}
+    }
+  }
+  var target = wanted
+  if (reflected) {target = wanted.replace("R","X").replace("S","R").replace("X","S")}
+  if (letters != target) {throw "leaf mismatch " + wanted + " " + reflected + " " + letters}
+  var l = 4-leftR
+  if (leftR > l) {l = leftR}
+  var r = 4-rightR
+  if (rightR > r) {r = rightR}
+  var expected = ""
+  if (l != r) {
+    if ((l > r) != reflected) {expected = "R"} else {expected = "S"}
+  } else if (leftR != rightR) {
+    if ((leftR > rightR) != reflected) {expected = "r"} else {expected = "s"}
+  }
+  var actual = {atomno=1}.chirality
+  if (actual != expected) {throw "root mismatch " + wanted + " " + reflected + " actual=" + actual + " expected=" + expected}
+  print "CROSS_ROW " + wanted + " " + reflected + " " + letters + " [" + actual + "]"
+}
+
+var patterns = ["R","S"]
+for (var level=1; level < 8; level++) {
+  var expanded = []
+  for (var w in patterns) {
+    expanded.push(w + "R")
+    expanded.push(w + "S")
+  }
+  patterns = expanded
+}
+if (patterns.length != 256) {throw "pattern count"}
+var previousHands = "RRSSRSRS"
+for (var pattern in patterns) {
+  for (var k=1; k <= 8; k++) {
+    if (pattern[k] != previousHands[k]) {exchangeHalogens(k-1)}
+  }
+  checkConfig(pattern,false)
+  select all
+  invertSelected POINT {0 0 0}
+  checkConfig(pattern,true)
+  invertSelected POINT {0 0 0}
+  previousHands = pattern
+}
+print "CROSS_PARENT_ALL_256_PASS"

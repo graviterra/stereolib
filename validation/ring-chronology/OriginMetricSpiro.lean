@@ -1,4 +1,4 @@
-import TetraStereo.Engine.RingOriginIndexedKeys
+import TetraStereo.Engine.RingMetricChoiceTable
 
 /-! Final-descriptor counterexample for the two ring-duplicate distance
 conventions. Jmol's independent replay reads the identical V2000 fixture.
@@ -87,6 +87,36 @@ private def trace (i : LocalizedChemicalRing.Input) (r : i.certified.Atom) : IO 
       unless cmp == expectedDirection do throw (IO.userError "unexpected Rule 4b direction")
       IO.println s!"{tag} root arms {a}/{b} Rule 4b {repr cmp}"
 
+/-- Recompute the entire store with one specified auxiliary occurrence switched.
+Either length-three path reverses the root; either length-five path preserves it. -/
+private def intervention (i : LocalizedChemicalRing.Input) (r : i.certified.Atom)
+    (path : List Nat) (expected : RS) : IO Unit := do
+  let actual := RingMetricChoiceRobustness.trialPaths i r [path]
+  unless actual == some (some (.chiral expected,.chiral expected.swap)) do
+    throw (IO.userError s!"unexpected single intervention {path}: {repr actual}")
+  IO.println s!"active only at {path}: {repr actual}"
+
+private def proposedPaths : List (List Nat) :=
+  [[0,1,3],[0,5,7],[0,2,3,4,1],[0,6,7,8,5]]
+
+private def support (i : LocalizedChemicalRing.Input) (r : i.certified.Atom) : IO Unit := do
+  let sites := RingMetricChoiceRobustness.supportFromPaths r proposedPaths
+  unless sites.length == 4 && (RingOriginCausal.inventory i r).length == 12 do
+    throw (IO.userError "expected four proposed sites among twelve eligible occurrences")
+  let stdout ← IO.getStdout
+  for (chosen,certified) in RingMetricChoiceTable.table r sites do
+    let paths := chosen.map RingMetricChoiceRobustness.address
+    let mask := (proposedPaths.zipIdx.filter fun item => paths.contains item.1).foldl
+      (fun value item => value + 2^item.2) 0
+    let some cell := certified |
+      throw (IO.userError s!"off-support changes at mask {mask} for {paths}")
+    let expected := if paths.contains [0,1,3] || paths.contains [0,5,7] then RS.S else RS.R
+    unless cell == some (some (.chiral expected,.chiral expected.swap)) do
+      throw (IO.userError s!"unexpected root at mask {mask}: {repr cell}")
+    stdout.putStrLn s!"mask {mask}: {repr cell}"
+    stdout.flush
+  IO.println "verified all 16 support subsets against arbitrary off-support choices"
+
 def main (args : List String) : IO Unit := do
   let some (m,g) := input? | throw (IO.userError "invalid spiro fixture")
   match args with
@@ -94,6 +124,19 @@ def main (args : List String) : IO Unit := do
     let some i := LocalizedChemicalRing.admitRawSpatial? m g | throw (IO.userError "trace admission")
     let some r := (List.finRange i.certified.certified.input.molecule.atomCount)[0]? | throw (IO.userError "root")
     trace i r
+  | ["support"] =>
+    let some i := LocalizedChemicalRing.admitRawSpatial? m g | throw (IO.userError "support admission")
+    let some r := (List.finRange i.certified.certified.input.molecule.atomCount)[0]? | throw (IO.userError "root")
+    support i r
+  | ["intervention",side] =>
+    let some i := LocalizedChemicalRing.admitRawSpatial? m g | throw (IO.userError "intervention admission")
+    let some r := (List.finRange i.certified.certified.input.molecule.atomCount)[0]? | throw (IO.userError "root")
+    match side with
+    | "left" => intervention i r [0,1,3] .S
+    | "right" => intervention i r [0,5,7] .S
+    | "deep-left" => intervention i r [0,2,3,4,1] .R
+    | "deep-right" => intervention i r [0,6,7,8,5] .R
+    | _ => throw (IO.userError "expected left, right, deep-left, or deep-right")
   | ["mirror"] => check m ⟨g.positions.map CartesianPoint3.reflectX⟩ true
   | [] => check m g false
-  | _ => throw (IO.userError "expected no arguments, mirror, or trace")
+  | _ => throw (IO.userError "expected no arguments, mirror, trace, support, or intervention with a path name")

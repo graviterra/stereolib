@@ -1,8 +1,61 @@
-# Ring source status — 25 November 2026
+# Ring source status — 27 November 2026
 
 The ring programme now has an explicit executable development profile and an independent
 source-model connection to its detected-centre report. This is a scoped source update, not a
 claim of full CIP correctness, chemical completion or release readiness.
+
+## November 27 graph and family results
+
+The latest ring proofs connect more of the public report directly to graph paths and geometry.
+On arbitrary admitted single-bond graphs, molecular histories reconstruct constitutional priorities,
+including parent-facing edges and closures. Given a ready frozen publication table, the graph
+also reconstructs signed donor inventories at every sphere with multiplicities. The table remains
+an input to this general result: independently deriving every auxiliary hand from coordinates
+on arbitrary graphs is still open.
+[Deep constitutional comparisons](TetraStereo/Examples/RingDeepHistoryComparison.lean) ·
+[Graph inventory theorem](TetraStereo/Engine/RingGraphHistoryInventory.lean)
+
+On fully written cyclohexane-1,4-diol, the two substituted carbon frames determine the raw
+report for any requested atom list on admitted coordinates. Rule 5 distinguishes the two
+otherwise tied paths around the ring. [Diol report theorem](TetraStereo/Examples/AntipodalCyclohexaneReport.lean#L137)
+
+For specified graphs, stronger whole-report theorems derive the actual public API from oriented
+volumes at every admitted coordinate table and for every request list. They include the
+25-atom paired-cyclopropyl scaffold, the 41-atom cross-parent scaffold, fully hydrogenated decalin,
+and hexachlorocyclohexane. These are graph-specific results with explicit admission hypotheses.
+[Paired cyclopropyl report](TetraStereo/Examples/PairedCyclopropylPublic.lean) ·
+[Cross-parent all-atom report](TetraStereo/Examples/CrossParentAllAtoms.lean) ·
+[Decalin report](TetraStereo/Examples/DecalinPublicReport.lean) ·
+[Hexachlorocyclohexane report](TetraStereo/Examples/HexachlorocyclohexanePublicReport.lean)
+
+On the paired-cyclopropyl graph, seven signed volumes determine the complete raw report:
+six donor carbons return their hands and the other 18 peripheral atoms refuse. Of 64 ordered
+donor-triple pairs, Rule 4b decides 48; eight complementary pairs give lowercase through Rule 5;
+eight identical pairs refuse. All 128 donor-triple/central-hand combinations have admitted rational
+coordinate realizations. On this scaffold refusal is equivalent to a hand-preserving arm exchange.
+That equivalence is not universal: the cross-parent scaffold has 16 refusals without such an exchange.
+[Realizations](TetraStereo/Examples/PairedCyclopropylRealizations.lean) ·
+[Exchange classification](TetraStereo/Examples/PairedCyclopropylExchangeClass.lean) ·
+[Cross-parent exchange limits](TetraStereo/Examples/CrossParentExchange.lean)
+
+On the cross-parent scaffold all 256 donor patterns have admitted coordinates. The public root
+counts are 70 refusals, 76 R, 76 S, 17 r and 17 s with its fixed central frame. For decalin,
+two junction volumes determine every row: equal signs give r/r at the junctions, opposite signs
+s/s; the other 26 atoms refuse. On hexachlorocyclohexane, six volumes determine all rows and the
+seven published achiral examples' 42 letters and casing are checked. These classifications belong
+to their specified graphs and coordinate conventions.
+[Cross-parent patterns](TetraStereo/Examples/CrossParentFaces.lean) ·
+[Decalin geometry](TetraStereo/Examples/DecalinFrames.lean) ·
+[Published hexachlorocyclohexanes](TetraStereo/Examples/BlueBookHexachlorocyclohexaneSeries.lean)
+
+The pinned raw replay gives R/S at C36 of 106-atom VS242 and C27 of 94-atom VS262.
+These published structures are acyclic. At VS242 the fifth Rule 5 bit decides after Rule 4b ties.
+At VS262, graph decisions settle 24 of 28 scheduled auxiliary sites; four use stereo fallback.
+These are executable queries through implementations proved equal to the public raw API, rather
+than universal kernel theorems for those molecular families.
+[Raw queries](validation/ring-chronology/VS242PublicReport.lean) ·
+[VS242 reference words](validation/ring-chronology/check_vs242_cross_band.py) ·
+[VS262 coordinate check](validation/ring-chronology/hanson_figure8_sdf.py)
 
 ## Established connections
 
@@ -204,6 +257,20 @@ chemical sources prescribe for rerooted auxiliaries remains open.
 [Centres replay](validation/ring-chronology/CentresOriginMetricSpiro.java) ·
 [Jmol replay](validation/ring-chronology/OriginMetricSpiro.spt)
 
+For this spiro graph, the store comparison covers all 4,096 choices of distance convention at
+its 12 eligible auxiliary occurrences. On the supplied geometry the root becomes S exactly
+when the convention switches to active-focus distance on path `0–1–3`, on `0–5–7`, or on both.
+Otherwise it stays R. These path identifiers are zero-based.
+[Molecular support check](validation/ring-chronology/OriginMetricSpiro.lean#L102) ·
+[Proof for the unselected occurrences](TetraStereo/Engine/RingMetricChoiceRobustness.lean)
+
+VS279 offers a source question at a specific auxiliary. On the path C-10–C-9–C-8, Lean finds
+S at C-8 using construction-root distances and a constitutional tie using active-focus
+distances. Both conventions preserve the published final s at C-10. The Blue Book diagram
+leaves this occurrence of C-8 unlabelled. An independent assignment for the occurrence would
+discriminate between the readings. [Lean control](validation/ring-chronology/OriginVS279.lean) ·
+[Blue Book P-93.6, example 1](https://iupac.qmul.ac.uk/BlueBook/P9.html#9306)
+
 Lean proves equality of the two stores and raw reports under explicit graph conditions, including
 when deleting one edge leaves a forest. A stronger order criterion checks actual closure-origin
 pairs at eligible auxiliary foci. Failure of a sufficient criterion alone does not imply a changed
@@ -270,6 +337,23 @@ Jmol correspondence nor justify retrying every baseline refusal in full mode.
 
 ## Verification boundary
 
+For the November 27 update, the source export reproduced 4,745 maintained Lean modules and
+the original umbrella. A focused audit against the cached development compilation passed
+eleven kernel-only assertions, including the graph donor inventory, full raw report
+equalities and hexachlorocyclohexane example theorems. Lean ran serially under a 6 GiB
+process-tree limit with swap disabled.
+
+The [decalin replay](validation/ring-chronology/check_decalin_rule5.py) reproduced *s,s*
+at both cis junctions and *r,r* at both trans junctions on the original and reflected
+geometries. The [paired-cyclopropyl Jmol replay](validation/ring-chronology/check_paired_cyclopropyl_donors.py)
+checked the 64 donor patterns and their mirrors. Across those 128 root readings it returned
+48 R, 48 S, eight r, eight s and 16 unassigned.
+
+The exported [raw query driver](validation/ring-chronology/VS242PublicReport.lean) gave R
+at VS242 C36 and VS262 C27, and S on each reflection. Both inputs are acyclic controls for the
+shared evaluator. Separately, the [fused-ring Jmol replay](validation/ring-chronology/check_fused_jmol.py)
+confirmed the expected readings at all 128 roots and 768 specified auxiliary occurrences.
+
 The earlier preserved original-source checkpoints cover **74 distinct source files and 422
 kernel guards**. The subsequent two-module checkpoint adds **eight kernel-only guards** for pairing
 parity, exact two-pair entries and exhaustive root outcomes. The two public source files are
@@ -293,8 +377,8 @@ The exported receipt generator also reproduced both deep-marked Centres receipts
 [Receipt generator](validation/ring-chronology/generate_deep_marked_source.py) ·
 [GitHub source checks](https://github.com/graviterra/stereolib/actions/runs/45768097529)
 
-The [module inventory](source-modules.json) contains all 4,617 maintained Lean modules.
-The original umbrella brings the package total to 4,618 Lean files. The validation drivers
+The [module inventory](source-modules.json) contains all 4,745 maintained Lean modules.
+The original umbrella brings the package total to 4,746 Lean files. The validation drivers
 are counted separately.
 A universal chemical completeness theorem and full chemical approval remain open. See the [README](README.md) for
 existing acyclic results, collaboration guidance and safe source checks.

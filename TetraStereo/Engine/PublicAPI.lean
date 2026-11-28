@@ -42,11 +42,17 @@ import TetraStereo.Engine.RingOriginAncestry
 import TetraStereo.Engine.RingOriginOrderGraph
 import TetraStereo.Engine.RingAtomicMetricPublication
 import TetraStereo.Engine.RingOriginTwinStore
+import TetraStereo.Engine.RingExchangeStore
+import TetraStereo.Engine.RingAutomaticRefusal
+import TetraStereo.Engine.RingFiniteExchange
 import TetraStereo.Engine.RingOriginTwinLeaves
 import TetraStereo.Engine.RingOriginMarkRenumber
 import TetraStereo.Engine.RingOriginOrderRawCheck
 import TetraStereo.Engine.RingRawLigandOrder
 import TetraStereo.Engine.RingLigandFirstDifference
+import TetraStereo.Engine.RingOrdinaryPairVerdict
+import TetraStereo.Engine.RingSplitLigandTie
+import TetraStereo.Engine.RingTrialInventoryOrder
 import TetraStereo.Engine.RingConstitutionalResidual
 import TetraStereo.Engine.RingStereoUnitResidual
 import TetraStereo.Engine.RingSourceUnitPriority
@@ -54,6 +60,10 @@ import TetraStereo.Engine.RingPyramidalInventoryConservation
 import TetraStereo.Engine.RingBridgeheadReport
 import TetraStereo.Engine.RingOxaziridineAuxiliaryReport
 import TetraStereo.Engine.RingOxaziridineReport
+import TetraStereo.Engine.RingChloroaziridineReport
+import TetraStereo.Engine.RingDiaziridineStore
+import TetraStereo.Engine.RingTwinCoordinateTransport
+import TetraStereo.Engine.RingPerpendicularPhantom
 import TetraStereo.Engine.RingBondImplicitReport
 import TetraStereo.Engine.RingBridgeheadPaths
 import TetraStereo.Engine.RingNumericPairReport
@@ -137,6 +147,15 @@ neighbor ordering while retaining the same physical graph and coordinates. -/
 abbrev ringMolecularReportPresentation := @RingBondRecordOrder.implicit_raw_public
 abbrev ringShortBridgePaths := @RingBridgeheadNitrogen.test_iff_paths
 abbrev ringOxaziridineReport := @RingOxaziridineReport.from_source
+/-- Raw nitrogen descriptor for the recognized mono- and gem-dimethyl N-chloroaziridines. -/
+abbrev ringChloroaziridineReport := @RingChloroaziridineReport.from_source
+/-- The raw nitrogen row for a recognized dialkyldiaziridine after hydrogen preparation. -/
+abbrev ringDiaziridineReport := @RingDiaziridineOrder.raw
+/-- Exact address and reading of a dialkyldiaziridine nitrogen after each committed sphere. -/
+abbrev ringDiaziridinePathRow := @RingDiaziridineStore.row_iff
+/-- A perpendicular lowest-priority phantom preserves the full raw report and every sphere. -/
+abbrev ringPerpendicularPhantomReport := @RingPerpendicularPhantom.raw_exact
+abbrev ringPerpendicularPhantomRows := @RingPerpendicularPhantom.rows_exact
 abbrev ringOxaziridinePathRow := @RingOxaziridineAuxiliaryReport.row_iff
 /-- Complete rooted-graph criterion for equality of actual ring-duplicate origins. -/
 abbrev ringClosureCommonOriginCriterion := @RingCommonOriginCriterion.commonOrigin_iff
@@ -169,6 +188,28 @@ abbrev ringThreeTerminalRefusal := @RingOriginTriplePublication.refusal
 abbrev ringOriginTwinStoreAudit := RingOriginTwinStore.audit
 abbrev ringOriginTwinStoreTrajectory := @RingOriginTwinStore.audit_stores
 abbrev ringOriginTwinStoreRaw := RingOriginTwinStore.raw_exact
+
+/-- Return the first differing batch and occurrence, or the common addressed rows. -/
+abbrev ringCompareSphereStores := @RingStoreDecision.scan
+abbrev ringFirstDifference := @RingStoreDecision.firstDifference?
+abbrev ringFirstDifferenceIff := @RingStoreDecision.trajectory_iff
+
+/-- Certify proposed ligand exchanges on the actual reader before issuing a refusal. -/
+abbrev ringCheckedExchange := @RingLigandExchange.check
+abbrev ringExchangeReportFromRaw? (propose : (i : LocalizedChemicalRing.Input) → RingExchangeStore.Proposals i) :=
+  RingRawComparisonLift.fromRaw (RingExchangeStore.report propose)
+abbrev ringCheckedExchangeRaw := RingExchangeStore.raw_exact
+
+/-- Discover observed-tree exchanges directly in the molecular input. -/
+abbrev ringAutomaticRefusal := @RingAutomaticRefusal.select
+abbrev ringAutomaticRefusalFromRaw? := RingAutomaticRefusal.fromRaw?
+abbrev ringAutomaticRefusalStores := @RingAutomaticRefusal.stores
+abbrev ringAutomaticRefusalRaw := RingAutomaticRefusal.raw_exact
+/-- A decisive fast comparison certifies existence or absence. The exact
+decision can fall back to a finite search over cursor correspondences. -/
+abbrev ringQuickMarkedExchange := @RingFiniteExchange.quick?
+abbrev ringDecideMarkedExchange := @RingFiniteExchange.decidePair
+abbrev ringDecideMarkedExchangeIff := @RingFiniteExchange.decidePair_iff
 abbrev ringAtomicMetricStoreCheck := RingAtomicMetricPublication.check
 abbrev ringAtomicMetricStoresExact := @RingAtomicMetricPublication.rows_exact
 abbrev ringAtomicMetricRawExact := RingAtomicMetricPublication.raw_exact
@@ -225,6 +266,23 @@ abbrev ringMolecularLigandReportExact := RingRawLigandOrder.native
 abbrev ringMolecularLigandDisagreement := RingRawLigandOrder.disagreement
 /-- Exact rule-stage scan for each pair of retained arms in a ready molecular read. -/
 abbrev ringMolecularLigandStages := @RingLigandFirstDifference.all_active_arms
+/-- The scheduled nominations and every ordered ligand comparison at a public tetrahedral occurrence. -/
+abbrev ringLigandTrialsAt? := RingResidualPairDecision.atSite?
+abbrev ringLigandTrialsExact := @RingResidualPairDecision.public_exact
+/-- All ordinary ligand comparisons on the public reader before any Rule 6 nomination. -/
+abbrev ringOrdinaryLigandTableAt? := RingOrdinaryPairVerdict.table?
+abbrev ringOrdinaryLigandTableExact := @RingOrdinaryPairVerdict.exact
+/-- Classify one scheduled pair by first deciding rule and existence of a retained-branch exchange. -/
+abbrev ringLigandPairAt? := RingResidualPairDecision.classifyAt?
+abbrev ringLigandPairExact := @RingResidualPairDecision.public_classify_iff
+/-- Direction and a necessary and sufficient tie criterion from signed molecular path inventories. -/
+abbrev ringLigandInventoryOrder := @RingTrialInventoryOrder.public_pair
+
+/-- Preserve ligand comparisons using only the geometry of relevant auxiliary centers. -/
+abbrev ringLigandPrioritiesAcrossCoordinates := @RingTwinCoordinateTransport.priorities
+abbrev ringTwinCoordinateSphere := @RingTwinCoordinateTransport.sphere
+/-- A marked tie can be witnessed separately for ordinary ranking and for the mark word. -/
+abbrev ringTieOfTwoMatches := @RingSplitLigandTie.tie_of_two_matches
 /-- Compare another center inventory and local procedure on every molecular occurrence. -/
 abbrev checkRingMolecularPolicy := RingIndependentInventory.check
 abbrev ringMolecularPolicyCheckExact := RingIndependentInventory.check_true_iff_states
